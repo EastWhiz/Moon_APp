@@ -100,7 +100,7 @@ const PrettoSlider = styled(Slider)({
   },
 });
 
-const appURL = "https://www.pairbo.store";
+const appURL = "https://83e3-182-178-237-249.ngrok-free.app";
 
 function App() {
 
