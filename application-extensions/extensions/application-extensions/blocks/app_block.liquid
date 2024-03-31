@@ -1,0 +1,33 @@
+{{ 'depend_fonts_one.css' | asset_url | stylesheet_tag }}
+{{ 'depend_fonts_two.css' | asset_url | stylesheet_tag }}
+{{ 'depend_sweet_alert.css' | asset_url | stylesheet_tag }}
+{{ 'depend_quill_bubble.css' | asset_url | stylesheet_tag }}
+{{ 'depend_quill_snow.css' | asset_url | stylesheet_tag }}
+{{ 'depend_style.css' | asset_url | stylesheet_tag }}
+
+<div id="root"></div>
+
+{% comment %} theme-check-disable ParserBlockingScriptTag {% endcomment %}
+{{ 'depend_react.js' | asset_url | script_tag }}
+{{ 'depend_react_dom.js' | asset_url | script_tag }}
+{{ 'depend_mui.js' | asset_url | script_tag }}
+{{ 'depend_babel.js' | asset_url | script_tag }}
+{{ 'depend_html2canvas.js' | asset_url | script_tag }}
+{{ 'depend_sweet_alert.js' | asset_url | script_tag }}
+{{ 'depend_draggable.js' | asset_url | script_tag }}
+{{ 'depend_quill.js' | asset_url | script_tag }}
+{% comment %} theme-check-enable ParserBlockingScriptTag {% endcomment %}
+
+<script>
+  // alert('Pairbo 15/12/2023 v8 LIVE');
+  console.log('Pairbo 05/02/2024 FINAL');
+</script>
+
+<script async type="text/babel" src="{{ 'application.js' | asset_url }}"></script>
+
+{% schema %}
+{
+  "name": "Pairbo - App",
+  "target": "body"
+}
+{% endschema %}
