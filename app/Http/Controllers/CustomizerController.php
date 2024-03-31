@@ -47,9 +47,11 @@ class CustomizerController extends Controller
             return sendResponse(false, "Shop does not exist");
 
         $front_image_url = $request->front_image_url;
+        $image_two = $request->pairbo_image_two;
+        $image_three = $request->pairbo_image_three;
 
-        $image = $request->file('canvas');
-        $base64Image = base64_encode(file_get_contents($image->path()));
+        // $image = $request->file('canvas');
+        // $base64Image = base64_encode(file_get_contents($image->path()));
 
         // return $request->model;
 
@@ -65,37 +67,44 @@ class CustomizerController extends Controller
                     "inventory_management" => null,
                 ],
                 "images" => [
-                    [
-                        "src" => $front_image_url
-                    ]
+                    ["src" => $front_image_url],
+                    ["src" => $image_two],
+                    ["src" => $image_three],
                 ]
             ],
         ]);
 
         DeletePairboJob::dispatch($user->id, $response['body']['product']['id'])->delay(now()->addMinutes(5));
 
-        $response2 = $user->api()->rest('post', '/admin/api/2023-04/products/' . $response['body']['product']['id'] . '/images.json', [
-            "image" => [
-                "position" => 2,
-                "src" => "",
-                "metafields" => [
-                    [
-                        "key" => "new",
-                        "value" => "newvalue",
-                        "type" => "single_line_text_field",
-                        "namespace" => "global"
-                    ]
-                ],
-                "attachment" => $base64Image,
-                "filename" => "generate.png"
-            ]
-        ]);
+        // $response2 = $user->api()->rest('post', '/admin/api/2023-04/products/' . $response['body']['product']['id'] . '/images.json', [
+        //     "image" => [
+        //         "position" => 2,
+        //         "src" => "",
+        //         "metafields" => [
+        //             [
+        //                 "key" => "new",
+        //                 "value" => "newvalue",
+        //                 "type" => "single_line_text_field",
+        //                 "namespace" => "global"
+        //             ]
+        //         ],
+        //         "attachment" => $base64Image,
+        //         "filename" => "generate.png"
+        //     ]
+        // ]);
 
         $filename2 = "";
         if (isset($request->canvas)) {
             $file = $request->file('canvas');
             $filename2 = time() . '-' . $file->getClientOriginalName();
             request()->canvas->storeAs('public/uploaded_images', $filename2);
+        }
+
+        $filename3 = "";
+        if (isset($request->qr_code)) {
+            $file = $request->file('qr_code');
+            $filename3 = time() . '-' . $file->getClientOriginalName();
+            request()->qr_code->storeAs('public/uploaded_images', $filename3);
         }
 
         if ($response['errors'] == false) {
@@ -107,6 +116,11 @@ class CustomizerController extends Controller
             $product->tags = $response['body']['product']['tags'];
             $product->price = "5.00";
             $product->canvas_image = "storage/uploaded_images/" . $filename2;
+            $product->qr_code_image = "storage/uploaded_images/" . $filename3;
+            $product->font_style = $request->font_style;
+            $product->font_color = $request->font_color;
+            $product->message = $request->message;
+            $product->metadata_json = $request->metadata_json;
             $product->save();
 
             $object['product_id'] = $response['body']['product']['id'];

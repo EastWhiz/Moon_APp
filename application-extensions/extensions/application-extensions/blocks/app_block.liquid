@@ -5,6 +5,7 @@
 {{ 'depend_quill_snow.css' | asset_url | stylesheet_tag }}
 {{ 'depend_style.css' | asset_url | stylesheet_tag }}
 
+<div id="qrcode_pairbo"></div>
 <div id="root"></div>
 
 {% comment %} theme-check-disable ParserBlockingScriptTag {% endcomment %}
@@ -16,11 +17,13 @@
 {{ 'depend_sweet_alert.js' | asset_url | script_tag }}
 {{ 'depend_draggable.js' | asset_url | script_tag }}
 {{ 'depend_quill.js' | asset_url | script_tag }}
+{{ 'depend_jquery.js' | asset_url | script_tag }}
+{{ 'depend_qr_code.js' | asset_url | script_tag }}
 {% comment %} theme-check-enable ParserBlockingScriptTag {% endcomment %}
 
 <script>
   // alert('Pairbo 15/12/2023 v8 LIVE');
-  console.log('Pairbo 05/02/2024 FINAL');
+  console.log('Pairbo 31/03/2024 v12');
 </script>
 
 <script async type="text/babel" src="{{ 'application.js' | asset_url }}"></script>

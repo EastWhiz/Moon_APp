@@ -11,43 +11,42 @@
 }
 
 @font-face {
-  font-family: "f1";
+  font-family: "Bright Sunshine";
   src: url('https://83e3-182-178-237-249.ngrok-free.app/api/fonts/BrightSunshine.ttf') format('truetype');
-
 }
 
 @font-face {
-  font-family: "f2";
+  font-family: "Calibri";
   src: url('https://83e3-182-178-237-249.ngrok-free.app/api/fonts/Calibri.ttf') format('truetype');
 }
 
 @font-face {
-  font-family: "f3";
+  font-family: "Caveat";
   src: url('https://83e3-182-178-237-249.ngrok-free.app/api/fonts/Caveat.ttf') format('truetype');
 }
 
 @font-face {
-  font-family: "f4";
+  font-family: "Dancing Script";
   src: url('https://83e3-182-178-237-249.ngrok-free.app/api/fonts/DancingScript.ttf') format('truetype');
 }
 
 @font-face {
-  font-family: "f5";
+  font-family: "Kalam";
   src: url('https://83e3-182-178-237-249.ngrok-free.app/api/fonts/Kalam.ttf') format('truetype');
 }
 
 @font-face {
-  font-family: "f6";
+  font-family: "Liebe Heide";
   src: url('https://83e3-182-178-237-249.ngrok-free.app/api/fonts/LiebeHeide.ttf') format('truetype');
 }
 
 @font-face {
-  font-family: "f7";
+  font-family: "Reanie Beenie";
   src: url('https://83e3-182-178-237-249.ngrok-free.app/api/fonts/ReenieBeanie.ttf') format('truetype');
 }
 
 @font-face {
-  font-family: "f8";
+  font-family: "Sacramento";
   src: url('https://83e3-182-178-237-249.ngrok-free.app/api/fonts/Sacramento.ttf') format('truetype');
 }
 
@@ -236,4 +235,11 @@ input:focus-visible {
   outline: none !important;
   outline-offset: none !important;
   box-shadow: none !important;
+}
+
+#qrcode_pairbo {
+  width: 160px;
+  height: 160px;
+  margin-top: 15px;
+  display: none
 }

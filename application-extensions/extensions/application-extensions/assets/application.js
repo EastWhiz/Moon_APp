@@ -232,7 +232,7 @@ function App() {
     height: 0
   });
 
-  const [sliderSize, setSliderSize] = window.React.useState(20);
+  const [sliderSize, setSliderSize] = window.React.useState(15);
   const [text, setText] = window.React.useState("");
   const [font, setFont] = window.React.useState("");
   const [fontColor, setFontColor] = window.React.useState("black");
@@ -804,8 +804,9 @@ function App() {
           async function addToCartAsync() {
             try {
               const formDataTwo = new FormData();
-              formDataTwo.set("id", result.data.variant_id);
-              formDataTwo.set("quantity", 1);
+              formDataTwo.append("id", result.data.variant_id);
+              formDataTwo.append("quantity", 1);
+              formDataTwo.append(`properties[Message]`, text);
 
               const response = await fetch(window.Shopify.routes.root + 'cart/add.js', {
                 method: "POST",
@@ -848,6 +849,21 @@ function App() {
     setFinalLoading(true);
     setBase64ImageLoading(true);
 
+    let qr_code = new QRCode(document.getElementById("qrcode_pairbo"), {
+      width: 600,
+      height: 600
+    });
+
+    let metadataJson = JSON.stringify({
+      fontStyle: font ? font : "Calibri",
+      fontColor: fontColor,
+      message: text,
+      productId: selectedPairbo.product_id,
+      merchantId: Shopify.shop,
+    })
+
+    qr_code.makeCode(metadataJson);
+
     setTimeout(() => {
       html2canvas(document.querySelector('#div_actual'), {
         height: document.querySelector('#div_actual').offsetHeight - 1,
@@ -867,6 +883,17 @@ function App() {
         formData.append('front_image_url', frontImage);
         // formData.append('shop', "porta-international.myshopify.com");
         formData.append('pairbo_product_id', selectedPairbo.product_id);
+        formData.append('pairbo_image_two', selectedPairbo.image_two);
+        formData.append('pairbo_image_three', selectedPairbo.image_three);
+
+        formData.append('font_style', font ? font : "Calibri");
+        formData.append('font_color', fontColor);
+        formData.append('message', text);
+        formData.append('metadata_json', metadataJson);
+
+        let qrCode = document.querySelector("#qrcode_pairbo").childNodes[1].src;
+        const file2 = DataURIToBlob(qrCode);
+        formData.append('qr_code', file2, 'qr_code.png');
 
         function calculateFormDataSize(formData) {
           return Array.from(formData).reduce((accumulator, [key, value]) => {
@@ -1162,7 +1189,7 @@ function App() {
                                 </Box>
                                 <Box id="text_two" style={dimensionsZero}>
                                   <ReactDraggable bounds={{ left: 0, top: 0, right: draggableWidthHeight.width, bottom: draggableWidthHeight.height }}>
-                                    <Box style={{ color: fontColor ? `${fontColor}` : 'black', width: "auto", height: "auto", wordWrap: 'break-word', overflowWrap: 'break-word', fontSize: `${sliderSize}px`, fontFamily: font ? `f${font}` : 'f2' }}>
+                                    <Box style={{ color: fontColor ? `${fontColor}` : 'black', width: "auto", height: "auto", wordWrap: 'break-word', overflowWrap: 'break-word', fontSize: `${sliderSize}px`, fontFamily: font ? font : 'Calibri' }}>
                                       {stringWithBreaks}
                                     </Box>
                                   </ReactDraggable>
@@ -1191,11 +1218,11 @@ function App() {
                                   Add Personal Message
                                 </Typography>
                                 <textarea value={text} placeholder="Input" style={{ color: "white", resize: "none", width: '100%', background: 'none', border: '2px solid gray', borderRadius: '4px', minHeight: '120px', fontFamily: 'Arial', fontSize: '14px', padding: "10px" }} onChange={(e) => {
-                                  setText(e.target.value);
+                                  text.length <= 223 ? setText(e.target.value) : null
                                 }} />
                                 {/* <Box id="editor_one">
                                 </Box>  */}
-                                <Box>
+                                {/* <Box>
                                   <Typography mt={2} variant="body" component="div" sx={{ color: "white", fontSize: "14px", display: "flex", fontWeight: "normal", }}>
                                     Size
                                   </Typography>
@@ -1204,7 +1231,7 @@ function App() {
                                       setSliderSize(e.target.value);
                                     }} />
                                   </Box>
-                                </Box>
+                                </Box> */}
                                 <Box sx={{ pt: 2 }}>
                                   <FormControl fullWidth size="small" sx={{
                                     marginBottom: "2px",
@@ -1231,14 +1258,14 @@ function App() {
                                       renderValue={font !== "" ? undefined : () => <Box sx={{ color: "white", fontSize: "14px" }}>Font</Box>}
                                     >
 
-                                      <MenuItem value={'1'}>Bright Sunshine</MenuItem>
-                                      <MenuItem value={'2'}>Calibri</MenuItem>
-                                      <MenuItem value={'3'}>Caveat</MenuItem>
-                                      <MenuItem value={'4'}>Dancing Script</MenuItem>
-                                      <MenuItem value={'5'}>Kalam</MenuItem>
-                                      {/* <MenuItem value={'6'}>Liebe Heide</MenuItem> */}
-                                      <MenuItem value={'7'}>Reanie Beenie</MenuItem>
-                                      <MenuItem value={'8'}>Sacramento</MenuItem>
+                                      <MenuItem value={'Bright Sunshine'}>Bright Sunshine</MenuItem>
+                                      <MenuItem value={'Calibri'}>Calibri</MenuItem>
+                                      <MenuItem value={'Caveat'}>Caveat</MenuItem>
+                                      <MenuItem value={'Dancing Script'}>Dancing Script</MenuItem>
+                                      <MenuItem value={'Kalam'}>Kalam</MenuItem>
+                                      {/* <MenuItem value={'Liebe Heide'}>Liebe Heide</MenuItem> */}
+                                      <MenuItem value={'Reanie Beenie'}>Reanie Beenie</MenuItem>
+                                      <MenuItem value={'Sacramento'}>Sacramento</MenuItem>
                                     </Select>
                                   </FormControl>
                                 </Box>

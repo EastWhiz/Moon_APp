@@ -43,8 +43,11 @@ class DeletePairboJob implements ShouldQueue
         // Log::info(json_encode($use_less_product));
 
         if ($use_less_product) {
-            $response = $user->api()->rest('delete', '/admin/api/2023-04/products/' . $this->product_id . '.json', [
-                "products/" . $this->product_id . ""
+            $response = $user->api()->rest('put', '/admin/api/2023-04/products/' . $this->product_id . '.json', [
+                "product" => [
+                    "status" => "draft",
+                    "published_at" => NULL,
+                ],
             ]);
 
             if ($response['errors'] == false) {

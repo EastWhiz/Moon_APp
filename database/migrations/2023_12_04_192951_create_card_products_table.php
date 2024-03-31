@@ -21,6 +21,11 @@ return new class extends Migration
             $table->string('price');
             $table->string('order_id')->nullable();
             $table->string('canvas_image');
+            $table->string('qr_code_image');
+            $table->string('font_style');
+            $table->string('font_color');
+            $table->string('message');
+            $table->longText('metadata_json');
             $table->timestamps();
         });
     }

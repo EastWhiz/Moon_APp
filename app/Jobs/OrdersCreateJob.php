@@ -118,13 +118,26 @@ class OrdersCreateJob implements ShouldQueue
                 $created->order_id = $order->id;
                 $created->save();
 
-                $response = $user->api()->rest('delete', '/admin/api/2023-04/products/' . $item->product_id . '.json', [
-                    "products/" . $item->product_id . ""
+                $response = $user->api()->rest('post', '/admin/api/2023-04/products/' . $item->product_id . '/images.json', [
+                    "image" => [
+                        "position" => 4,
+                        "src" => env('APP_URL') . "/" . $created->canvas_image,
+                    ]
                 ]);
 
-                if ($response['errors'] == true) {
-                    sendApiLog(false, 'API RESPONSE', $response);
-                }
+                $response = $user->api()->rest('post', '/admin/api/2023-04/products/' . $item->product_id . '/images.json', [
+                    "image" => [
+                        "position" => 5,
+                        "src" => env('APP_URL') . "/" . $created->qr_code_image,
+                    ]
+                ]);
+
+                $response = $user->api()->rest('put', '/admin/api/2023-04/products/' . $item->product_id . '.json', [
+                    "product" => [
+                        "status" => "draft",
+                        "published_at" => NULL,
+                    ],
+                ]);
 
                 Log::info("Creating Extra Charges");
 
@@ -133,12 +146,36 @@ class OrdersCreateJob implements ShouldQueue
                     'price' => 3.0,
                 ];
 
-                $request = $user->api()->rest('post', '/admin/api/2023-04/recurring_application_charges.json', ["recurring_application_charge" => $charge]);
-                // Log::info(json_encode($request));
-                if ($request['status'] == 201) {
-                    $charges = $request['body']['container']['recurring_application_charge'];
+                $response = $user->api()->rest('post', '/admin/api/2023-04/recurring_application_charges.json', ["recurring_application_charge" => $charge]);
+                if ($response['status'] == 201) {
+                    $charges = $response['body']['container']['recurring_application_charge'];
                     Log::info($charges);
                 }
+
+                $metadata = json_decode($created->metadata_json);
+
+                $response = $user->api()->rest('put', '/admin/api/2023-04/orders/' . $payload->id . '.json', [
+                    "order" => [
+                        "note_attributes" => [[
+                            "name" => 'Font Style',
+                            "value" => $metadata->fontStyle,
+                        ], [
+                            "name" => 'Font Color',
+                            "value" => $metadata->fontColor,
+                        ], [
+                            "name" => 'Message',
+                            "value" => $metadata->message,
+                        ], [
+                            "name" => 'Pairbo Product ID',
+                            "value" => $metadata->productId,
+                        ], [
+                            "name" => 'Merchant ID',
+                            "value" => $metadata->merchantId,
+                        ]]
+                    ],
+                ]);
+
+                // Log::info(json_encode($response));
             }
         }
 
