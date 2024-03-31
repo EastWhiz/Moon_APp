@@ -1,0 +1,20 @@
+# Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
+
+name = "Pairbo"
+client_id = "7ff8760a41ef95c760732c99914a1829"
+application_url = "https://90de-182-178-248-57.ngrok-free.app"
+embedded = true
+
+[access_scopes]
+# Learn more at https://shopify.dev/docs/apps/tools/cli/configuration#access_scopes
+scopes = "write_products"
+use_legacy_install_flow = true
+
+[auth]
+redirect_urls = [ "https://90de-182-178-248-57.ngrok-free.app/authenticate" ]
+
+[webhooks]
+api_version = "2023-10"
+
+[pos]
+embedded = false

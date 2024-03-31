@@ -1,0 +1,22 @@
+# Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
+
+name = "Pairbo Private"
+client_id = "b4b00e373e98f7e80b6cf9c3d33b2e52"
+application_url = "https://www.pairbo.store"
+embedded = true
+
+[access_scopes]
+# Learn more at https://shopify.dev/docs/apps/tools/cli/configuration#access_scopes
+scopes = "write_products"
+use_legacy_install_flow = true
+
+[auth]
+redirect_urls = [
+  "https://www.pairbo.store/authenticate"
+]
+
+[webhooks]
+api_version = "2023-10"
+
+[pos]
+embedded = false
