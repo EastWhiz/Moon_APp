@@ -227,10 +227,10 @@ function App() {
   });
   const [dimensions, setDimensions] = window.React.useState(false);
   const [dimensionsTwo, setDimensionsTwo] = window.React.useState(false);
-  const [draggableWidthHeight, setDraggableWidthHeight] = window.React.useState({
-    width: 0,
-    height: 0
-  });
+  // const [draggableWidthHeight, setDraggableWidthHeight] = window.React.useState({
+  //   width: 0,
+  //   height: 0
+  // });
 
   const [sliderSize, setSliderSize] = window.React.useState(15);
   const [text, setText] = window.React.useState("");
@@ -723,16 +723,16 @@ function App() {
         // DOING CALCULATIONS AND PLACING 2 DIVS ON ITS POSITION
         let capturedWidth = document.querySelector("#div_actual").clientWidth;
         setCardWidth(capturedWidth);
-        // console.log(capturedWidth);
+        console.log(capturedWidth);
 
         setDimensionsZero({
-          width: `${(capturedWidth / 2) * 1.1}px`,
+          width: `${((capturedWidth / 2) * 1.22) * 0.83}px`,
           lineHeight: "1.0",
-          marginLeft: `${((capturedWidth / 2) / 2) * 0.9}px`,
-          marginTop: `${(capturedWidth / 2) + ((capturedWidth / 2) * -0.1)}px`,
-          fontSize: `14px`,
+          marginLeft: `${((capturedWidth / 2) / 2) * 0.975}px`,
+          marginTop: `${(capturedWidth / 2) + ((capturedWidth / 2) * 0.04)}px`,
+          fontSize: `15px`,
           overflow: `hidden`,
-          height: `${(capturedWidth / 2) * 0.95}px`,
+          height: `${(capturedWidth / 2) * 0.7635}px`,
           position: "absolute"
         })
         //ALSO CALCULATE HEIGHT
@@ -744,10 +744,10 @@ function App() {
           overflow: "hidden"
         });
 
-        setDraggableWidthHeight({
-          width: (capturedWidth / 2) * 1.05,
-          height: (capturedWidth / 2) * 0.82
-        })
+        // setDraggableWidthHeight({
+        //   width: (capturedWidth / 2) * 1.05,
+        //   height: (capturedWidth / 2) * 0.82
+        // })
 
         setDimensionsTwo({
           width: `${babyCapturedWidth}px`,
@@ -1029,13 +1029,13 @@ function App() {
       // console.log(capturedWidth);
 
       setDimensionsZero({
-        width: `${(capturedWidth / 2) * 1.1}px`,
+        width: `${((capturedWidth / 2) * 1.22) * 0.83}px`,
         lineHeight: "1.0",
-        marginLeft: `${((capturedWidth / 2) / 2) * 0.9}px`,
-        marginTop: `${(capturedWidth / 2) + ((capturedWidth / 2) * -0.1)}px`,
-        fontSize: `14px`,
+        marginLeft: `${((capturedWidth / 2) / 2) * 0.975}px`,
+        marginTop: `${(capturedWidth / 2) + ((capturedWidth / 2) * 0.04)}px`,
+        fontSize: `15px`,
         overflow: `hidden`,
-        height: `${(capturedWidth / 2) * 0.95}px`,
+        height: `${(capturedWidth / 2) * 0.7635}px`,
         position: "absolute"
       })
       //ALSO CALCULATE HEIGHT
@@ -1047,10 +1047,10 @@ function App() {
         overflow: "hidden"
       });
 
-      setDraggableWidthHeight({
-        width: (capturedWidth / 2) * 1.05,
-        height: (capturedWidth / 2) * 0.82
-      })
+      // setDraggableWidthHeight({
+      //   width: (capturedWidth / 2) * 1.05,
+      //   height: (capturedWidth / 2) * 0.82
+      // })
 
       setDimensionsTwo({
         width: `${babyCapturedWidth}px`,
@@ -1188,11 +1188,11 @@ function App() {
                                   </Box>
                                 </Box>
                                 <Box id="text_two" style={dimensionsZero}>
-                                  <ReactDraggable bounds={{ left: 0, top: 0, right: draggableWidthHeight.width, bottom: draggableWidthHeight.height }}>
-                                    <Box style={{ color: fontColor ? `${fontColor}` : 'black', width: "auto", height: "auto", wordWrap: 'break-word', overflowWrap: 'break-word', fontSize: `${sliderSize}px`, fontFamily: font ? font : 'Calibri' }}>
-                                      {stringWithBreaks}
-                                    </Box>
-                                  </ReactDraggable>
+                                  {/*<ReactDraggable bounds={{ left: 0, top: 0, right: draggableWidthHeight.width, bottom: draggableWidthHeight.height }}>*/}
+                                  <Box style={{ color: fontColor ? `${fontColor}` : 'black', width: "auto", height: "auto", wordWrap: 'break-word', overflowWrap: 'break-word', fontSize: `${sliderSize}px`, fontFamily: font ? font : 'Calibri' }}>
+                                    {stringWithBreaks}
+                                  </Box>
+                                  {/*</ReactDraggable>*/}
                                 </Box>
                               </Grid>
                             </Grid>
@@ -1214,11 +1214,18 @@ function App() {
                                 }
                               </Box>
                               <Box sx={{ border: "2px dashed #515151", borderRadius: "5px", p: 1.5, pt: 1 }}>
-                                <Typography variant="body" component="div" sx={{ color: "white", fontSize: "14px", display: "flex", fontWeight: "normal", pb: 0.5, }}>
-                                  Add Personal Message
-                                </Typography>
+                                <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+                                  <Typography variant="body" component="div" sx={{ color: "white", fontSize: "14px", display: "flex", fontWeight: "normal", pb: 0.5, }}>
+                                    Add Personal Message
+                                  </Typography>
+                                  <Box style={{ color: "#e3e3e3", fontSize: "13px" }}>
+                                    Characters Count: {text.length}/223
+                                  </Box>
+                                </Box>
                                 <textarea value={text} placeholder="Input" style={{ color: "white", resize: "none", width: '100%', background: 'none', border: '2px solid gray', borderRadius: '4px', minHeight: '120px', fontFamily: 'Arial', fontSize: '14px', padding: "10px" }} onChange={(e) => {
-                                  text.length <= 223 ? setText(e.target.value) : null
+                                  if (e.target.value.length <= 223) {
+                                    setText(e.target.value);
+                                  }
                                 }} />
                                 {/* <Box id="editor_one">
                                 </Box>  */}
