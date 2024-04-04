@@ -2,7 +2,7 @@
 
 name = "Pairbo Private"
 client_id = "b4b00e373e98f7e80b6cf9c3d33b2e52"
-application_url = "https://83e3-182-178-237-249.ngrok-free.app"
+application_url = "https://c9a4-182-178-161-142.ngrok-free.app"
 embedded = true
 
 [access_scopes]
@@ -12,7 +12,7 @@ use_legacy_install_flow = true
 
 [auth]
 redirect_urls = [
-  "https://83e3-182-178-237-249.ngrok-free.app/authenticate"
+  "https://c9a4-182-178-161-142.ngrok-free.app/authenticate"
 ]
 
 [webhooks]
