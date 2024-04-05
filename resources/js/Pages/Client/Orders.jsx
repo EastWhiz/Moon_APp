@@ -17,7 +17,7 @@ export default function Dashboard({ auth }) {
 
     const page = usePage().props;
     const { query } = page.ziggy;
-  // console.log(page);
+    console.log(page);
 
     function objectToQueryString(obj) {
         return Object.keys(obj)
@@ -195,7 +195,7 @@ export default function Dashboard({ auth }) {
         }
 
         url = url.toString() + '&' + queryString;
-      // console.log(url);
+        // console.log(url);
         setLoading(true)
         fetch(url)
             .then((response) => response.json())
@@ -230,7 +230,7 @@ export default function Dashboard({ auth }) {
                 setLoading(false);
             })
             .catch((err) => {
-              // console.log(err);
+                // console.log(err);
                 setLoading(false);
             });
 
