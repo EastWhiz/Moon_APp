@@ -100,7 +100,7 @@ const PrettoSlider = styled(Slider)({
   },
 });
 
-const appURL = "https://c9a4-182-178-161-142.ngrok-free.app";
+const appURL = "https://phpstack-1169091-4354155.cloudwaysapps.com";
 
 function App() {
 

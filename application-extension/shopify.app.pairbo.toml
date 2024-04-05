@@ -2,7 +2,7 @@
 
 name = "Pairbo"
 client_id = "730b1722c8be1c4522180f5daa434707"
-application_url = "https://phpstack-1169091-4086900.cloudwaysapps.com"
+application_url = "https://phpstack-1169091-4354155.cloudwaysapps.com"
 embedded = true
 
 [access_scopes]
@@ -12,16 +12,16 @@ use_legacy_install_flow = true
 
 [auth]
 redirect_urls = [
-  "https://phpstack-1169091-4086900.cloudwaysapps.com/authenticate"
+  "https://phpstack-1169091-4354155.cloudwaysapps.com/authenticate"
 ]
 
 [webhooks]
 api_version = "2023-10"
 
   [webhooks.privacy_compliance]
-  customer_deletion_url = "https://phpstack-1169091-4086900.cloudwaysapps.com/webhook/customers-redact"
-  customer_data_request_url = "https://phpstack-1169091-4086900.cloudwaysapps.com/webhook/customers-data-request"
-  shop_deletion_url = "https://phpstack-1169091-4086900.cloudwaysapps.com/webhook/shop-redact"
+  customer_deletion_url = "https://phpstack-1169091-4354155.cloudwaysapps.com/webhook/customers-redact"
+  customer_data_request_url = "https://phpstack-1169091-4354155.cloudwaysapps.com/webhook/customers-data-request"
+  shop_deletion_url = "https://phpstack-1169091-4354155.cloudwaysapps.com/webhook/shop-redact"
 
 [pos]
 embedded = false

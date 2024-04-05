@@ -3,14 +3,14 @@
 client_id = "b4b00e373e98f7e80b6cf9c3d33b2e52"
 name = "Pairbo Private"
 handle = "pairbo-private"
-application_url = "https://c9a4-182-178-161-142.ngrok-free.app/"
+application_url = "https://phpstack-1169091-4354155.cloudwaysapps.com/"
 embedded = true
 
 [build]
 include_config_on_deploy = true
 
 [auth]
-redirect_urls = [ "https://c9a4-182-178-161-142.ngrok-free.app/authenticate" ]
+redirect_urls = [ "https://phpstack-1169091-4354155.cloudwaysapps.com/authenticate" ]
 
 [webhooks]
 api_version = "2023-10"
