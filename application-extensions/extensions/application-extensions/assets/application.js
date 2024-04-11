@@ -110,6 +110,20 @@ function App() {
   let pairboCount = Math.ceil(window.innerWidth / 215);
   // console.log(pairboCount);
 
+  function getLengthWithoutNewlines(text) {
+    // Remove newline characters using a regular expression
+    let cleanedText = text.replace(/[\r\n]/g, '');
+
+    // Return the length of the cleaned string
+    return cleanedText.length;
+  }
+
+  function countNewlines(text) {
+    // Use a regular expression with the global flag to find all occurrences of '\n'
+    var newlineCount = (text.match(/\n/g) || []).length;
+    return newlineCount;
+  }
+
   function showError(message) {
     document.querySelectorAll(".custom_error_id").forEach((value, index) => {
       value.style.display = "";
@@ -217,10 +231,10 @@ function App() {
   const [cardWidth, setCardWidth] = window.React.useState(0);
   const [dimensionsZero, setDimensionsZero] = window.React.useState({
     width: `0px`,
-    lineHeight: "1.0",
+    // lineHeight: "1.0",
     marginLeft: `0px`,
     marginTop: `0px`,
-    fontSize: `0px`,
+    // fontSize: `0px`,
     overflow: `hidden`,
     height: `0px`,
     position: "absolute"
@@ -726,11 +740,11 @@ function App() {
         console.log(capturedWidth);
 
         setDimensionsZero({
-          width: `${((capturedWidth / 2) * 1.22) * 0.83}px`,
-          lineHeight: "1.0",
+          width: `${((capturedWidth / 2) * 1.22) * 0.8416}px`,
+          // lineHeight: "1.0",
           marginLeft: `${((capturedWidth / 2) / 2) * 0.975}px`,
           marginTop: `${(capturedWidth / 2) + ((capturedWidth / 2) * 0.04)}px`,
-          fontSize: `15px`,
+          // fontSize: `15px`,
           overflow: `hidden`,
           height: `${(capturedWidth / 2) * 0.7635}px`,
           position: "absolute"
@@ -849,10 +863,10 @@ function App() {
     setFinalLoading(true);
     setBase64ImageLoading(true);
 
-    let qr_code = new QRCode(document.getElementById("qrcode_pairbo"), {
-      width: 600,
-      height: 600
-    });
+    // let qr_code = new QRCode(document.getElementById("qrcode_pairbo"), {
+    //   width: 600,
+    //   height: 600
+    // });
 
     let metadataJson = JSON.stringify({
       fontStyle: font ? font : "Calibri",
@@ -862,7 +876,7 @@ function App() {
       merchantId: Shopify.shop,
     })
 
-    qr_code.makeCode(metadataJson);
+    // qr_code.makeCode(metadataJson);
 
     setTimeout(() => {
       html2canvas(document.querySelector('#div_actual'), {
@@ -891,9 +905,9 @@ function App() {
         formData.append('message', text);
         formData.append('metadata_json', metadataJson);
 
-        let qrCode = document.querySelector("#qrcode_pairbo").childNodes[1].src;
-        const file2 = DataURIToBlob(qrCode);
-        formData.append('qr_code', file2, 'qr_code.png');
+        // let qrCode = document.querySelector("#qrcode_pairbo").childNodes[1].src;
+        // const file2 = DataURIToBlob(qrCode);
+        // formData.append('qr_code', file2, 'qr_code.png');
 
         function calculateFormDataSize(formData) {
           return Array.from(formData).reduce((accumulator, [key, value]) => {
@@ -909,7 +923,7 @@ function App() {
 
         const dataSizeInBytes = calculateFormDataSize(formData);
         const dataSizeInMB = dataSizeInBytes / (1024 * 1024); // Convert bytes to MB
-        // console.log(`Data size: ${dataSizeInMB} MB`);
+        console.log(`Data size: ${dataSizeInMB} MB`);
 
         upload(formData);
       });
@@ -1029,11 +1043,11 @@ function App() {
       // console.log(capturedWidth);
 
       setDimensionsZero({
-        width: `${((capturedWidth / 2) * 1.22) * 0.83}px`,
-        lineHeight: "1.0",
+        width: `${((capturedWidth / 2) * 1.22) * 0.8416}px`,
+        // lineHeight: "1.0",
         marginLeft: `${((capturedWidth / 2) / 2) * 0.975}px`,
         marginTop: `${(capturedWidth / 2) + ((capturedWidth / 2) * 0.04)}px`,
-        fontSize: `15px`,
+        // fontSize: `15px`,
         overflow: `hidden`,
         height: `${(capturedWidth / 2) * 0.7635}px`,
         position: "absolute"
@@ -1189,7 +1203,8 @@ function App() {
                                 </Box>
                                 <Box id="text_two" style={dimensionsZero}>
                                   {/*<ReactDraggable bounds={{ left: 0, top: 0, right: draggableWidthHeight.width, bottom: draggableWidthHeight.height }}>*/}
-                                  <Box style={{ color: fontColor ? `${fontColor}` : 'black', width: "auto", height: "auto", wordWrap: 'break-word', overflowWrap: 'break-word', fontSize: `${sliderSize}px`, fontFamily: font ? font : 'Calibri' }}>
+                                  {/* fontSize: `${sliderSize}px`, */}
+                                  <Box style={{ color: fontColor ? `${fontColor}` : 'black', width: "auto", height: "auto", wordWrap: 'break-word', overflowWrap: 'break-word', fontFamily: font ? font : 'Calibri' }}>
                                     {stringWithBreaks}
                                   </Box>
                                   {/*</ReactDraggable>*/}
@@ -1219,11 +1234,11 @@ function App() {
                                     Add Personal Message
                                   </Typography>
                                   <Box style={{ color: "#e3e3e3", fontSize: "13px" }}>
-                                    Characters Count: {text.length}/223
+                                    {223 - getLengthWithoutNewlines(text)} characters
                                   </Box>
                                 </Box>
                                 <textarea value={text} placeholder="Input" style={{ color: "white", resize: "none", width: '100%', background: 'none', border: '2px solid gray', borderRadius: '4px', minHeight: '120px', fontFamily: 'Arial', fontSize: '14px', padding: "10px" }} onChange={(e) => {
-                                  if (e.target.value.length <= 223) {
+                                  if (getLengthWithoutNewlines(e.target.value) <= 223 && countNewlines(e.target.value) <= 10) {
                                     setText(e.target.value);
                                   }
                                 }} />

@@ -5,7 +5,7 @@
 {{ 'depend_quill_snow.css' | asset_url | stylesheet_tag }}
 {{ 'depend_style.css' | asset_url | stylesheet_tag }}
 
-<div id="qrcode_pairbo"></div>
+{% comment %} <div id="qrcode_pairbo"></div> {% endcomment %}
 <div id="root"></div>
 
 {% comment %} theme-check-disable ParserBlockingScriptTag {% endcomment %}
@@ -23,7 +23,7 @@
 
 <script>
   // alert('Pairbo 15/12/2023 v8 LIVE');
-  console.log('Pairbo 04/04/2024 v8');
+  console.log('Pairbo 11/04/2024 v15');
 </script>
 
 <script async type="text/babel" src="{{ 'application.js' | asset_url }}"></script>

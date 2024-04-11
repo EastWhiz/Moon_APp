@@ -243,3 +243,92 @@ input:focus-visible {
   margin-top: 15px;
   display: none
 }
+
+#text_two {
+  font-size: 15px;
+  line-height: 1.1;
+}
+
+@media screen and (max-width: 900px) {
+  #text_two {
+      font-size: 20px;
+      line-height: 1.1;
+  }
+}
+
+@media screen and (max-width: 850px) {
+  #text_two {
+      font-size: 19px;
+      line-height: 1.1;
+  }
+}
+
+@media screen and (max-width: 800px) {
+  #text_two {
+      font-size: 18px;
+      line-height: 1.1;
+  }
+}
+
+@media screen and (max-width: 750px) {
+  #text_two {
+      font-size: 16px;
+      line-height: 1.1;
+  }
+}
+
+@media screen and (max-width: 700px) {
+  #text_two {
+      font-size: 16px;
+      line-height: 1.1;
+  }
+}
+
+@media screen and (max-width: 650px) {
+  #text_two {
+      font-size: 15px;
+      line-height: 1.1;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  #text_two {
+      font-size: 14px;
+      line-height: 1.1;
+  }
+}
+
+@media screen and (max-width: 550px) {
+  #text_two {
+      font-size: 13.5px;
+      line-height: 1.1;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  #text_two {
+      font-size: 13px;
+      line-height: 1.1;
+  }
+}
+
+@media screen and (max-width: 450px) {
+  #text_two {
+      font-size: 12px;
+      line-height: 1.1;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  #text_two {
+      font-size: 11px;
+      line-height: 1.1;
+  }
+}
+
+@media screen and (max-width: 360px) {
+  #text_two {
+      font-size: 10px;
+      line-height: 1.0;
+  }
+}
