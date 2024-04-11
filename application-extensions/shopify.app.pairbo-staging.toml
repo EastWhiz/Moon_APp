@@ -1,8 +1,8 @@
 # Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
 
-client_id = "146cc189bbcbf630eb366d31873fe1fc"
-name = "pairbo-staging"
-handle = "pairbo-test"
+client_id = "ff25d1156e5ce95a71b0ff080526a1ae"
+name = "Pairbo Staging"
+handle = "pairbo-staging"
 application_url = "https://phpstack-1169091-4354155.cloudwaysapps.com/"
 embedded = true
 
@@ -19,7 +19,7 @@ redirect_urls = [
 ]
 
 [webhooks]
-api_version = "2024-01"
+api_version = "2024-04"
 
 [pos]
 embedded = false
