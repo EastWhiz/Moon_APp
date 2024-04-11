@@ -24,7 +24,7 @@ return new class extends Migration
             $table->string('qr_code_image');
             $table->string('font_style');
             $table->string('font_color');
-            $table->string('message');
+            $table->string('message')->nullable();
             $table->longText('metadata_json');
             $table->timestamps();
         });

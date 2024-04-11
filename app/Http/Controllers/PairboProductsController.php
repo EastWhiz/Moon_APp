@@ -17,6 +17,10 @@ class PairboProductsController extends Controller
         $page = 1;
         $limit = 250;
 
+        PairboProduct::query()->delete();
+        PairboCollection::query()->delete();
+        PairboCollectionProduct::query()->delete();
+
         do {
             $response = Http::get("https://pairbo.com/products.json?limit=$limit&page=$page");
             if ($response->successful()) {

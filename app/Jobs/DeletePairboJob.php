@@ -39,23 +39,17 @@ class DeletePairboJob implements ShouldQueue
 
         $user = User::find($this->user_id);
 
-        $use_less_product = CardProduct::where('user_id', $user->id)->where('product_id', $this->product_id)->whereNull('order_id')->first();
-        // Log::info(json_encode($use_less_product));
+        $response = $user->api()->rest('put', '/admin/api/2023-04/products/' . $this->product_id . '.json', [
+            "product" => [
+                "status" => "draft",
+                "published_at" => NULL,
+            ],
+        ]);
 
-        if ($use_less_product) {
-            $response = $user->api()->rest('put', '/admin/api/2023-04/products/' . $this->product_id . '.json', [
-                "product" => [
-                    "status" => "draft",
-                    "published_at" => NULL,
-                ],
-            ]);
-
-            if ($response['errors'] == false) {
-                // Log::info(json_encode($response));
-                $use_less_product->delete();
-            } else {
-                sendApiLog(false, 'API RESPONSE', $response);
-            }
+        if ($response['errors'] == false) {
+            // Log::info(json_encode($response));
+        } else {
+            sendApiLog(false, 'API RESPONSE', $response);
         }
     }
 }
