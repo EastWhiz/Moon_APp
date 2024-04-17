@@ -69,6 +69,10 @@ class CustomizerController extends Controller
             $image_two = $request->pairbo_image_two;
             $image_three = $request->pairbo_image_three;
 
+            // Log::info($front_image_url);
+            // Log::info($image_two);
+            // Log::info($image_three);
+
             $response = $user->api()->rest('post', '/admin/api/2023-04/products.json', [
                 "product" => [
                     "title" => "Premium Greeting Card",
@@ -84,13 +88,28 @@ class CustomizerController extends Controller
                     ],
                     "images" => [
                         ["src" => $front_image_url],
-                        ["src" => $image_two],
-                        ["src" => $image_three],
                     ]
                 ],
             ]);
+            // Log::info(json_encode($response));
 
-            $response2 = $user->api()->rest('post', '/admin/api/2024-04/products/' . $response['body']['product']['id'] . '/metafields.json',[
+            $response2 = $user->api()->rest('post', '/admin/api/2023-04/products/' . $response['body']['product']['id'] . '/images.json', [
+                "image" => [
+                    "position" => 2,
+                    "src" => $image_three,
+                ]
+            ]);
+            // Log::info(json_encode($response2));
+
+            $response3 = $user->api()->rest('post', '/admin/api/2023-04/products/' . $response['body']['product']['id'] . '/images.json', [
+                "image" => [
+                    "position" => 3,
+                    "src" => $image_two,
+                ]
+            ]);
+            // Log::info(json_encode($response3));
+
+            $response4 = $user->api()->rest('post', '/admin/api/2024-04/products/' . $response['body']['product']['id'] . '/metafields.json',[
                 'metafield' => [
                     'namespace'=> "seo",
                     'key' => "hidden",
@@ -98,6 +117,7 @@ class CustomizerController extends Controller
                     'value' => 1
                 ] 
             ]);
+            // Log::info(json_encode($response4));
             
             $filename2 = "";
             if (isset($request->canvas)) {

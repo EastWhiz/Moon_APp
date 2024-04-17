@@ -6,6 +6,7 @@ use App\Models\Collection;
 use App\Models\CollectionProduct;
 use App\Models\Color;
 use App\Models\Product;
+use App\Models\CardProduct;
 use App\Models\ProductImage;
 use App\Models\ProductVariant;
 use App\Models\User;
@@ -460,4 +461,94 @@ if (!function_exists('removeNodesAndEdges')) {
         }
         return $array;
     }
+}
+
+if (!function_exists('handleResponse')) {
+    function handleResponse($response)
+    {
+        Log::info($response);
+
+        if ($response->successful()) {
+            return $response->json();
+        }
+
+        // Handle error responses
+        $statusCode = $response->status();
+        if ($statusCode === 401) {
+            return ['error' => 'Unauthorized'];
+        } elseif ($statusCode === 400) {
+            return ['error' => 'Bad Request', 'message' => 'Field validation message'];
+        } else {
+            return ['error' => 'Internal Server Error'];
+        }
+    }
+}
+
+if (!function_exists('generateWebhook')) {
+    function generateWebhook($user, $payload, $card_product)
+    {   
+        Log::info(json_encode($user));
+        Log::info(json_encode($payload));
+        Log::info(json_encode($card_product));
+
+        $accessToken = 'l0zg56wu8ujf8oxb01rg4bhjhzyxcxbkys7u7oqzy9egb1opamkkwvx4mklhflcf7xn27fvxg8z30cw71vjosf665h1dw0b1fs3a';
+        $urlOrders = 'https://us-central1-pairbodb.cloudfunctions.net/pairbo/api/sync/orders';
+        $urlBrands = 'https://us-central1-pairbodb.cloudfunctions.net/pairbo/api/sync/brands';
+    
+        $orderPayload = [
+            'order_id' => (string)$payload->id,
+            'user_id' => (string)$user->id,
+            'order_created_at' => (string)$payload->created_at,
+            'customer_id' => $payload->customer ? (string)$payload->customer->id : "1234567890",
+            'total' => (float)$payload->subtotal_price,
+            'final_total' => (float)$payload->total_price,
+            // 'customer_name' => 'John Doe',
+            // 'customer_address' => '123 Main St',
+            // 'customer_address_two' => 'Apt 101',
+            // 'payment_status' => 'paid',
+            // 'order_name' => 'Order #12345',
+            'line_items' => []
+        ];
+
+        foreach ($payload->line_items as $key => $line_item) {
+            $card_product = CardProduct::where('product_id', $line_item->product_id)->first();
+            if ($card_product) {
+                $orderPayload['line_items'][] = [
+                    'name' => (string)$line_item->title,
+                    'line_item_id' => (string)$line_item->id,
+                    'product_id' => (string)$line_item->product_id,
+                    'pairbo_product_id' => (string)$card_product->pairbo_product_id,
+                    'font_style' => $card_product->font_style,
+                    'font_color' => $card_product->font_color,
+                    'message' => $card_product->message,
+                    'price' => (float)$line_item->price,
+                    'quantity' => (int)$line_item->quantity,
+                ];
+            }
+        }
+    
+        $brandPayload = [
+            'id' => (string)$user->id,
+            'name' => $user->store_name ? $user->store_name : $user->name,
+            'email' => $user->email,
+            'phone' => '123-456-7890',
+            'store_name' => $user->store_name ? $user->store_name : $user->name,
+            'status' => 'active'
+        ];
+    
+        $responseOrders = Http::withHeaders([
+            'Authorization' => 'Bearer ' . $accessToken,
+            'Content-Type' => 'application/json',
+        ])->post($urlOrders, $orderPayload);
+    
+        $responseBrands = Http::withHeaders([
+            'Authorization' => 'Bearer ' . $accessToken,
+            'Content-Type' => 'application/json',
+        ])->post($urlBrands, $brandPayload);
+    
+        Log::info(json_encode([
+            'orders_response' => handleResponse($responseOrders),
+            'brands_response' => handleResponse($responseBrands)
+        ]));
+    }    
 }

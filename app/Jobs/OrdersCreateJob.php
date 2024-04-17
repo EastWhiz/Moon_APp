@@ -113,31 +113,31 @@ class OrdersCreateJob implements ShouldQueue
         }
 
         foreach ($payload->line_items as $key => $item) {
-            $created = CardProduct::where('product_id', $item->product_id)->first();
-            if ($created) {
-                $created->order_id = $order->id;
-                $created->save();
+            $card_product = CardProduct::where('product_id', $item->product_id)->first();
+            if ($card_product) {
+                $card_product->order_id = $order->id;
+                $card_product->save();
 
-                $response = $user->api()->rest('post', '/admin/api/2023-04/products/' . $item->product_id . '/images.json', [
-                    "image" => [
-                        "position" => 4,
-                        "src" => env('APP_URL') . "/" . $created->canvas_image,
-                    ]
-                ]);
+                // $response = $user->api()->rest('post', '/admin/api/2023-04/products/' . $item->product_id . '/images.json', [
+                //     "image" => [
+                //         "position" => 4,
+                //         "src" => env('APP_URL') . "/" . $card_product->canvas_image,
+                //     ]
+                // ]);
 
-                $response = $user->api()->rest('post', '/admin/api/2023-04/products/' . $item->product_id . '/images.json', [
-                    "image" => [
-                        "position" => 5,
-                        "src" => env('APP_URL') . "/" . $created->qr_code_image,
-                    ]
-                ]);
+                // $response = $user->api()->rest('post', '/admin/api/2023-04/products/' . $item->product_id . '/images.json', [
+                //     "image" => [
+                //         "position" => 5,
+                //         "src" => env('APP_URL') . "/" . $card_product->qr_code_image,
+                //     ]
+                // ]);
 
-                $response = $user->api()->rest('put', '/admin/api/2023-04/products/' . $item->product_id . '.json', [
-                    "product" => [
-                        "status" => "draft",
-                        "published_at" => NULL,
-                    ],
-                ]);
+                // $response = $user->api()->rest('put', '/admin/api/2023-04/products/' . $item->product_id . '.json', [
+                //     "product" => [
+                //         "status" => "draft",
+                //         "published_at" => NULL,
+                //     ],
+                // ]);
 
                 Log::info("Creating Extra Charges");
 
@@ -152,7 +152,7 @@ class OrdersCreateJob implements ShouldQueue
                     Log::info($charges);
                 }
 
-                $metadata = json_decode($created->metadata_json);
+                $metadata = json_decode($card_product->metadata_json);
 
                 $response = $user->api()->rest('put', '/admin/api/2023-04/orders/' . $payload->id . '.json', [
                     "order" => [
@@ -176,6 +176,8 @@ class OrdersCreateJob implements ShouldQueue
                 ]);
 
                 // Log::info(json_encode($response));
+
+                generateWebhook($user, $payload, $card_product);
             }
         }
 
