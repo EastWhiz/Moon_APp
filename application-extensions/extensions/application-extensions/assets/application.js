@@ -110,6 +110,56 @@ function App() {
   let pairboCount = Math.ceil(window.innerWidth / 215);
   // console.log(pairboCount);
 
+  function calculateFormDataSize(formData) {
+    return Array.from(formData).reduce((accumulator, [key, value]) => {
+      if (value instanceof Blob) {
+        // If the value is a file/blob, add its size to the accumulator
+        return accumulator + value.size;
+      } else {
+        // If it's a string, get the size in bytes
+        return accumulator + encodeURIComponent(value).length;
+      }
+    }, 0);
+  }
+
+  function calculateFontSize(width) {
+    const dataPoints = [
+      { width: 188.92, fontSize: 10.5 },
+      { width: 210.998, fontSize: 12 },
+      { width: 238.72, fontSize: 13.5 },
+      { width: 255.661, fontSize: 14.5 },
+      { width: 289.031, fontSize: 16 },
+      { width: 388.626, fontSize: 22 },
+      { width: 588.842, fontSize: 33 },
+      { width: 789.059, fontSize: 45 }
+    ];
+
+    // Find the two data points between which the given width falls
+    let startIndex = 0;
+    while (startIndex < dataPoints.length - 1 && width > dataPoints[startIndex + 1].width) {
+      startIndex++;
+    }
+
+    if (startIndex === dataPoints.length - 1) {
+      // Extrapolate based on the ratio of the last two data points
+      const lastPoint = dataPoints[dataPoints.length - 1];
+      const secondLastPoint = dataPoints[dataPoints.length - 2];
+      const ratio = (width - secondLastPoint.width) / (lastPoint.width - secondLastPoint.width);
+      return secondLastPoint.fontSize + ratio * (lastPoint.fontSize - secondLastPoint.fontSize);
+    }
+
+    const startPoint = dataPoints[startIndex];
+    const endPoint = dataPoints[startIndex + 1];
+
+    // Calculate the interpolation factor
+    const factor = (width - startPoint.width) / (endPoint.width - startPoint.width);
+
+    // Interpolate the font size
+    const interpolatedFontSize = startPoint.fontSize + factor * (endPoint.fontSize - startPoint.fontSize);
+
+    return interpolatedFontSize;
+  }
+
   function getLengthWithoutNewlines(text) {
     // Remove newline characters using a regular expression
     let cleanedText = text.replace(/[\r\n]/g, '');
@@ -231,10 +281,10 @@ function App() {
   const [cardWidth, setCardWidth] = window.React.useState(0);
   const [dimensionsZero, setDimensionsZero] = window.React.useState({
     width: `0px`,
-    // lineHeight: "1.0",
+    lineHeight: "1.1",
     marginLeft: `0px`,
     marginTop: `0px`,
-    // fontSize: `0px`,
+    fontSize: `0px`,
     overflow: `hidden`,
     height: `0px`,
     position: "absolute"
@@ -577,7 +627,7 @@ function App() {
                       } else
                         showError("Must select free message or greeting card for gift");
                     } else {
-                      document.querySelector("#CartDrawer-Checkout").click();
+                      document.querySelector('#checkout').click();
                     }
                   else {
                     if (document.querySelector('#send_something_id')) {
@@ -741,10 +791,10 @@ function App() {
 
         setDimensionsZero({
           width: `${((capturedWidth / 2) * 1.22) * 0.8416}px`,
-          // lineHeight: "1.0",
+          lineHeight: "1.1",
           marginLeft: `${((capturedWidth / 2) / 2) * 0.975}px`,
           marginTop: `${(capturedWidth / 2) + ((capturedWidth / 2) * 0.04)}px`,
-          // fontSize: `15px`,
+          fontSize: `${calculateFontSize(((capturedWidth / 2) * 1.22) * 0.8416)}px`,
           overflow: `hidden`,
           height: `${(capturedWidth / 2) * 0.7635}px`,
           position: "absolute"
@@ -881,8 +931,8 @@ function App() {
     setTimeout(() => {
       html2canvas(document.querySelector('#div_actual'), {
         height: document.querySelector('#div_actual').offsetHeight - 1,
-        scale: 3,
-        dpi: 500,
+        // scale: 3,
+        // dpi: 500,
         allowTaint: false,
         useCORS: true,
         backgroundColor: null
@@ -901,25 +951,13 @@ function App() {
         formData.append('pairbo_image_three', selectedPairbo.image_three);
 
         formData.append('font_style', font ? font : "Calibri");
-        formData.append('font_color', fontColor);
+        formData.append('font_color', fontColor == "black" ? "#000000" : "#FFFFFF");
         formData.append('message', text);
         formData.append('metadata_json', metadataJson);
 
         // let qrCode = document.querySelector("#qrcode_pairbo").childNodes[1].src;
         // const file2 = DataURIToBlob(qrCode);
         // formData.append('qr_code', file2, 'qr_code.png');
-
-        function calculateFormDataSize(formData) {
-          return Array.from(formData).reduce((accumulator, [key, value]) => {
-            if (value instanceof Blob) {
-              // If the value is a file/blob, add its size to the accumulator
-              return accumulator + value.size;
-            } else {
-              // If it's a string, get the size in bytes
-              return accumulator + encodeURIComponent(value).length;
-            }
-          }, 0);
-        }
 
         const dataSizeInBytes = calculateFormDataSize(formData);
         const dataSizeInMB = dataSizeInBytes / (1024 * 1024); // Convert bytes to MB
@@ -1044,10 +1082,10 @@ function App() {
 
       setDimensionsZero({
         width: `${((capturedWidth / 2) * 1.22) * 0.8416}px`,
-        // lineHeight: "1.0",
+        lineHeight: "1.1",
         marginLeft: `${((capturedWidth / 2) / 2) * 0.975}px`,
         marginTop: `${(capturedWidth / 2) + ((capturedWidth / 2) * 0.04)}px`,
-        // fontSize: `15px`,
+        fontSize: `${calculateFontSize(((capturedWidth / 2) * 1.22) * 0.8416)}px`,
         overflow: `hidden`,
         height: `${(capturedWidth / 2) * 0.7635}px`,
         position: "absolute"
@@ -1201,7 +1239,7 @@ function App() {
                                     <img src={selectedPairbo.image_two} alt="Your Image" style={{ width: dimensionsTwo.width, display: dimensionsTwo.display, marginLeft: dimensionsTwo.marginLeft, marginTop: dimensionsTwo.marginTop }} />
                                   </Box>
                                 </Box>
-                                <Box id="text_two" style={dimensionsZero}>
+                                <Box style={dimensionsZero}>
                                   {/*<ReactDraggable bounds={{ left: 0, top: 0, right: draggableWidthHeight.width, bottom: draggableWidthHeight.height }}>*/}
                                   {/* fontSize: `${sliderSize}px`, */}
                                   <Box style={{ color: fontColor ? `${fontColor}` : 'black', width: "auto", height: "auto", wordWrap: 'break-word', overflowWrap: 'break-word', fontFamily: font ? font : 'Calibri' }}>
