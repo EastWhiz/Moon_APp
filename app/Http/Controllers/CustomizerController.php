@@ -9,7 +9,7 @@ use App\Models\PairboProduct;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
-use Carbon;
+use Carbon\Carbon;
 
 class CustomizerController extends Controller
 {
