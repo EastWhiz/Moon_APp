@@ -447,7 +447,7 @@ function App() {
            <div
               style="width:355px; font-size: 14px;border-bottom: 1px solid #d1d1d1;padding-bottom: 10px;margin-bottom: 10px;">
               <input type="checkbox" id="send_something_two_id">
-              <span>Send a Gift?</span>
+              <span>Sending a Gift?</span>
            </div>
         </div>
         <div id="cart_data_id" style="display: flex;justify-content: flex-end;">
@@ -686,11 +686,14 @@ function App() {
             cart_response.items.forEach((element) => {
               if (element.vendor == "Pairbo") {
                 no_check = false;
-                if (window.location.href.includes('/cart'))
+                if (window.location.href.includes('/cart')) {
+                  document.querySelector('#send_something_two_id').checked = true;
                   document.querySelector('#premium_card_two_id').checked = true;
-                else {
+                } else {
                   if (document.querySelector('#premium_card_id'))
                     document.querySelector('#premium_card_id').checked = true;
+                  if (document.querySelector('#send_something_id'))
+                    document.querySelector('#send_something_id').checked = true;
                 }
               }
             });
@@ -1123,7 +1126,7 @@ function App() {
 
   const dynamicZoomHandler = () => {
     setBase64ImageLoading(true);
-    setFinalLoading(true);
+    // setFinalLoading(true);
     setTimeout(() => {
       html2canvas(document.querySelector('#div_actual'), {
         height: document.querySelector('#div_actual').offsetHeight - 1,
@@ -1137,7 +1140,7 @@ function App() {
         setBase64Image(dataURL);
         setSteps({ one: false, two: false, three: false, zoom: false, zoomTwo: true });
         setBase64ImageLoading(false);
-        setFinalLoading(false);
+        // setFinalLoading(false);
       })
     }, 500);
   }
