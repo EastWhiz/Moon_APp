@@ -442,7 +442,7 @@ function App() {
         let element = document.querySelector('.cart__footer');
 
         // Create the content you want to prepend
-        let contentToPrepend = `<div id="cart_page_func_id">
+        let contentToPrepend = `<div id="cart_page_func_id" style="display:none">
         <div id="send_or_not_id" style="display: flex;justify-content: flex-end;">
            <div
               style="width:355px; font-size: 14px;border-bottom: 1px solid #d1d1d1;padding-bottom: 10px;margin-bottom: 10px;">
@@ -585,7 +585,11 @@ function App() {
                 if (no_check) {
                   handleOpen();
                 } else {
-                  document.querySelector("#CartDrawer-Checkout").click();
+                  if (window.location.href.includes('/cart')) {
+                    document.querySelector('#checkout').click();
+                  } else {
+                    document.querySelector("#CartDrawer-Checkout").click();
+                  }
                 }
               }
 
@@ -682,6 +686,7 @@ function App() {
 
           //DISABLE LOGIC
           if (cart_response.items.length > 0) {
+            document.querySelector("#cart_page_func_id").style.display = "";
             let no_check = true;
             cart_response.items.forEach((element) => {
               if (element.vendor == "Pairbo") {
@@ -873,7 +878,7 @@ function App() {
               const formDataTwo = new FormData();
               formDataTwo.append("id", result.data.variant_id);
               formDataTwo.append("quantity", 1);
-              formDataTwo.append(`properties[Message]`, text);
+              formDataTwo.append(`properties[Message]`, JSON.stringify(text));
 
               const response = await fetch(window.Shopify.routes.root + 'cart/add.js', {
                 method: "POST",
