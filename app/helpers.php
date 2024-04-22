@@ -5,6 +5,7 @@ use App\Jobs\VariantUpdateCreateJob;
 use App\Models\Collection;
 use App\Models\CollectionProduct;
 use App\Models\Color;
+use App\Models\CardProductDetail;
 use App\Models\Product;
 use App\Models\CardProduct;
 use App\Models\ProductImage;
@@ -485,11 +486,11 @@ if (!function_exists('handleResponse')) {
 }
 
 if (!function_exists('generateWebhook')) {
-    function generateWebhook($user, $payload, $card_product)
+    function generateWebhook($user, $payload, $card_detail)
     {   
-        Log::info(json_encode($user));
-        Log::info(json_encode($payload));
-        Log::info(json_encode($card_product));
+        // Log::info(json_encode($user));
+        // Log::info(json_encode($payload));
+        // Log::info(json_encode($card_detail));
 
         $accessToken = 'l0zg56wu8ujf8oxb01rg4bhjhzyxcxbkys7u7oqzy9egb1opamkkwvx4mklhflcf7xn27fvxg8z30cw71vjosf665h1dw0b1fs3a';
         $urlOrders = 'https://us-central1-pairbodb.cloudfunctions.net/pairbo/api/sync/orders';
@@ -518,9 +519,9 @@ if (!function_exists('generateWebhook')) {
                     'line_item_id' => (string)$line_item->id,
                     'product_id' => (string)$line_item->product_id,
                     'pairbo_product_id' => (string)$card_product->pairbo_product_id,
-                    'font_style' => $card_product->font_style,
-                    'font_color' => $card_product->font_color,
-                    'message' => $card_product->message,
+                    'font_style' => $card_detail->font_style,
+                    'font_color' => $card_detail->font_color,
+                    'message' => $card_detail->message,
                     'price' => (float)$line_item->price,
                     'quantity' => (int)$line_item->quantity,
                 ];

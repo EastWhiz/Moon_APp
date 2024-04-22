@@ -5,6 +5,7 @@ namespace App\Jobs;
 use App\Models\CardProduct;
 use App\Models\MessageProduct;
 use App\Models\Order;
+use App\Models\CardProductDetail;
 use App\Models\OrderLineItem;
 use App\Models\User;
 use Illuminate\Bus\Queueable;
@@ -115,9 +116,6 @@ class OrdersCreateJob implements ShouldQueue
         foreach ($payload->line_items as $key => $item) {
             $card_product = CardProduct::where('product_id', $item->product_id)->first();
             if ($card_product) {
-                $card_product->order_id = $order->id;
-                $card_product->save();
-
                 // $response = $user->api()->rest('post', '/admin/api/2023-04/products/' . $item->product_id . '/images.json', [
                 //     "image" => [
                 //         "position" => 4,
@@ -149,10 +147,23 @@ class OrdersCreateJob implements ShouldQueue
                 $response = $user->api()->rest('post', '/admin/api/2023-04/recurring_application_charges.json', ["recurring_application_charge" => $charge]);
                 if ($response['status'] == 201) {
                     $charges = $response['body']['container']['recurring_application_charge'];
-                    Log::info($charges);
+                    // Log::info($charges);
                 }
 
-                $metadata = json_decode($card_product->metadata_json);
+                $_unique_cart_id = false;
+                foreach ($item->properties as $property) {
+                    if ($property->name === "_unique_cart_id") {
+                        $_unique_cart_id = $property->value;
+                        break;
+                    }
+                }
+                Log::info($_unique_cart_id);
+
+                $card_detail = CardProductDetail::where('unique_cart_id',$_unique_cart_id)->first();
+                $card_detail->order_id = $order->id;
+                $card_detail->save();
+
+                $metadata = json_decode($card_detail->metadata_json);
 
                 $response = $user->api()->rest('put', '/admin/api/2023-04/orders/' . $payload->id . '.json', [
                     "order" => [
@@ -164,7 +175,7 @@ class OrdersCreateJob implements ShouldQueue
                             "value" => $metadata->fontColor,
                         ], [
                             "name" => 'Message',
-                            "value" => $metadata->message,
+                            "value" => json_encode($metadata->message),
                         ], [
                             "name" => 'Pairbo Product ID',
                             "value" => $metadata->productId,
@@ -177,7 +188,7 @@ class OrdersCreateJob implements ShouldQueue
 
                 // Log::info(json_encode($response));
 
-                generateWebhook($user, $payload, $card_product);
+                generateWebhook($user, $payload, $card_detail);
             }
         }
 

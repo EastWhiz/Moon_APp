@@ -47,8 +47,34 @@ class CustomizerController extends Controller
         if (empty($user))
             return sendResponse(false, "Shop does not exist");
 
+        $filename2 = "";
+        if (isset($request->canvas)) {
+            $file = $request->file('canvas');
+            $filename2 = time() . '-' . $file->getClientOriginalName();
+            request()->canvas->storeAs('public/uploaded_images', $filename2);
+        }
+
+        $filename3 = "";
+        if (isset($request->qr_code)) {
+            $file = $request->file('qr_code');
+            $filename3 = time() . '-' . $file->getClientOriginalName();
+            request()->qr_code->storeAs('public/uploaded_images', $filename3);
+        }
+
         $existing_product = CardProduct::where('pairbo_product_id',$request->pairbo_product_id)->first();
         if($existing_product) {
+
+            $existing_product->details()->create([
+                'unique_cart_id' => $request->unique_cart_id,
+                'canvas_image' => "storage/uploaded_images/" . $filename2,
+                'qr_code_image' => "storage/uploaded_images/" . $filename3,
+                'font_style' => $request->font_style,
+                'font_color' => $request->font_color,
+                'message' => $request->message ? $request->message : "NO_MESSAGE",
+                'metadata_json' => $request->metadata_json,
+            ]);
+
+
             $object['product_id'] = $existing_product->product_id;
             $object['variant_id'] = $existing_product->variant_id;
             $product_exist = $user->api()->rest('get', '/admin/api/2023-04/products/' . $existing_product->product_id . '.json');
@@ -104,21 +130,7 @@ class CustomizerController extends Controller
                 ] 
             ]);
             // Log::info(json_encode($response4));
-            
-            $filename2 = "";
-            if (isset($request->canvas)) {
-                $file = $request->file('canvas');
-                $filename2 = time() . '-' . $file->getClientOriginalName();
-                request()->canvas->storeAs('public/uploaded_images', $filename2);
-            }
-
-            $filename3 = "";
-            if (isset($request->qr_code)) {
-                $file = $request->file('qr_code');
-                $filename3 = time() . '-' . $file->getClientOriginalName();
-                request()->qr_code->storeAs('public/uploaded_images', $filename3);
-            }
-
+        
             if ($response['errors'] == false) {
                 $product = new CardProduct;
                 $product->user_id = $user->id;
@@ -127,13 +139,17 @@ class CustomizerController extends Controller
                 $product->pairbo_product_id = $request->pairbo_product_id;
                 $product->tags = $response['body']['product']['tags'];
                 $product->price = "5.00";
-                $product->canvas_image = "storage/uploaded_images/" . $filename2;
-                $product->qr_code_image = "storage/uploaded_images/" . $filename3;
-                $product->font_style = $request->font_style;
-                $product->font_color = $request->font_color;
-                $product->message = $request->message ? $request->message : "NO_MESSAGE";
-                $product->metadata_json = $request->metadata_json;
                 $product->save();
+
+                $product->details()->create([
+                    'unique_cart_id' => $request->unique_cart_id,
+                    'canvas_image' => "storage/uploaded_images/" . $filename2,
+                    'qr_code_image' => "storage/uploaded_images/" . $filename3,
+                    'font_style' => $request->font_style,
+                    'font_color' => $request->font_color,
+                    'message' => $request->message ? $request->message : "NO_MESSAGE",
+                    'metadata_json' => $request->metadata_json,
+                ]);
 
                 $object['product_id'] = $response['body']['product']['id'];
                 $object['variant_id'] = $response['body']['product']['variants'][0]['id'];
