@@ -122,6 +122,16 @@ function App() {
     }, 0);
   }
 
+  function generateRandomString(length) {
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    let result = '';
+    const charactersLength = characters.length;
+    for (let i = 0; i < length; i++) {
+      result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+    return result;
+  }
+
   function calculateFontSize(width) {
     const dataPoints = [
       { width: 188.92, fontSize: 10.5 },
@@ -862,7 +872,7 @@ function App() {
 
   const addToCartHandler = () => {
 
-    async function upload(formData) {
+    async function upload(formData, unique_cart_id) {
       try {
         const response = await fetch(`${appURL}/api/create-product`, {
           method: "POST",
@@ -878,7 +888,8 @@ function App() {
               const formDataTwo = new FormData();
               formDataTwo.append("id", result.data.variant_id);
               formDataTwo.append("quantity", 1);
-              formDataTwo.append(`properties[Message]`,text);
+              formDataTwo.append(`properties[Message]`, text);
+              formDataTwo.append(`properties[_unique_cart_id]`, unique_cart_id);
 
               const response = await fetch(window.Shopify.routes.root + 'cart/add.js', {
                 method: "POST",
@@ -945,6 +956,9 @@ function App() {
         useCORS: true,
         backgroundColor: null
       }).then(canvas => {
+
+        const unique_cart_id = generateRandomString(40);
+
         const dataURL = canvas.toDataURL('image/png');
         // console.log(dataURL);
         const file = DataURIToBlob(dataURL);
@@ -962,6 +976,7 @@ function App() {
         formData.append('font_color', fontColor == "black" ? "#000000" : "#FFFFFF");
         formData.append('message', text);
         formData.append('metadata_json', metadataJson);
+        formData.append('unique_cart_id', unique_cart_id);
 
         // let qrCode = document.querySelector("#qrcode_pairbo").childNodes[1].src;
         // const file2 = DataURIToBlob(qrCode);
@@ -971,7 +986,7 @@ function App() {
         const dataSizeInMB = dataSizeInBytes / (1024 * 1024); // Convert bytes to MB
         console.log(`Data size: ${dataSizeInMB} MB`);
 
-        upload(formData);
+        upload(formData, unique_cart_id);
       });
     }, 500);
     // }
