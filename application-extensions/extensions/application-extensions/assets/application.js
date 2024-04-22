@@ -878,7 +878,7 @@ function App() {
               const formDataTwo = new FormData();
               formDataTwo.append("id", result.data.variant_id);
               formDataTwo.append("quantity", 1);
-              formDataTwo.append(`properties[Message]`, JSON.stringify(text));
+              formDataTwo.append(`properties[Message]`,text);
 
               const response = await fetch(window.Shopify.routes.root + 'cart/add.js', {
                 method: "POST",
