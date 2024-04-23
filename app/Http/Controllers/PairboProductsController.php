@@ -22,7 +22,7 @@ class PairboProductsController extends Controller
         PairboCollectionProduct::query()->delete();
 
         do {
-            $response = Http::get("https://pairbo.com/products.json?limit=$limit&page=$page");
+            $response = Http::get("https://cards.pairbo.com/products.json?limit=$limit&page=$page");
             if ($response->successful()) {
                 $data = $response->json();
                 // Log::info(json_encode(count($data['products'])));
@@ -58,7 +58,7 @@ class PairboProductsController extends Controller
         $limit = 250;
 
         do {
-            $response = Http::get("https://pairbo.com/collections.json?limit=$limit&page=$page");
+            $response = Http::get("https://cards.pairbo.com/collections.json?limit=$limit&page=$page");
             if ($response->successful()) {
                 $data = $response->json();
 
@@ -75,7 +75,7 @@ class PairboProductsController extends Controller
                     $inside_limit = 250;
 
                     do {
-                        $inside_response = Http::get("https://pairbo.com/collections/" . $collection['handle'] . "/products.json?limit=$inside_limit&page=$inside_page");
+                        $inside_response = Http::get("https://cards.pairbo.com/collections/" . $collection['handle'] . "/products.json?limit=$inside_limit&page=$inside_page");
                         if ($inside_response->successful()) {
                             $inside_data = $inside_response->json();
 
