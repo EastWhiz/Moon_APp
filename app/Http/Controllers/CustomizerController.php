@@ -62,7 +62,10 @@ class CustomizerController extends Controller
         }
 
         $existing_product = CardProduct::where('pairbo_product_id',$request->pairbo_product_id)->first();
-        if($existing_product) {
+        $product_exist = $user->api()->rest('get', '/admin/api/2023-04/products/' . @$existing_product->product_id . '.json');
+        Log::info(json_encode($existing_product));
+        Log::info(json_encode($product_exist));
+        if($existing_product && $product_exist['errors'] == false) {
 
             $existing_product->details()->create([
                 'unique_cart_id' => $request->unique_cart_id,
@@ -74,11 +77,9 @@ class CustomizerController extends Controller
                 'metadata_json' => $request->metadata_json,
             ]);
 
-
             $object['product_id'] = $existing_product->product_id;
             $object['variant_id'] = $existing_product->variant_id;
-            $product_exist = $user->api()->rest('get', '/admin/api/2023-04/products/' . $existing_product->product_id . '.json');
-            if($product_exist['body']['product']['status'] == "active") {    
+            if($product_exist['body']['product']['status'] == "active") { 
                 return sendResponse(true, "Product Already Created Successfully and active", $object);
             } else {
                 return $product_active = $user->api()->rest('put', '/admin/api/2023-04/products/' . $existing_product->product_id . '.json', [
@@ -90,6 +91,12 @@ class CustomizerController extends Controller
                 return sendResponse(true, "Product Already Created Successfully but draft. now active", $object);
             }
         } else {
+
+            if($existing_product) {
+                Log::info("DELETING EXISTING DATA FROM DATABASE");
+                $existing_product->details()->delete();
+                $existing_product->delete();
+            }
 
             $front_image_url = $request->front_image_url;
             $image_two = $request->pairbo_image_two;

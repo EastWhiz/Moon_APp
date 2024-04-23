@@ -12,6 +12,7 @@ use App\Jobs\SyncProductsJob;
 use App\Models\PairboProduct;
 use App\Models\Product;
 use App\Models\User;
+use App\Models\CardProduct;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -235,7 +236,8 @@ Route::get('/webhook-integration', [FireBaseWebhookController::class, 'webhookIn
 // });
 
 // Route::get('/test', function () {
-//     $user = User::find(3);
+//     $product = CardProduct::find(40);
+//     $product->details()->delete();
 // });
 
 
