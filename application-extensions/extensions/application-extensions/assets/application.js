@@ -957,7 +957,7 @@ function App() {
 
     setTimeout(() => {
       html2canvas(document.querySelector('#div_actual'), {
-        height: document.querySelector('#div_actual').offsetHeight - 1,
+        // height: document.querySelector('#div_actual').offsetHeight - 1,
         // scale: 3,
         // dpi: 500,
         allowTaint: false,
@@ -1157,7 +1157,7 @@ function App() {
     // setFinalLoading(true);
     setTimeout(() => {
       html2canvas(document.querySelector('#div_actual'), {
-        height: document.querySelector('#div_actual').offsetHeight - 1,
+        // height: document.querySelector('#div_actual').offsetHeight - 1,
         scale: 2,
         dpi: 300,
         allowTaint: false,
