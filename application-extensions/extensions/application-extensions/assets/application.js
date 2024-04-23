@@ -982,7 +982,7 @@ function App() {
 
         formData.append('font_style', font ? font : "Calibri");
         formData.append('font_color', fontColor == "black" ? "#000000" : "#FFFFFF");
-        formData.append('message', text);
+        formData.append('message', JSON.stringify(text));
         formData.append('metadata_json', metadataJson);
         formData.append('unique_cart_id', unique_cart_id);
 
