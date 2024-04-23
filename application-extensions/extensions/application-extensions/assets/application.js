@@ -110,6 +110,10 @@ function App() {
   let pairboCount = Math.ceil(window.innerWidth / 215);
   // console.log(pairboCount);
 
+  function replaceNewlinesWithSpace(str) {
+    return str.replace(/\n/g, ' ');
+  }
+
   function calculateFormDataSize(formData) {
     return Array.from(formData).reduce((accumulator, [key, value]) => {
       if (value instanceof Blob) {
@@ -888,7 +892,7 @@ function App() {
               const formDataTwo = new FormData();
               formDataTwo.append("id", result.data.variant_id);
               formDataTwo.append("quantity", 1);
-              formDataTwo.append(`properties[Message]`, text);
+              formDataTwo.append(`properties[Message]`, replaceNewlinesWithSpace(text));
               formDataTwo.append(`properties[_unique_cart_id]`, unique_cart_id);
 
               const response = await fetch(window.Shopify.routes.root + 'cart/add.js', {
