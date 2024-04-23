@@ -906,7 +906,11 @@ function App() {
               }, 500);
 
             } catch (error) {
+              setFinalLoading(false);
+              setBase64ImageLoading(false);
+              handleClose();
               console.error(error);
+              Swal.fire("Error!", JSON.stringify(error), "error");
             }
           }
           await addToCartAsync();
@@ -914,7 +918,11 @@ function App() {
           Swal.fire("Error!", result.message, "error");
         }
       } catch (error) {
+        setFinalLoading(false);
+        setBase64ImageLoading(false);
+        handleClose();
         console.error(error);
+        Swal.fire("Error!", JSON.stringify(error), "error");
       }
     }
 
