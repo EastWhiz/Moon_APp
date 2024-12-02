@@ -7,16 +7,12 @@ import { OrbitControls } from "@react-three/drei";
 const mainUrl = "https://phpstack-1376322-5078804.cloudwaysapps.com/images";
 
 const Moon = () => {
-    const textureURL = `${mainUrl}/moon_textures.jpg`;
-    const displacementURL = `${mainUrl}/moon_displacement.jpg`;
+    const textureURL = "https://s3-us-west-2.amazonaws.com/s.cdpn.io/17271/lroc_color_poles_1k.jpg";
+    const displacementURL = "https://s3-us-west-2.amazonaws.com/s.cdpn.io/17271/ldem_3_8bit.jpg";
 
     // Use THREE's TextureLoader
     const texture = new THREE.TextureLoader().load(textureURL);
     const displacementMap = new THREE.TextureLoader().load(displacementURL);
-
-    // -webkit-box-shadow: -1px 0px 33px -6px rgba(0,0,0,0.75);
-    // -moz-box-shadow: -1px 0px 33px -6px rgba(0,0,0,0.75);
-    // box-shadow: -1px 0px 33px -6px rgba(0,0,0,0.75);
 
     return (
         <mesh>
