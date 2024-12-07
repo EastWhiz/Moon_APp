@@ -22,7 +22,7 @@ const Moon = () => {
         <>
             {/* Moon */}
             {/* ref={moonRef} */}
-            <Sphere args={[2, 60, 60]} >
+            <Sphere args={[2, 60, 60]}>
                 <meshPhongMaterial
                     attach="material"
                     color={0xffffff}
