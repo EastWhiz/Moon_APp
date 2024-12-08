@@ -1,5 +1,6 @@
 import { Box, Button, Grid2 as Grid, Switch, Tab, Tabs, TextField, Typography } from "@mui/material";
 import { OrbitControls, Sphere, useTexture } from "@react-three/drei";
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { Canvas, useFrame } from "@react-three/fiber";
 import { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
@@ -390,7 +391,7 @@ const App = () => {
                                             <Switch defaultChecked color="secondary" />
                                         </Box>
                                     </Typography>
-                                    <TextField
+                                    {/* <TextField
                                         color="secondary"
                                         type="date"
                                         fullWidth id="standard-helperText"
@@ -399,7 +400,8 @@ const App = () => {
                                         onChange={handleDate}
                                         placeholder="12/29/2020 22:00"
                                         variant="standard" sx={{ mb: 1 }}
-                                    />
+                                    /> */}
+                                    <DatePicker label="Basic date picker" />
                                 </Box>
                             </Box>}
                         {selectedTab === 2 &&
