@@ -1,7 +1,10 @@
-import { Box, Button, Grid2 as Grid, Switch, Tab, Tabs, TextField, Typography } from "@mui/material";
+import { Autocomplete, Box, Button, Checkbox, FormControl, FormControlLabel, FormGroup, Grid2 as Grid, Switch, Tab, Tabs, TextField, Typography } from "@mui/material";
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { OrbitControls, Sphere, useTexture } from "@react-three/drei";
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { Canvas, useFrame } from "@react-three/fiber";
+import dayjs from "dayjs";
 import { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
 
@@ -96,7 +99,7 @@ const Moon = () => {
     );
 };
 
-function useDivDimensions(id, delay = 300) {
+function useDivDimensions(id, delay = 300, frameSize) {
     const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
 
     useEffect(() => {
@@ -127,21 +130,17 @@ function useDivDimensions(id, delay = 300) {
             window.removeEventListener("resize", handleResize);
             clearTimeout(timeout);
         };
-    }, [id, delay]);
+    }, [id, delay, frameSize]);
 
     return dimensions;
 }
 
-
 const App = () => {
 
-    const { width, height } = useDivDimensions("cardId", 50); // Debounce delay of 300ms
-
-    function increaseBySixtyPercent(num) {
-        return num + num * 0.45;
-    }
-
-    // console.log(width, height, increaseBySixtyPercent(width));
+    const [frameSize, setFrameSize] = useState("5070");
+    const handleFrameSize = (event) => {
+        setFrameSize(event.target.value);
+    };
 
     const [selectedTab, setSelectedTab] = useState(0); // To handle the active tab state
     const handleTabs = (event, newValue) => {
@@ -158,16 +157,10 @@ const App = () => {
         setParagraphText(event.target.value);
     };
 
-    const [date, setDate] = useState();
-    const handleDate = (event) => {
-        setDate(event.target.value);
-    };
+    const [selectedDate, setSelectedDate] = useState(dayjs()); // State to manage the selected date
 
-    const [city, setCity] = useState();
-    const handleCity = (event) => {
-        setCity(event.target.value);
-    };
-
+    const [citiesList, setCitiesList] = useState([]);
+    const [city, setCity] = useState("");
     const [border, setBorder] = useState(0);
     const handleBorder = (index) => {
         setBorder(index);
@@ -183,11 +176,58 @@ const App = () => {
     ]);
 
     const changeTabHandler = () => {
-        if (selectedTab != 3)
+        if (selectedTab !== 3)
             setSelectedTab(prevTab => prevTab + 1);
     }
 
+    const searchCityHandler = (e) => {
+        // console.log(e.target.value);
+        async function getCityData() {
+            const url = `http://api.geonames.org/search?name_startsWith=${e}&maxRows=5&username=ouzzall&type=json`;
+
+            try {
+                const response = await fetch(url);
+                const data = await response.json();
+                // console.log(data);
+                let result = data.geonames.map(city => {
+                    return { name: `${city.name}, ${city.adminName1}, ${city.countryName}`, value: `${city.name}, ${city.adminName1}, ${city.countryName}`, lat: city.lat, lng: city.lng };
+                });
+                // console.log(result);
+                setCitiesList(result);
+            } catch (error) {
+                console.error(error);
+            }
+        }
+        getCityData()
+    }
+
+
+    const increaseBySixtyPercent = (num) => {
+        return num + num * 0.45;
+    }
+
+    const { width, height } = useDivDimensions("cardId", 50, frameSize); // Debounce delay of 300ms
+    // console.log(width, height, increaseBySixtyPercent(width));
+
+    let timeout = null;
+
     const activeDesign = designs.find(design => design.active === true);
+
+    let price = 0;
+    if (frameSize === "5070")
+        price += 59.90;
+    else if (frameSize === "3040")
+        price += 49.90;
+
+    if (border !== 0 && frameSize === "5070")
+        price += 32.90;
+    else if (border !== 0 && frameSize === "3040")
+        price += 29.90;
+
+    const defaultProps = {
+        options: citiesList,
+        getOptionLabel: (option) => option?.name || '',
+    };
 
     return (
         <Box
@@ -212,7 +252,7 @@ const App = () => {
                     sx={{
                         display: "block",
                         position: "absolute",
-                        width: { xs: '50%', sm: '70%', md: '55%', lg: '35%', xl: '30%', },
+                        width: frameSize === "5070" ? { xs: '50%', sm: '70%', md: '55%', lg: '35%', xl: '30%' } : { xs: '47%', sm: '67%', md: '53%', lg: '33%', xl: '28%' },
                         minWidth: { xs: '250px' },
                         padding: { xs: '20px', sm: '20px', md: '25px', lg: '25px', xl: '25px' },
                         textAlign: "center",
@@ -239,22 +279,22 @@ const App = () => {
                             </Grid>
                             <Grid>
                                 <Typography variant="body1" sx={{ fontWeight: "500", mb: 1, fontSize: { xs: "18px", md: "24px" } }}>
-                                    {title || "My Moonshine"}
+                                    {title || "Liebe ist alles"}
                                 </Typography>
                             </Grid>
                             <Grid>
-                                <Typography variant="body2" sx={{ fontWeight: "500", mb: 2, fontSize: { xs: "14px", md: "16px" } }}>
-                                    {paragraphText}
+                                <Typography variant="body2" sx={{ fontWeight: "500", mb: 2, fontSize: { xs: "14px", md: "16px", padding: "0px 10px" } }}>
+                                    {paragraphText || "Liebe ist, wenn zwei Herzen im gleichen Takt schlagen"}
                                 </Typography>
                             </Grid>
                             <Grid>
                                 <Typography variant="body1" sx={{ fontSize: { xs: "10px", md: "12px" } }}>
-                                    {date || "29 Dec 2020"}
+                                    {dayjs(selectedDate.$d).format('MM-DD-YYYY hh:mm A')}
                                 </Typography>
                             </Grid>
                             <Grid>
                                 <Typography variant="body1" sx={{ fontSize: { xs: "10px", md: "12px" }, mb: 2 }}>
-                                    {city || "Berlin"}
+                                    {city.name || 'München'}
                                 </Typography>
                             </Grid>
                         </Grid>
@@ -303,7 +343,7 @@ const App = () => {
                     <Box>
                         {selectedTab === 0 &&
                             <Box>
-                                <Box sx={{ p: 2, pb: 1.8 }}>
+                                <Box sx={{ p: 2, pb: 0.5 }}>
                                     <Typography variant="h6" sx={{ fontSize: { xs: "14px", md: "16px" }, mb: 1 }}>
                                         Wählen Sie Ihr Design
                                     </Typography>
@@ -313,7 +353,7 @@ const App = () => {
                                                 <Box
                                                     component="img"
                                                     src={design.smMoon}
-                                                    alt={`Image ${index + 1}`}
+                                                    // alt={`Image ${index + 1}`}
                                                     onClick={() => {
                                                         let temp = [...designs];
                                                         designs.forEach((element, indexInside) => {
@@ -338,32 +378,15 @@ const App = () => {
                                             </Grid>
                                         ))}
                                     </Grid>
-                                    <Typography variant="h6" sx={{ fontSize: { xs: "14px", md: "16px" }, mt: 1, mb: 1 }}>
+                                    <Typography variant="h6" sx={{ fontSize: { xs: "14px", md: "16px" }, mt: 2 }}>
                                         Wählen Sie den Typ
-                                        <Box component="span" sx={{ mx: 2 }}>
-                                            <Switch defaultChecked color="secondary" />
-                                        </Box>
                                     </Typography>
-                                    <Grid container spacing={2.5}>
-                                        {[`${mainUrl}/large-size.PNG`, `${mainUrl}/small-size.PNG`].map((imageSrc, index) => (
-                                            <Grid key={index}>
-                                                <Box
-                                                    component="img"
-                                                    src={imageSrc}
-                                                    alt={`Image ${index + 1}`}
-                                                    sx={{
-                                                        width: 46,
-                                                        height: 46,
-                                                        p: "2px",
-                                                        borderRadius: "10px",
-                                                        border: "3px solid #cccccc",
-                                                        borderColor: index === 0 ? "#9c27b0" : "f76916",
-                                                        cursor: "pointer",
-                                                    }}
-                                                />
-                                            </Grid>
-                                        ))}
-                                    </Grid>
+                                    <Box>
+                                        <FormGroup>
+                                            <FormControlLabel control={<Checkbox color="secondary" value="5070" checked={frameSize === '5070'} onChange={handleFrameSize} />} label="50x70 cm" />
+                                            <FormControlLabel control={<Checkbox color="secondary" value="3040" checked={frameSize === '3040'} onChange={handleFrameSize} />} label="30x40 cm" />
+                                        </FormGroup>
+                                    </Box>
                                 </Box>
                             </Box>}
                         {selectedTab === 1 &&
@@ -375,33 +398,54 @@ const App = () => {
                                             <Switch defaultChecked color="secondary" />
                                         </Box>
                                     </Typography>
-                                    <TextField
-                                        color="secondary"
-                                        fullWidth id="standard-helperText"
-                                        value={city}
-                                        onChange={handleCity}
-                                        placeholder="München"
-                                        variant="standard" sx={{
-                                            mb: 2
-                                        }}
-                                    />
+                                    <FormControl fullWidth sx={{ mb: 2 }}>
+                                        <Autocomplete
+                                            {...defaultProps}
+                                            value={city}
+                                            onInputChange={(e, newInputValue) => {
+                                                clearTimeout(timeout);
+                                                timeout = setTimeout(() => {
+                                                    searchCityHandler(newInputValue); // Pass new input value to search
+                                                }, 500);
+                                            }}
+                                            onChange={(event, newValue) => {
+                                                // console.log(event, newValue);
+                                                setCity(newValue);
+                                                setCitiesList([]);
+                                            }}
+                                            renderInput={(params) => (
+                                                <TextField {...params}
+                                                    variant="standard"
+                                                    color="secondary"
+                                                    placeholder="Stadt suchen"
+                                                />
+                                            )}
+                                            disableClearable
+                                        />
+                                    </FormControl>
                                     <Typography variant="h6" sx={{ fontSize: { xs: "14px", md: "16px" }, mb: 1 }}>
                                         Bestimmen Sie die Uhrzeit
                                         <Box component="span" sx={{ mx: 2 }}>
                                             <Switch defaultChecked color="secondary" />
                                         </Box>
                                     </Typography>
-                                    {/* <TextField
-                                        color="secondary"
-                                        type="date"
-                                        fullWidth id="standard-helperText"
-                                        value={date}
-                                        defaultValue="12/29/2020 22:00"
-                                        onChange={handleDate}
-                                        placeholder="12/29/2020 22:00"
-                                        variant="standard" sx={{ mb: 1 }}
-                                    /> */}
-                                    <DatePicker label="Basic date picker" />
+                                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                                        <DateTimePicker
+                                            format="MM-DD-YYYY hh:mm A"  // Customize the format as you wish
+                                            variant="standard"
+                                            slotProps={{
+                                                textField: {
+                                                    sx: { width: '100%' },
+                                                    variant: "standard",
+                                                    color: "secondary"
+                                                },
+                                            }}
+                                            value={selectedDate}
+                                            onChange={(newValue) => {
+                                                setSelectedDate(newValue);
+                                            }}
+                                        />
+                                    </LocalizationProvider>
                                 </Box>
                             </Box>}
                         {selectedTab === 2 &&
@@ -443,7 +487,7 @@ const App = () => {
                                                 <Box
                                                     component="img"
                                                     src={imageSrc}
-                                                    alt={`Image ${index + 1}`}
+                                                    // alt={`Image ${index + 1}`}
                                                     onClick={() => handleBorder(index)}
                                                     sx={{
                                                         width: 46,
@@ -482,7 +526,7 @@ const App = () => {
                                 textAlign: "center",
                                 fontSize: { xs: "14px", md: "16px" },
                             }}>
-                                Preis: 59.90 €
+                                Preis: {price.toFixed(2)} €
                             </Typography>
                             <Button variant="contained" onClick={changeTabHandler} fullWidth sx={{
                                 py: { xs: 1, md: 2 },
@@ -493,7 +537,7 @@ const App = () => {
                                 fontSize: { xs: "14px", md: "16px" },
                                 "&:hover": { backgroundColor: "#9c27b0", },
                             }}>
-                                {selectedTab == 0 ? 'Select Date and Location' : selectedTab == 1 ? 'Write a Text' : selectedTab == 2 ? 'To the Extras' : selectedTab == 3 ? 'Add to Cart' : null}
+                                {selectedTab === 0 ? 'Select Date and Location' : selectedTab === 1 ? 'Write a Text' : selectedTab === 2 ? 'To the Extras' : selectedTab === 3 ? 'Add to Cart' : null}
                             </Button>
                         </Box>
                     </Box>
