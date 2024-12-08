@@ -1,4 +1,4 @@
-import { Box, Button, FormControlLabel, Grid2, styled, Switch, Tab, Tabs, TextField, Typography } from "@mui/material";
+import { Box, Button, Grid2 as Grid, Switch, Tab, Tabs, TextField, Typography } from "@mui/material";
 import { OrbitControls, Sphere, useTexture } from "@react-three/drei";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { useEffect, useRef, useState } from "react";
@@ -140,12 +140,12 @@ const App = () => {
         return num + num * 0.45;
     }
 
-    console.log(width, height, increaseBySixtyPercent(width));
+    // console.log(width, height, increaseBySixtyPercent(width));
 
-    const [value, setValue] = useState(0); // To handle the active tab state
+    const [selectedTab, setSelectedTab] = useState(0); // To handle the active tab state
 
-    const handleChange = (event, newValue) => {
-        setValue(newValue);
+    const handleTabs = (event, newValue) => {
+        setSelectedTab(newValue);
     };
 
     const [title, setTitle] = useState();
@@ -185,45 +185,12 @@ const App = () => {
 
     const [designs, setDesigns] = useState([
         { background: "black", moon: `${mainUrl}/full1.png`, color: "white", smMoon: `${mainUrl}/m1.png`, active: true },
-        { background: "white", moon: `${mainUrl}/full2.png`, color: "black", smMoon: `${mainUrl}/m2.png`, active: false },
-        { background: "white", moon: `${mainUrl}/full3.png`, color: "black", smMoon: `${mainUrl}/m3.png`, active: false },
-        { background: "white", moon: `${mainUrl}/full4.png`, color: "black", smMoon: `${mainUrl}/m4.png`, active: false },
-        { background: `url('${mainUrl}/desert_orange.png')`, moon: `${mainUrl}/full5.png`, color: "white", smMoon: `${mainUrl}/m5.png`, active: false },
-        { background: `url('${mainUrl}/underwater_blue.png')`, moon: `${mainUrl}/full6.png`, color: "white", smMoon: `${mainUrl}/m6.png`, active: false },
+        // { background: "white", moon: `${mainUrl}/full2.png`, color: "black", smMoon: `${mainUrl}/m2.png`, active: false },
+        // { background: "white", moon: `${mainUrl}/full3.png`, color: "black", smMoon: `${mainUrl}/m3.png`, active: false },
+        // { background: "white", moon: `${mainUrl}/full4.png`, color: "black", smMoon: `${mainUrl}/m4.png`, active: false },
+        // { background: `url('${mainUrl}/desert_orange.png')`, moon: `${mainUrl}/full5.png`, color: "white", smMoon: `${mainUrl}/m5.png`, active: false },
+        // { background: `url('${mainUrl}/underwater_blue.png')`, moon: `${mainUrl}/full6.png`, color: "white", smMoon: `${mainUrl}/m6.png`, active: false },
     ]);
-
-    const Android12Switch = styled(Switch)(({ theme }) => ({
-        padding: 8,
-        '& .MuiSwitch-track': {
-            borderRadius: 22 / 2,
-            '&::before, &::after': {
-                content: '""',
-                position: 'absolute',
-                top: '50%',
-                transform: 'translateY(-50%)',
-                width: 16,
-                height: 16,
-            },
-            '&::before': {
-                backgroundImage: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="16" width="16" viewBox="0 0 24 24"><path fill="${encodeURIComponent(
-                    theme.palette.getContrastText(theme.palette.primary.main),
-                )}" d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z"/></svg>')`,
-                left: 12,
-            },
-            '&::after': {
-                backgroundImage: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="16" width="16" viewBox="0 0 24 24"><path fill="${encodeURIComponent(
-                    theme.palette.getContrastText(theme.palette.primary.main),
-                )}" d="M19,13H5V11H19V13Z" /></svg>')`,
-                right: 12,
-            },
-        },
-        '& .MuiSwitch-thumb': {
-            boxShadow: 'none',
-            width: 16,
-            height: 16,
-            margin: 2,
-        },
-    }));
 
     const activeDesign = designs.find(design => design.active === true);
 
@@ -266,8 +233,8 @@ const App = () => {
                     }}
                 >
                     <Box style={{ width: "100%", height: "100%", border: "1px solid silver" }}>
-                        <Grid2 container direction="column" alignItems="center">
-                            <Grid2 item>
+                        <Grid container direction="column" alignItems="center">
+                            <Grid>
                                 <Canvas
                                     camera={{ position: [0, 0, 4], fov: 75 }}
                                     style={{ height: "320px", width: "100%" }}
@@ -280,9 +247,9 @@ const App = () => {
                                     />
                                     <Moon />
                                 </Canvas>
-                            </Grid2>
+                            </Grid>
 
-                            <Grid2 item>
+                            <Grid>
                                 <Typography
                                     variant="body1"
                                     sx={{
@@ -293,9 +260,9 @@ const App = () => {
                                 >
                                     {title || "My Moonshine"}
                                 </Typography>
-                            </Grid2>
+                            </Grid>
 
-                            <Grid2 item>
+                            <Grid>
                                 <Typography
                                     variant="body2"
                                     sx={{
@@ -306,9 +273,9 @@ const App = () => {
                                 >
                                     {prText}
                                 </Typography>
-                            </Grid2>
+                            </Grid>
 
-                            <Grid2 item>
+                            <Grid>
                                 <Typography
                                     variant="body1"
                                     sx={{
@@ -318,17 +285,17 @@ const App = () => {
                                 >
                                     {date || "29 Dec 2020"}
                                 </Typography>
-                            </Grid2>
+                            </Grid>
 
-                            <Grid2 item>
+                            <Grid>
                                 {isCityOn && (
                                     <Typography variant="body1" sx={{ fontSize: { xs: "10px", md: "12px" }, mb: 2 }}>
                                         {city || "Berlin"}
                                     </Typography>
                                 )}
-                            </Grid2>
+                            </Grid>
 
-                            <Grid2 item>
+                            <Grid>
                                 <Box
                                     sx={{
                                         display: "flex",
@@ -365,9 +332,9 @@ const App = () => {
                                         ◐
                                     </Typography>
                                 </Box>
-                            </Grid2>
+                            </Grid>
 
-                            <Grid2 item>
+                            <Grid>
                                 <Typography
                                     variant="body2"
                                     sx={{
@@ -378,20 +345,19 @@ const App = () => {
                                 >
                                     MEIN MONDSCHEIN
                                 </Typography>
-                            </Grid2>
-                        </Grid2>
+                            </Grid>
+                        </Grid>
                     </Box>
                 </Box>
             </Box>
 
             <Box sx={{ width: { xs: '100%', sm: '40%', md: '35%' }, pt: 0 }}>
                 <Box >
-                    <Tabs sx={{
+                    <Tabs style={{
                         border: "1px solid #ccc",
                     }}
-                        value={value}
-                        onChange={handleChange}
-                        textColor="black"
+                        value={selectedTab}
+                        onChange={handleTabs}
                         indicatorColor="none"
                     >
                         <Tab label="Design" sx={{
@@ -400,7 +366,7 @@ const App = () => {
                             padding: { xs: "10px 0", sm: "16px 0", md: '16px 0' },
                             fontSize: { xs: "14px", sm: "22px", md: '22px' },
                             textTransform: "capitalize",
-                            '&.Mui-selected': { backgroundColor: '#e04848', color: 'white', },
+                            '&.Mui-selected': { backgroundColor: '#1b7fe3', color: 'white', },
                         }} />
                         <Tab label="Moment" sx={{
                             borderRight: '1px solid #ccc',
@@ -408,7 +374,7 @@ const App = () => {
                             padding: { xs: "10px 0", sm: "16px 0", md: '16px 0' },
                             fontSize: { xs: "14px", sm: "22px", md: '22px' },
                             textTransform: "capitalize",
-                            '&.Mui-selected': { backgroundColor: '#e04848', color: 'white', },
+                            '&.Mui-selected': { backgroundColor: '#1b7fe3', color: 'white', },
                         }} />
                         <Tab label="Text" sx={{
                             borderRight: '1px solid #ccc',
@@ -416,7 +382,7 @@ const App = () => {
                             padding: { xs: "10px 0", sm: "16px 0", md: '16px 0' },
                             fontSize: { xs: "14px", sm: "22px", md: '22px' },
                             textTransform: "capitalize",
-                            '&.Mui-selected': { backgroundColor: '#e04848', color: 'white', },
+                            '&.Mui-selected': { backgroundColor: '#1b7fe3', color: 'white', },
                         }} />
                         <Tab label="Extras" sx={{
                             width: "25%",
@@ -424,21 +390,21 @@ const App = () => {
                             fontSize: { xs: "14px", sm: "22px", md: '22px' },
                             textTransform: "capitalize",
                             '&.Mui-selected': {
-                                backgroundColor: '#e04848', color: 'white',
+                                backgroundColor: '#1b7fe3', color: 'white',
                             },
                         }} />
                     </Tabs>
 
                     <Box sx={{ border: '' }}>
-                        {value === 0 &&
+                        {selectedTab === 0 &&
                             <div>
                                 <Box sx={{ p: 2, }}>
                                     <Typography variant="h6" sx={{ fontSize: { xs: "14px", md: "16px" }, mb: 1 }}>
-                                        Choose your design
+                                        Wählen Sie Ihr Design
                                     </Typography>
-                                    <Grid2 container spacing={2.5}>
+                                    <Grid container spacing={2.5}>
                                         {designs.map((design, index) => (
-                                            <Grid2 item key={index}>
+                                            <Grid key={index}>
                                                 <Box
                                                     component="img"
                                                     src={design.smMoon}
@@ -461,25 +427,23 @@ const App = () => {
                                                         height: 32,
                                                         p: "4px",
                                                         borderRadius: "10px",
-                                                        border: design.active ? "3px solid #f76916" : "3px solid #cccccc",
+                                                        border: design.active ? "3px solid #1b7fe3" : "3px solid #cccccc",
                                                         backgroundColor: index === 0 ? "black" : "transparent" && index === 4 ? "#d09281" : "transparent" && index === 5 ? "#718f91" : "transparent",  // Black background for the first box
                                                         cursor: "pointer",
                                                     }}
                                                 />
-                                            </Grid2>
+                                            </Grid>
                                         ))}
-                                    </Grid2>
+                                    </Grid>
                                     <Typography variant="h6" sx={{ fontSize: { xs: "14px", md: "16px" }, mt: 3, mb: 1 }}>
-                                        Choose the version
+                                        Wählen Sie den Typ
                                         <Box component="span" sx={{ mx: 2 }}>
-                                            <FormControlLabel
-                                                control={<Android12Switch defaultChecked color="warning" />}
-                                            />
+                                            <Switch defaultChecked />
                                         </Box>
                                     </Typography>
-                                    <Grid2 container spacing={2.5}>
+                                    <Grid container spacing={2.5}>
                                         {[`${mainUrl}/large-size.PNG`, `${mainUrl}/small-size.PNG`].map((imageSrc, index) => (
-                                            <Grid2 item key={index}>
+                                            <Grid key={index}>
                                                 <Box
                                                     component="img"
                                                     src={imageSrc}
@@ -490,13 +454,13 @@ const App = () => {
                                                         p: "2px",
                                                         borderRadius: "10px",
                                                         border: "3px solid #cccccc",
-                                                        borderColor: index === 0 ? "#f76916" : "f76916",
+                                                        borderColor: index === 0 ? "#1b7fe3" : "f76916",
                                                         cursor: "pointer",
                                                     }}
                                                 />
-                                            </Grid2>
+                                            </Grid>
                                         ))}
-                                    </Grid2>
+                                    </Grid>
                                     <Typography variant="body2" sx={{
                                         my: 3, borderTop: "2px solid #474665",
                                         borderBottom: "2px solid #474665",
@@ -510,47 +474,45 @@ const App = () => {
                                     <Button variant="contained" fullWidth sx={{
                                         py: { xs: 1, md: 2 },
                                         textTransform: "none",
-                                        backgroundColor: "#ff5c5c",
+                                        backgroundColor: "#1b7fe3",
                                         color: "#ffffff",
                                         fontWeight: "600",
                                         fontSize: { xs: "14px", md: "16px" },
-                                        "&:hover": { backgroundColor: "#e04848", },
+                                        "&:hover": { backgroundColor: "#1b7fe3", },
+
                                     }}>
-                                        Select date and location
+                                        Select Date and Location
                                     </Button>
                                 </Box>
                             </div>}
-                        {value === 1 &&
+                        {selectedTab === 1 &&
                             <div>
                                 <Box sx={{ p: 2, }}>
                                     <Typography variant="h6" sx={{ fontSize: { xs: "14px", md: "16px" }, mb: 1 }}>
-                                        Set the location
+                                        Legen Sie den Standort fest
                                         <Box component="span" sx={{ mx: 2 }}>
-                                            <FormControlLabel
-                                                control={<Android12Switch checked={isCityOn} onChange={handleIsCityOn} color="warning" />}
-                                            />
+                                            <Switch defaultChecked />
                                         </Box>
                                     </Typography>
                                     <TextField
                                         fullWidth id="standard-helperText"
                                         value={city}
                                         onChange={handleCity}
-                                        placeholder="Berlin"
-                                        helperText="Ort ist erforderlich"
+                                        placeholder="München"
                                         variant="standard" sx={{
                                             mb: 3
-                                        }} />
+                                        }}
+                                    />
 
                                     <Typography variant="h6" sx={{ fontSize: { xs: "14px", md: "16px" }, mb: 1 }}>
-                                        Determine the time
+                                        Bestimmen Sie die Uhrzeit
                                         <Box component="span" sx={{ mx: 2 }}>
-                                            <FormControlLabel
-                                                control={<Android12Switch defaultChecked color="warning" />}
-                                            />
+                                            <Switch defaultChecked />
                                         </Box>
                                     </Typography>
 
                                     <TextField
+                                        type="date"
                                         fullWidth id="standard-helperText"
                                         value={date}
                                         defaultValue="12/29/2020 22:00"
@@ -570,34 +532,35 @@ const App = () => {
                                     <Button variant="contained" fullWidth sx={{
                                         py: { xs: 1, md: 2 },
                                         textTransform: "none",
-                                        backgroundColor: "#ff5c5c",
+                                        backgroundColor: "#1b7fe3",
                                         color: "#ffffff",
                                         fontWeight: "600",
                                         fontSize: { xs: "14px", md: "16px" },
-                                        "&:hover": { backgroundColor: "#e04848", },
+                                        "&:hover": { backgroundColor: "#1b7fe3", },
                                     }}>
-                                        Write a text
+                                        Write a Text
                                     </Button>
                                 </Box>
                             </div>}
-                        {value === 2 &&
+                        {selectedTab === 2 &&
                             <div>
                                 <Box sx={{ p: 2, }}>
                                     <Typography variant="h6" sx={{ fontSize: { xs: "14px", md: "16px" }, mb: 1 }}>
-                                        Add a title (optional)
+                                        Fügen Sie einen Titel hinzu (optional)
                                     </Typography>
                                     <TextField
                                         fullWidth id=""
                                         value={title}
                                         onChange={handleTitle}
-                                        placeholder="My Moonshine"
+                                        placeholder="Liebe ist alles"
                                         variant="standard" sx={{ mb: 3 }} />
 
                                     <Typography variant="h6" sx={{ fontSize: { xs: "14px", md: "16px" }, mb: 1 }}>
-                                        Write a personal text (optional)
+                                        Fügen Sie einen persönlichen Text hinzu (optional)
                                     </Typography>
                                     <TextField fullWidth id=""
                                         value={prText}
+                                        placeholder="Liebe ist, wenn zwei Herzen im gleichen Takt schlagen"
                                         onChange={handlePrText}
                                         variant="standard" sx={{ mb: 3, }} />
 
@@ -611,26 +574,26 @@ const App = () => {
                                     <Button variant="contained" fullWidth sx={{
                                         py: { xs: 1, md: 2 },
                                         textTransform: "none",
-                                        backgroundColor: "#ff5c5c",
+                                        backgroundColor: "#1b7fe3",
                                         color: "#ffffff",
                                         fontWeight: "600",
                                         fontSize: { xs: "14px", md: "16px" },
-                                        "&:hover": { backgroundColor: "#e04848", },
+                                        "&:hover": { backgroundColor: "#1b7fe3", },
                                     }}>
-                                        To the extras
+                                        To the Extras
                                     </Button>
                                 </Box>
                             </div>
                         }
-                        {value === 3 &&
+                        {selectedTab === 3 &&
                             <div>
                                 <Box sx={{ p: 2 }}>
                                     <Typography variant="h6" sx={{ fontSize: { xs: "14px", md: "16px" }, mb: 1 }}>
-                                        Add a picture frame
+                                        Fügen Sie einen Bilderrahmen hinzu
                                     </Typography>
-                                    <Grid2 container spacing={2.5}>
+                                    <Grid container spacing={2.5}>
                                         {[`${mainUrl}/no-border.PNG`, `${mainUrl}/black-border.PNG`, `${mainUrl}/light-border.PNG`].map((imageSrc, index) => (
-                                            <Grid2 item key={index}>
+                                            <Grid key={index}>
                                                 <Box
                                                     component="img"
                                                     src={imageSrc}
@@ -642,15 +605,15 @@ const App = () => {
                                                         height: 46,
                                                         p: "2px",
                                                         borderRadius: "10px",
-                                                        border: index === border ? "3px solid #f76916" : "3px solid #cccccc", // Highlight the first image
+                                                        border: index === border ? "3px solid #1b7fe3" : "3px solid #cccccc", // Highlight the first image
                                                         cursor: "pointer",
                                                     }}
                                                 />
-                                            </Grid2>
+                                            </Grid>
                                         ))}
-                                    </Grid2>
+                                    </Grid>
                                     <Typography variant="h6" sx={{ fontSize: { xs: "14px", md: "16px" }, mb: 1, mt: 3 }}>
-                                        Speichere dein Poster für später
+                                        Speichern Sie Ihr Poster für später
                                     </Typography>
                                     <TextField
                                         type="email"
@@ -669,12 +632,12 @@ const App = () => {
                                     <Button variant="contained" fullWidth sx={{
                                         py: { xs: 1, md: 2 },
                                         textTransform: "none",
-                                        backgroundColor: "#ff5c5c",
+                                        backgroundColor: "#1b7fe3",
                                         color: "#ffffff",
                                         fontWeight: "600", fontSize: { xs: "14px", md: "16px" },
-                                        "&:hover": { backgroundColor: "#e04848", },
+                                        "&:hover": { backgroundColor: "#1b7fe3", },
                                     }}>
-                                        Add to cart
+                                        Add to Cart
                                     </Button>
                                 </Box>
                             </div>}
