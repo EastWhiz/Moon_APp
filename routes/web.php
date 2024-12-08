@@ -25,7 +25,4 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::get('/astronomy-api/appearance',[ApiController::class,'getMoonAppearance'])->name('moonAppearance');
-Route::get('/astronomy-api/moon',[ApiController::class,'getMoonPicture'])->name('moonAppearance');
-
 require __DIR__.'/auth.php';

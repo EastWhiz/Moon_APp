@@ -8,10 +8,11 @@ import dayjs from "dayjs";
 import { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
 
-const mainUrl = "https://ee21-182-181-207-55.ngrok-free.app/images";
+const mainUrl = "https://ee21-182-181-207-55.ngrok-free.app";
 
 const getMoonPosition = (moonData) => {
 
+    // console.log(moonData.extraInfo.phase.angel);
     const positionMapping = [
         { range: [0, 13], position: [100, -100, -240], intensity: 10 },
         { range: [13, 26], position: [100, -100, -210], intensity: 9 },
@@ -44,16 +45,16 @@ const getMoonPosition = (moonData) => {
     ];
 
     // Find the corresponding position based on elongation
-    const positionData = positionMapping.find(({ range }) =>
-        moonData.elongation >= range[0] && moonData.elongation < range[1]
-    );
+    const positionData = positionMapping.find(({ range }) => moonData.extraInfo.phase.angel >= range[0] && moonData.extraInfo.phase.angel < range[1]);
+    // console.log(positionData);
 
     // Return the position or a default value if not found
-    return positionData ? positionData.position : [0, 0, 0];
+    return positionData ? positionData : { range: [91, 104], position: [100, -100, 30], intensity: 3.6 };
 };
 
-const Moon = () => {
+const Moon = ({ moonData }) => {
 
+    // console.log(moonData);
     const moonRef = useRef();
 
     const textureURL = "https://s3-us-west-2.amazonaws.com/s.cdpn.io/17271/lroc_color_poles_1k.jpg";
@@ -85,8 +86,8 @@ const Moon = () => {
 
             <directionalLight
                 color={0xffffff}
-                intensity={10}
-                position={[100, -100, 0]}
+                intensity={moonData.intensity}
+                position={moonData.position}
             />
 
             <hemisphereLight
@@ -137,6 +138,9 @@ function useDivDimensions(id, delay = 300, frameSize) {
 
 const App = () => {
 
+    const [moonData, setMoonData] = useState({ range: [91, 104], position: [100, -100, 30], intensity: 3.6 });
+    const [moon, setMoon] = useState({ range: [91, 104], position: [100, -100, 30], intensity: 3.6 });
+
     const [frameSize, setFrameSize] = useState("5070");
     const handleFrameSize = (event) => {
         setFrameSize(event.target.value);
@@ -166,13 +170,35 @@ const App = () => {
         setBorder(index);
     };
 
+    useEffect(() => {
+        async function getData() {
+            const url = `${mainUrl}/api/astronomy-api/appearance?date=${dayjs(selectedDate.$d).format('MM-DD-YYYY hh:mm A')}&latitude=${city.lat}&longitude=${city.lng}`;
+            try {
+                const response = await fetch(url);
+                if (!response.ok) {
+                    throw new Error(`Response status: ${response.status}`);
+                }
+
+                const result = await response.json();
+                // console.log(result.data..table.rows[0].cells[0]);
+                setMoon(getMoonPosition(result.data.table.rows[0].cells[0]));
+            } catch (error) {
+                console.error(error.message);
+            }
+        }
+
+        if (city !== "") {
+            getData();
+        }
+    }, [city, selectedDate]);
+
     const [designs, setDesigns] = useState([
-        { background: "black", moon: `${mainUrl}/full1.png`, color: "white", smMoon: `${mainUrl}/m1.png`, active: true },
-        // { background: "white", moon: `${mainUrl}/full2.png`, color: "black", smMoon: `${mainUrl}/m2.png`, active: false },
-        // { background: "white", moon: `${mainUrl}/full3.png`, color: "black", smMoon: `${mainUrl}/m3.png`, active: false },
-        // { background: "white", moon: `${mainUrl}/full4.png`, color: "black", smMoon: `${mainUrl}/m4.png`, active: false },
-        // { background: `url('${mainUrl}/desert_orange.png')`, moon: `${mainUrl}/full5.png`, color: "white", smMoon: `${mainUrl}/m5.png`, active: false },
-        // { background: `url('${mainUrl}/underwater_blue.png')`, moon: `${mainUrl}/full6.png`, color: "white", smMoon: `${mainUrl}/m6.png`, active: false },
+        { background: "black", moon: `${mainUrl}/images/full1.png`, color: "white", smMoon: `${mainUrl}/images/m1.png`, active: true },
+        // { background: "white", moon: `${mainUrl}/images/full2.png`, color: "black", smMoon: `${mainUrl}/images/m2.png`, active: false },
+        // { background: "white", moon: `${mainUrl}/images/full3.png`, color: "black", smMoon: `${mainUrl}/images/m3.png`, active: false },
+        // { background: "white", moon: `${mainUrl}/images/full4.png`, color: "black", smMoon: `${mainUrl}/images/m4.png`, active: false },
+        // { background: `url('${mainUrl}/images/desert_orange.png')`, moon: `${mainUrl}/images/full5.png`, color: "white", smMoon: `${mainUrl}/images/m5.png`, active: false },
+        // { background: `url('${mainUrl}/images/underwater_blue.png')`, moon: `${mainUrl}/images/full6.png`, color: "white", smMoon: `${mainUrl}/images/m6.png`, active: false },
     ]);
 
     const changeTabHandler = () => {
@@ -206,7 +232,7 @@ const App = () => {
         return num + num * 0.45;
     }
 
-    const { width, height } = useDivDimensions("cardId", 50, frameSize); // Debounce delay of 300ms
+    const { width } = useDivDimensions("cardId", 50, frameSize); // Debounce delay of 300ms
     // console.log(width, height, increaseBySixtyPercent(width));
 
     let timeout = null;
@@ -274,7 +300,7 @@ const App = () => {
                                     <OrbitControls enablePan={false} enableZoom={false} enableRotate={false}
                                         touches={{ ONE: THREE.TOUCH.ROTATE, TWO: THREE.TOUCH.DOLLY_ROTATE }}
                                     />
-                                    <Moon />
+                                    <Moon moonData={moon} />
                                 </Canvas>
                             </Grid>
                             <Grid>
@@ -482,7 +508,7 @@ const App = () => {
                                         Fügen Sie einen Bilderrahmen hinzu
                                     </Typography>
                                     <Grid container spacing={2.5}>
-                                        {[`${mainUrl}/no-border.PNG`, `${mainUrl}/black-border.PNG`, `${mainUrl}/light-border.PNG`].map((imageSrc, index) => (
+                                        {[`${mainUrl}/images/no-border.PNG`, `${mainUrl}/images/black-border.PNG`, `${mainUrl}/images/light-border.PNG`].map((imageSrc, index) => (
                                             <Grid key={index}>
                                                 <Box
                                                     component="img"

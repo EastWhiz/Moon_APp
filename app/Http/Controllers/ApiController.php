@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 
@@ -18,14 +19,16 @@ class ApiController extends Controller
         // Set the API endpoint
         $url = 'https://api.astronomyapi.com/api/v2/bodies/positions/moon';
 
+        $carbonDate = Carbon::createFromFormat('d-m-Y h:i A', $request->date);
+
         // API request parameters based on the table you shared
-        $latitude = 31.5203696;  // Replace with observer's latitude
-        $longitude = 74.3436;  // Replace with observer's longitude
+        $latitude = $request->latitude;  // Replace with observer's latitude
+        $longitude = $request->longitude;  // Replace with observer's longitude
         $elevation = 1; // replace with actual elevation
-        $date = "2024-12-14";
-        $from_date = "2024-12-08"; // replace with actual start date
-        $to_date = "2024-12-08"; // replace with actual end date
-        $time = '12:37:25'; // replace with actual time
+        $from_date = $carbonDate->format('Y-d-m'); // replace with actual start date
+        $to_date = $carbonDate->format('Y-d-m'); // replace with actual end date
+        $time = $carbonDate->format('H:i:s'); // replace with actual time
+        // logger(json_encode([$from_date, $to_date, $time]));
         $output = 'table'; // or 'rows, table'
 
         // API headers (replace with actual header values)
@@ -43,17 +46,12 @@ class ApiController extends Controller
             'time' => $time,
             'output' => $output,
         ]);
-        return $data = $response->json();
 
-        $rows = collect($data['data']['table']['rows'][0]['cells']);
-
-        $data = [];
-        foreach ($rows as $key => $row) {
-            $data[] = $row['position'];
-        }
-        return $data;
-
-        return view('welcome', compact('data'));
+        return response([
+            'status' => true,
+            'message' => 'Moon lat and lng is received',
+            'data' => $response->json()['data']
+        ], 200);
     }
 
     public function getMoonPicture(Request $request)
