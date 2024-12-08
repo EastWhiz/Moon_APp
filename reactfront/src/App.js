@@ -134,7 +134,7 @@ function useDivDimensions(id, delay = 300) {
 
 const App = () => {
 
-    const { width, height } = useDivDimensions("cardId", 100); // Debounce delay of 300ms
+    const { width, height } = useDivDimensions("cardId", 50); // Debounce delay of 300ms
 
     function increaseBySixtyPercent(num) {
         return num + num * 0.45;
@@ -143,42 +143,31 @@ const App = () => {
     // console.log(width, height, increaseBySixtyPercent(width));
 
     const [selectedTab, setSelectedTab] = useState(0); // To handle the active tab state
-
     const handleTabs = (event, newValue) => {
         setSelectedTab(newValue);
     };
 
     const [title, setTitle] = useState();
-
     const handleTitle = (event) => {
         setTitle(event.target.value);
     };
 
-    const [prText, setPrText] = useState();
-
-    const handlePrText = (event) => {
-        setPrText(event.target.value);
+    const [paragraphText, setParagraphText] = useState();
+    const handleParagraphText = (event) => {
+        setParagraphText(event.target.value);
     };
 
     const [date, setDate] = useState();
-
     const handleDate = (event) => {
         setDate(event.target.value);
     };
 
     const [city, setCity] = useState();
-    const [isCityOn, setIsCityOn] = useState(true);
-
     const handleCity = (event) => {
         setCity(event.target.value);
     };
 
-    const handleIsCityOn = (event) => {
-        setIsCityOn(event.target.checked);
-    };
-
     const [border, setBorder] = useState(0);
-
     const handleBorder = (index) => {
         setBorder(index);
     };
@@ -192,15 +181,17 @@ const App = () => {
         // { background: `url('${mainUrl}/underwater_blue.png')`, moon: `${mainUrl}/full6.png`, color: "white", smMoon: `${mainUrl}/m6.png`, active: false },
     ]);
 
+    const changeTabHandler = () => {
+        if (selectedTab != 3)
+            setSelectedTab(prevTab => prevTab + 1);
+    }
+
     const activeDesign = designs.find(design => design.active === true);
 
     return (
         <Box
             sx={{
-                minHeight: '100vh',
-                display: 'flex',
-                justifyContent: 'center',
-                flexDirection: { xs: 'column', sm: 'row', md: 'row' },
+                minHeight: '100vh', display: 'flex', justifyContent: 'center', flexDirection: { xs: 'column', sm: 'row', md: 'row' },
             }}
         >
             <Box sx={{
@@ -239,111 +230,30 @@ const App = () => {
                                     camera={{ position: [0, 0, 4], fov: 75 }}
                                     style={{ height: "320px", width: "100%" }}
                                 >
-                                    <OrbitControls
-                                        enablePan={false}
-                                        enableZoom={false}
-                                        enableRotate={false}
+                                    <OrbitControls enablePan={false} enableZoom={false} enableRotate={false}
                                         touches={{ ONE: THREE.TOUCH.ROTATE, TWO: THREE.TOUCH.DOLLY_ROTATE }}
                                     />
                                     <Moon />
                                 </Canvas>
                             </Grid>
-
                             <Grid>
-                                <Typography
-                                    variant="body1"
-                                    sx={{
-                                        fontWeight: "500",
-                                        mb: 1,
-                                        fontSize: { xs: "18px", md: "24px" },
-                                    }}
-                                >
+                                <Typography variant="body1" sx={{ fontWeight: "500", mb: 1, fontSize: { xs: "18px", md: "24px" } }}>
                                     {title || "My Moonshine"}
                                 </Typography>
                             </Grid>
-
                             <Grid>
-                                <Typography
-                                    variant="body2"
-                                    sx={{
-                                        fontWeight: "500",
-                                        mb: 2,
-                                        fontSize: { xs: "14px", md: "16px" },
-                                    }}
-                                >
-                                    {prText}
+                                <Typography variant="body2" sx={{ fontWeight: "500", mb: 2, fontSize: { xs: "14px", md: "16px" } }}>
+                                    {paragraphText}
                                 </Typography>
                             </Grid>
-
                             <Grid>
-                                <Typography
-                                    variant="body1"
-                                    sx={{
-                                        fontSize: { xs: "10px", md: "12px" },
-
-                                    }}
-                                >
+                                <Typography variant="body1" sx={{ fontSize: { xs: "10px", md: "12px" } }}>
                                     {date || "29 Dec 2020"}
                                 </Typography>
                             </Grid>
-
                             <Grid>
-                                {isCityOn && (
-                                    <Typography variant="body1" sx={{ fontSize: { xs: "10px", md: "12px" }, mb: 2 }}>
-                                        {city || "Berlin"}
-                                    </Typography>
-                                )}
-                            </Grid>
-
-                            <Grid>
-                                <Box
-                                    sx={{
-                                        display: "flex",
-                                        justifyContent: "center",
-                                        alignItems: "center",
-                                        // mb: 1,
-                                    }}
-                                >
-                                    <Typography
-                                        variant="body1"
-                                        sx={{
-                                            fontSize: { xs: "16px", md: "18px" },
-                                            mx: 1,
-                                        }}
-                                    >
-                                        ◑
-                                    </Typography>
-                                    <Typography
-                                        variant="body1"
-                                        sx={{
-                                            fontSize: { xs: "16px", md: "18px" },
-                                            mx: 1,
-                                        }}
-                                    >
-                                        ◯
-                                    </Typography>
-                                    <Typography
-                                        variant="body1"
-                                        sx={{
-                                            fontSize: { xs: "16px", md: "18px" },
-                                            mx: 1,
-                                        }}
-                                    >
-                                        ◐
-                                    </Typography>
-                                </Box>
-                            </Grid>
-
-                            <Grid>
-                                <Typography
-                                    variant="body2"
-                                    sx={{
-                                        fontWeight: "bold",
-                                        fontSize: { xs: "10px", md: "12px" },
-                                        mb: 1,
-                                    }}
-                                >
-                                    MEIN MONDSCHEIN
+                                <Typography variant="body1" sx={{ fontSize: { xs: "10px", md: "12px" }, mb: 2 }}>
+                                    {city || "Berlin"}
                                 </Typography>
                             </Grid>
                         </Grid>
@@ -352,21 +262,15 @@ const App = () => {
             </Box>
 
             <Box sx={{ width: { xs: '100%', sm: '40%', md: '35%' }, pt: 0 }}>
-                <Box >
-                    <Tabs style={{
-                        border: "1px solid #ccc",
-                    }}
-                        value={selectedTab}
-                        onChange={handleTabs}
-                        indicatorColor="none"
-                    >
+                <Box>
+                    <Tabs style={{ border: "1px solid #ccc", }} value={selectedTab} onChange={handleTabs} indicatorColor="none">
                         <Tab label="Design" sx={{
                             borderRight: '1px solid #ccc',
                             width: "25%",
                             padding: { xs: "10px 0", sm: "16px 0", md: '16px 0' },
                             fontSize: { xs: "14px", sm: "22px", md: '22px' },
                             textTransform: "capitalize",
-                            '&.Mui-selected': { backgroundColor: '#1b7fe3', color: 'white', },
+                            '&.Mui-selected': { backgroundColor: '#9c27b0', color: 'white', },
                         }} />
                         <Tab label="Moment" sx={{
                             borderRight: '1px solid #ccc',
@@ -374,7 +278,7 @@ const App = () => {
                             padding: { xs: "10px 0", sm: "16px 0", md: '16px 0' },
                             fontSize: { xs: "14px", sm: "22px", md: '22px' },
                             textTransform: "capitalize",
-                            '&.Mui-selected': { backgroundColor: '#1b7fe3', color: 'white', },
+                            '&.Mui-selected': { backgroundColor: '#9c27b0', color: 'white', },
                         }} />
                         <Tab label="Text" sx={{
                             borderRight: '1px solid #ccc',
@@ -382,7 +286,7 @@ const App = () => {
                             padding: { xs: "10px 0", sm: "16px 0", md: '16px 0' },
                             fontSize: { xs: "14px", sm: "22px", md: '22px' },
                             textTransform: "capitalize",
-                            '&.Mui-selected': { backgroundColor: '#1b7fe3', color: 'white', },
+                            '&.Mui-selected': { backgroundColor: '#9c27b0', color: 'white', },
                         }} />
                         <Tab label="Extras" sx={{
                             width: "25%",
@@ -390,15 +294,15 @@ const App = () => {
                             fontSize: { xs: "14px", sm: "22px", md: '22px' },
                             textTransform: "capitalize",
                             '&.Mui-selected': {
-                                backgroundColor: '#1b7fe3', color: 'white',
+                                backgroundColor: '#9c27b0', color: 'white',
                             },
                         }} />
                     </Tabs>
 
-                    <Box sx={{ border: '' }}>
+                    <Box>
                         {selectedTab === 0 &&
-                            <div>
-                                <Box sx={{ p: 2, }}>
+                            <Box>
+                                <Box sx={{ p: 2, pb: 1.8 }}>
                                     <Typography variant="h6" sx={{ fontSize: { xs: "14px", md: "16px" }, mb: 1 }}>
                                         Wählen Sie Ihr Design
                                     </Typography>
@@ -410,7 +314,6 @@ const App = () => {
                                                     src={design.smMoon}
                                                     alt={`Image ${index + 1}`}
                                                     onClick={() => {
-
                                                         let temp = [...designs];
                                                         designs.forEach((element, indexInside) => {
                                                             if (indexInside === index) {
@@ -420,14 +323,13 @@ const App = () => {
                                                             }
                                                         });
                                                         setDesigns(temp);
-
                                                     }}
                                                     sx={{
                                                         width: 32,
                                                         height: 32,
                                                         p: "4px",
                                                         borderRadius: "10px",
-                                                        border: design.active ? "3px solid #1b7fe3" : "3px solid #cccccc",
+                                                        border: design.active ? "3px solid #9c27b0" : "3px solid #cccccc",
                                                         backgroundColor: index === 0 ? "black" : "transparent" && index === 4 ? "#d09281" : "transparent" && index === 5 ? "#718f91" : "transparent",  // Black background for the first box
                                                         cursor: "pointer",
                                                     }}
@@ -435,10 +337,10 @@ const App = () => {
                                             </Grid>
                                         ))}
                                     </Grid>
-                                    <Typography variant="h6" sx={{ fontSize: { xs: "14px", md: "16px" }, mt: 3, mb: 1 }}>
+                                    <Typography variant="h6" sx={{ fontSize: { xs: "14px", md: "16px" }, mt: 1, mb: 1 }}>
                                         Wählen Sie den Typ
                                         <Box component="span" sx={{ mx: 2 }}>
-                                            <Switch defaultChecked />
+                                            <Switch defaultChecked color="secondary" />
                                         </Box>
                                     </Typography>
                                     <Grid container spacing={2.5}>
@@ -454,102 +356,61 @@ const App = () => {
                                                         p: "2px",
                                                         borderRadius: "10px",
                                                         border: "3px solid #cccccc",
-                                                        borderColor: index === 0 ? "#1b7fe3" : "f76916",
+                                                        borderColor: index === 0 ? "#9c27b0" : "f76916",
                                                         cursor: "pointer",
                                                     }}
                                                 />
                                             </Grid>
                                         ))}
                                     </Grid>
-                                    <Typography variant="body2" sx={{
-                                        my: 3, borderTop: "2px solid #474665",
-                                        borderBottom: "2px solid #474665",
-                                        color: "#474665",
-                                        py: "6px",
-                                        textAlign: "center",
-                                        fontSize: { xs: "14px", md: "16px" },
-                                    }}>
-                                        Price: 59.90 €
-                                    </Typography>
-                                    <Button variant="contained" fullWidth sx={{
-                                        py: { xs: 1, md: 2 },
-                                        textTransform: "none",
-                                        backgroundColor: "#1b7fe3",
-                                        color: "#ffffff",
-                                        fontWeight: "600",
-                                        fontSize: { xs: "14px", md: "16px" },
-                                        "&:hover": { backgroundColor: "#1b7fe3", },
-
-                                    }}>
-                                        Select Date and Location
-                                    </Button>
                                 </Box>
-                            </div>}
+                            </Box>}
                         {selectedTab === 1 &&
-                            <div>
-                                <Box sx={{ p: 2, }}>
+                            <Box>
+                                <Box sx={{ p: 2 }}>
                                     <Typography variant="h6" sx={{ fontSize: { xs: "14px", md: "16px" }, mb: 1 }}>
                                         Legen Sie den Standort fest
                                         <Box component="span" sx={{ mx: 2 }}>
-                                            <Switch defaultChecked />
+                                            <Switch defaultChecked color="secondary" />
                                         </Box>
                                     </Typography>
                                     <TextField
+                                        color="secondary"
                                         fullWidth id="standard-helperText"
                                         value={city}
                                         onChange={handleCity}
                                         placeholder="München"
                                         variant="standard" sx={{
-                                            mb: 3
+                                            mb: 2
                                         }}
                                     />
-
                                     <Typography variant="h6" sx={{ fontSize: { xs: "14px", md: "16px" }, mb: 1 }}>
                                         Bestimmen Sie die Uhrzeit
                                         <Box component="span" sx={{ mx: 2 }}>
-                                            <Switch defaultChecked />
+                                            <Switch defaultChecked color="secondary" />
                                         </Box>
                                     </Typography>
-
                                     <TextField
+                                        color="secondary"
                                         type="date"
                                         fullWidth id="standard-helperText"
                                         value={date}
                                         defaultValue="12/29/2020 22:00"
                                         onChange={handleDate}
                                         placeholder="12/29/2020 22:00"
-                                        variant="standard" sx={{
-                                            mb: 3
-                                        }} />
-
-                                    <Typography variant="body2" sx={{
-                                        my: 3, borderTop: "2px solid #474665",
-                                        borderBottom: "2px solid #474665", color: "#474665", py: "6px", textAlign: "center",
-                                        fontSize: { xs: "14px", md: "16px" },
-                                    }}>
-                                        Price: 59.90 €
-                                    </Typography>
-                                    <Button variant="contained" fullWidth sx={{
-                                        py: { xs: 1, md: 2 },
-                                        textTransform: "none",
-                                        backgroundColor: "#1b7fe3",
-                                        color: "#ffffff",
-                                        fontWeight: "600",
-                                        fontSize: { xs: "14px", md: "16px" },
-                                        "&:hover": { backgroundColor: "#1b7fe3", },
-                                    }}>
-                                        Write a Text
-                                    </Button>
+                                        variant="standard" sx={{ mb: 1 }}
+                                    />
                                 </Box>
-                            </div>}
+                            </Box>}
                         {selectedTab === 2 &&
-                            <div>
-                                <Box sx={{ p: 2, }}>
+                            <Box>
+                                <Box sx={{ p: 2 }}>
                                     <Typography variant="h6" sx={{ fontSize: { xs: "14px", md: "16px" }, mb: 1 }}>
                                         Fügen Sie einen Titel hinzu (optional)
                                     </Typography>
                                     <TextField
-                                        fullWidth id=""
+                                        color="secondary"
+                                        fullWidth
                                         value={title}
                                         onChange={handleTitle}
                                         placeholder="Liebe ist alles"
@@ -558,35 +419,18 @@ const App = () => {
                                     <Typography variant="h6" sx={{ fontSize: { xs: "14px", md: "16px" }, mb: 1 }}>
                                         Fügen Sie einen persönlichen Text hinzu (optional)
                                     </Typography>
-                                    <TextField fullWidth id=""
-                                        value={prText}
+                                    <TextField fullWidth
+                                        color="secondary"
+                                        value={paragraphText}
                                         placeholder="Liebe ist, wenn zwei Herzen im gleichen Takt schlagen"
-                                        onChange={handlePrText}
-                                        variant="standard" sx={{ mb: 3, }} />
-
-                                    <Typography variant="body2" sx={{
-                                        my: 3, borderTop: "2px solid #474665",
-                                        borderBottom: "2px solid #474665", color: "#474665", py: "6px", textAlign: "center",
-                                        fontSize: { xs: "14px", md: "16px" },
-                                    }}>
-                                        Price: 59.90 €
-                                    </Typography>
-                                    <Button variant="contained" fullWidth sx={{
-                                        py: { xs: 1, md: 2 },
-                                        textTransform: "none",
-                                        backgroundColor: "#1b7fe3",
-                                        color: "#ffffff",
-                                        fontWeight: "600",
-                                        fontSize: { xs: "14px", md: "16px" },
-                                        "&:hover": { backgroundColor: "#1b7fe3", },
-                                    }}>
-                                        To the Extras
-                                    </Button>
+                                        onChange={handleParagraphText}
+                                        variant="standard" sx={{ mb: 1, }}
+                                    />
                                 </Box>
-                            </div>
+                            </Box>
                         }
                         {selectedTab === 3 &&
-                            <div>
+                            <Box>
                                 <Box sx={{ p: 2 }}>
                                     <Typography variant="h6" sx={{ fontSize: { xs: "14px", md: "16px" }, mb: 1 }}>
                                         Fügen Sie einen Bilderrahmen hinzu
@@ -599,13 +443,12 @@ const App = () => {
                                                     src={imageSrc}
                                                     alt={`Image ${index + 1}`}
                                                     onClick={() => handleBorder(index)}
-                                                    val
                                                     sx={{
                                                         width: 46,
                                                         height: 46,
                                                         p: "2px",
                                                         borderRadius: "10px",
-                                                        border: index === border ? "3px solid #1b7fe3" : "3px solid #cccccc", // Highlight the first image
+                                                        border: index === border ? "3px solid #9c27b0" : "3px solid #cccccc", // Highlight the first image
                                                         cursor: "pointer",
                                                     }}
                                                 />
@@ -616,37 +459,45 @@ const App = () => {
                                         Speichern Sie Ihr Poster für später
                                     </Typography>
                                     <TextField
+                                        color="secondary"
                                         type="email"
                                         required
                                         fullWidth
                                         id=""
                                         placeholder="E-Mail Adresse (optional)"
-                                        variant="standard" sx={{ mb: 3, }} />
-                                    <Typography variant="body2" sx={{
-                                        my: 3, borderTop: "2px solid #474665",
-                                        borderBottom: "2px solid #474665", color: "#474665", py: "6px", textAlign: "center",
-                                        fontSize: { xs: "14px", md: "16px" },
-                                    }}>
-                                        Price: 59.90 €
-                                    </Typography>
-                                    <Button variant="contained" fullWidth sx={{
-                                        py: { xs: 1, md: 2 },
-                                        textTransform: "none",
-                                        backgroundColor: "#1b7fe3",
-                                        color: "#ffffff",
-                                        fontWeight: "600", fontSize: { xs: "14px", md: "16px" },
-                                        "&:hover": { backgroundColor: "#1b7fe3", },
-                                    }}>
-                                        Add to Cart
-                                    </Button>
+                                        variant="standard" sx={{ mb: 1 }}
+                                    />
                                 </Box>
-                            </div>}
+                            </Box>}
+                        <Box>
+                            <Typography variant="body2" sx={{
+                                mt: 2,
+                                mb: 4,
+                                borderTop: "2px solid #474665",
+                                borderBottom: "2px solid #474665",
+                                color: "#474665",
+                                py: "6px",
+                                textAlign: "center",
+                                fontSize: { xs: "14px", md: "16px" },
+                            }}>
+                                Preis: 59.90 €
+                            </Typography>
+                            <Button variant="contained" onClick={changeTabHandler} fullWidth sx={{
+                                py: { xs: 1, md: 2 },
+                                textTransform: "none",
+                                backgroundColor: "#9c27b0",
+                                color: "#ffffff",
+                                fontWeight: "600",
+                                fontSize: { xs: "14px", md: "16px" },
+                                "&:hover": { backgroundColor: "#9c27b0", },
+                            }}>
+                                {selectedTab == 0 ? 'Select Date and Location' : selectedTab == 1 ? 'Write a Text' : selectedTab == 2 ? 'To the Extras' : selectedTab == 3 ? 'Add to Cart' : null}
+                            </Button>
+                        </Box>
                     </Box>
                 </Box>
             </Box>
-        </Box >
-
-
+        </Box>
     );
 };
 
