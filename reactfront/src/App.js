@@ -4,7 +4,49 @@ import { Canvas, useFrame } from "@react-three/fiber";
 import { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
 
-const mainUrl = "https://phpstack-1376322-5078804.cloudwaysapps.com/images";
+const mainUrl = "https://ee21-182-181-207-55.ngrok-free.app/images";
+
+const getMoonPosition = (moonData) => {
+
+    const positionMapping = [
+        { range: [0, 13], position: [100, -100, -240], intensity: 10 },
+        { range: [13, 26], position: [100, -100, -210], intensity: 9 },
+        { range: [26, 39], position: [100, -100, -170], intensity: 8 },
+        { range: [39, 52], position: [100, -100, -130], intensity: 7 },
+        { range: [52, 65], position: [100, -100, -90], intensity: 6 },
+        { range: [65, 78], position: [100, -100, -50], intensity: 5 },
+        { range: [78, 91], position: [100, -100, -10], intensity: 4 },
+        { range: [91, 104], position: [100, -100, 30], intensity: 3.6 },
+        { range: [104, 117], position: [100, -100, 70], intensity: 3.5 },
+        { range: [117, 130], position: [100, -100, 110], intensity: 3.4 },
+        { range: [130, 143], position: [100, -100, 150], intensity: 3.2 },
+        { range: [143, 156], position: [100, -100, 190], intensity: 3.2 },
+        { range: [156, 169], position: [100, -100, 240], intensity: 3.1 },
+        { range: [169, 182], position: [100, -100, 250], intensity: 3 },
+        { range: [182, 195], position: [-100, -100, 250], intensity: 3 },
+        { range: [195, 208], position: [-100, -100, 240], intensity: 3.1 },
+        { range: [208, 221], position: [-100, -100, 190], intensity: 3.2 },
+        { range: [221, 234], position: [-100, -100, 150], intensity: 3.3 },
+        { range: [234, 247], position: [-100, -100, 110], intensity: 3.4 },
+        { range: [247, 260], position: [-100, -100, 70], intensity: 3.5 },
+        { range: [260, 273], position: [-100, -100, 30], intensity: 3.6 },
+        { range: [273, 286], position: [-100, -100, -10], intensity: 4 },
+        { range: [286, 299], position: [-100, -100, -50], intensity: 5 },
+        { range: [299, 312], position: [-100, -100, -90], intensity: 6 },
+        { range: [312, 325], position: [-100, -100, -130], intensity: 7 },
+        { range: [325, 338], position: [-100, -100, -170], intensity: 8 },
+        { range: [338, 351], position: [-100, -100, -210], intensity: 9 },
+        { range: [351, 360], position: [-100, -100, -240], intensity: 10 },
+    ];
+
+    // Find the corresponding position based on elongation
+    const positionData = positionMapping.find(({ range }) =>
+        moonData.elongation >= range[0] && moonData.elongation < range[1]
+    );
+
+    // Return the position or a default value if not found
+    return positionData ? positionData.position : [0, 0, 0];
+};
 
 const Moon = () => {
 
@@ -40,34 +82,7 @@ const Moon = () => {
             <directionalLight
                 color={0xffffff}
                 intensity={10}
-                // position={[100, -100, -240]}
-                // position={[100, -100, -210]}
-                // position={[100, -100, -170]}
-                // position={[100, -100, -130]}
-                // position={[100, -100, -90]}
-                // position={[100, -100, -50]}
-                // position={[100, -100, -10]}
-                position={[100, -100, 30]}
-            // position={[100, -100, 70]}
-            // position={[100, -100, 110]}
-            // position={[100, -100, 150]}
-            // position={[100, -100, 190]}
-            // position={[100, -100, 240]}
-            // position={[100, -100, 250]}
-            // position={[-100, -100, 250]}
-            // position={[-100, -100, 240]}
-            // position={[-100, -100, 190]}
-            // position={[-100, -100, 150]}
-            // position={[-100, -100, 110]}
-            // position={[-100, -100, 70]}
-            // position={[-100, -100, 30]}
-            // position={[-100, -100, -10]}
-            // position={[-100, -100, -50]}
-            // position={[-100, -100, -90]}
-            // position={[-100, -100, -130]}
-            // position={[-100, -100, -170]}
-            // position={[-100, -100, -210]}
-            // position={[-100, -100, -240]}
+                position={[100, -100, 0]}
             />
 
             <hemisphereLight
