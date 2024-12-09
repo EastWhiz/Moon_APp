@@ -12,7 +12,7 @@ const mainUrl = "https://a8b5-182-191-141-8.ngrok-free.app";
 
 const getMoonPosition = (moonData, city) => {
 
-    console.log(city);
+    // console.log(city);
     // console.log(moonData);
 
     let centerValue = city.lng ? parseInt(city.lng) : -100;
