@@ -214,7 +214,7 @@ const App = () => {
     const searchCityHandler = (e) => {
         // console.log(e.target.value);
         async function getCityData() {
-            const url = `http://api.geonames.org/search?name_startsWith=${e}&maxRows=5&username=ouzzall&type=json`;
+            const url = `${mainUrl}/geo-names?name_startsWith=${e}&maxRows=5&username=ouzzall&type=json`;
 
             try {
                 const response = await fetch(url);

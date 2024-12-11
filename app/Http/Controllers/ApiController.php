@@ -95,4 +95,36 @@ class ApiController extends Controller
         $response = Http::withHeaders($headers)->post($url, $data);
         return $response->json();
     }
+
+    public function getGeoNames(Request $request)
+    {
+        $searchTerm = $request->input('name_startsWith'); // Get the input from the request
+
+        $url = "http://api.geonames.org/search";
+        $params = [
+            'name_startsWith' => $searchTerm,
+            'maxRows' => 5,
+            'username' => 'ouzzall',
+            'type' => 'json',
+        ];
+
+        try {
+            // Make the API request using the Http facade
+            $response = Http::get($url, $params);
+
+            if ($response->successful()) {
+                $data = $response->json();
+                return response([
+                    'status' => true,
+                    'message' => 'Geo names data retrieved',
+                    'data' => $data
+                ], 200);
+            } else {
+                return response()->json(['error' => 'Failed to fetch city data'], $response->status());
+            }
+        } catch (\Exception $e) {
+            // Handle exceptions
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+    }
 }
