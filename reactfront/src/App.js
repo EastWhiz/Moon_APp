@@ -238,6 +238,8 @@ const App = () => {
     }
 
     const { width } = useDivDimensions("cardId", 50, frameSize); // Debounce delay of 300ms
+    const moonParent = useDivDimensions("moonParent", 50, frameSize); // Debounce delay of 300ms
+    // console.log(moonParent);
     // console.log(width, height, increaseBySixtyPercent(width));
 
     let timeout = null;
@@ -258,11 +260,11 @@ const App = () => {
     const defaultProps = {
         options: citiesList,
         getOptionLabel: (option) => option?.name || '',
-         renderOption: (props, option) => (
-        <li {...props} key={option?.lat}>
-            {option?.name}
-        </li>
-    ),
+        renderOption: (props, option) => (
+            <li {...props} key={option?.lat}>
+                {option?.name}
+            </li>
+        ),
     };
 
     return (
@@ -301,11 +303,11 @@ const App = () => {
                     }}
                 >
                     <Box style={{ width: "100%", height: "100%", border: "1px solid silver" }}>
-                        <Grid container direction="column" alignItems="center">
+                        <Grid container direction="column" alignItems="center" id="moonParent">
                             <Grid>
                                 <Canvas
                                     camera={{ position: [0, 0, 4], fov: 75 }}
-                                    style={{ height: "320px", width: "100%" }}
+                                    style={{ height: `${moonParent.width}px`, width: `${moonParent.width}px` }}
                                 >
                                     <OrbitControls enablePan={false} enableZoom={false} enableRotate={false}
                                         touches={{ ONE: THREE.TOUCH.ROTATE, TWO: THREE.TOUCH.DOLLY_ROTATE }}
@@ -340,10 +342,11 @@ const App = () => {
 
             <Box sx={{ width: { xs: '100%', sm: '40%', md: '35%' }, pt: 0 }}>
                 <Box>
-                    <Tabs style={{ border: "1px solid #ccc", }} value={selectedTab} onChange={handleTabs} indicatorColor="none">
+                    <Tabs style={{ border: "1px solid #ccc", minWidth: "100px" }} value={selectedTab} onChange={handleTabs} indicatorColor="none">
                         <Tab label="Design" sx={{
                             borderRight: '1px solid #ccc',
                             width: "25%",
+                            minWidth: "unset",
                             padding: { xs: "10px 0", sm: "16px 0", md: '16px 0' },
                             fontSize: { xs: "14px", sm: "22px", md: '22px' },
                             textTransform: "capitalize",
@@ -352,6 +355,7 @@ const App = () => {
                         <Tab label="Moment" sx={{
                             borderRight: '1px solid #ccc',
                             width: "25%",
+                            minWidth: "unset",
                             padding: { xs: "10px 0", sm: "16px 0", md: '16px 0' },
                             fontSize: { xs: "14px", sm: "22px", md: '22px' },
                             textTransform: "capitalize",
@@ -360,6 +364,7 @@ const App = () => {
                         <Tab label="Text" sx={{
                             borderRight: '1px solid #ccc',
                             width: "25%",
+                            minWidth: "unset",
                             padding: { xs: "10px 0", sm: "16px 0", md: '16px 0' },
                             fontSize: { xs: "14px", sm: "22px", md: '22px' },
                             textTransform: "capitalize",
@@ -367,6 +372,7 @@ const App = () => {
                         }} />
                         <Tab label="Extras" sx={{
                             width: "25%",
+                            minWidth: "unset",
                             padding: { xs: "10px 0", sm: "16px 0", md: '16px 0' },
                             fontSize: { xs: "14px", sm: "22px", md: '22px' },
                             textTransform: "capitalize",
