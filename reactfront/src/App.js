@@ -8,7 +8,7 @@ import dayjs from "dayjs";
 import { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
 
-const mainUrl = "https://a8b5-182-191-141-8.ngrok-free.app";
+const mainUrl = "https://phpstack-1380969-5101925.cloudwaysapps.com";
 
 const getMoonPosition = (moonData, city) => {
 
