@@ -198,7 +198,7 @@ const App = () => {
     }, [city, selectedDate]);
 
     const [designs, setDesigns] = useState([
-        { background: "black", moon: `${mainUrl}/images/full1.png`, color: "white", smMoon: `${mainUrl}/images/m1.png`, active: true },
+        { background: "black", moon: `${mainUrl}/api/images/full1.png`, color: "white", smMoon: `${mainUrl}/images/m1.png`, active: true },
         // { background: "white", moon: `${mainUrl}/images/full2.png`, color: "black", smMoon: `${mainUrl}/images/m2.png`, active: false },
         // { background: "white", moon: `${mainUrl}/images/full3.png`, color: "black", smMoon: `${mainUrl}/images/m3.png`, active: false },
         // { background: "white", moon: `${mainUrl}/images/full4.png`, color: "black", smMoon: `${mainUrl}/images/m4.png`, active: false },
