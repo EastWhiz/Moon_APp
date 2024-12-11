@@ -103,7 +103,7 @@ const Moon = ({ moonData }) => {
     );
 };
 
-function useDivDimensions(id, delay = 300, frameSize) {
+function useDivDimensions(id, delay = 300, frameSize, border) {
     const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
 
     useEffect(() => {
@@ -134,7 +134,7 @@ function useDivDimensions(id, delay = 300, frameSize) {
             window.removeEventListener("resize", handleResize);
             clearTimeout(timeout);
         };
-    }, [id, delay, frameSize]);
+    }, [id, delay, frameSize, border]);
 
     return dimensions;
 }
@@ -234,11 +234,11 @@ const App = () => {
 
 
     const increaseBySixtyPercent = (num) => {
-        return num + num * 0.45;
+        return num + num * 0.55;
     }
 
-    const { width } = useDivDimensions("cardId", 50, frameSize); // Debounce delay of 300ms
-    const moonParent = useDivDimensions("moonParent", 50, frameSize); // Debounce delay of 300ms
+    const { width } = useDivDimensions("cardId", 50, frameSize, border); // Debounce delay of 300ms
+    const moonParent = useDivDimensions("moonParent", 50, frameSize, border); // Debounce delay of 300ms
     // console.log(moonParent);
     // console.log(width, height, increaseBySixtyPercent(width));
 
@@ -270,7 +270,7 @@ const App = () => {
     return (
         <Box
             sx={{
-                minHeight: '100vh', display: 'flex', justifyContent: 'center', flexDirection: { xs: 'column', sm: 'row', md: 'row' },
+                minHeight: '90vh', display: 'flex', justifyContent: 'center', flexDirection: { xs: 'column', sm: 'row', md: 'row' },
             }}
         >
             <Box sx={{
@@ -283,14 +283,14 @@ const App = () => {
                 alignItems: 'center',
                 justifyContent: 'center',
                 position: "relative",
-                height: { xs: '75vh', sm: '60vh', md: '50vh', lg: '100vh', xl: '100vh' },
+                height: { xs: '60vh', sm: '60vh', md: '100vh', lg: '100vh', xl: '100vh' },
             }}>
                 <Box
                     id="cardId"
                     sx={{
                         display: "block",
                         position: "absolute",
-                        width: frameSize === "5070" ? { xs: '50%', sm: '70%', md: '55%', lg: '35%', xl: '30%' } : { xs: '47%', sm: '67%', md: '53%', lg: '33%', xl: '28%' },
+                        width: frameSize === "5070" ? { xs: '60%', sm: '85%', md: '65%', lg: '45%', xl: '40%' } : { xs: '58%', sm: '83%', md: '63%', lg: '43%', xl: '38%' },
                         minWidth: { xs: '250px' },
                         padding: { xs: '20px', sm: '20px', md: '25px', lg: '25px', xl: '25px' },
                         textAlign: "center",
@@ -307,7 +307,7 @@ const App = () => {
                             <Grid>
                                 <Canvas
                                     camera={{ position: [0, 0, 4], fov: 75 }}
-                                    style={{ height: `${moonParent.width}px`, width: `${moonParent.width}px` }}
+                                    style={{ height: `${moonParent.width * 0.95}px`, width: `${moonParent.width}px` }}
                                 >
                                     <OrbitControls enablePan={false} enableZoom={false} enableRotate={false}
                                         touches={{ ONE: THREE.TOUCH.ROTATE, TWO: THREE.TOUCH.DOLLY_ROTATE }}
@@ -321,7 +321,7 @@ const App = () => {
                                 </Typography>
                             </Grid>
                             <Grid>
-                                <Typography variant="body2" sx={{ fontWeight: "500", mb: 2, fontSize: { xs: "14px", md: "16px", padding: "0px 10px" } }}>
+                                <Typography variant="body2" sx={{ fontWeight: "500", mb: 2, fontSize: { xs: "12px", sm: "14px", md: "16px", lg: "16px", xl: "16px" }, padding: "0px 15px" }}>
                                     {paragraphText || "Liebe ist, wenn zwei Herzen im gleichen Takt schlagen"}
                                 </Typography>
                             </Grid>
