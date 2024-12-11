@@ -198,7 +198,7 @@ const App = () => {
     }, [city, selectedDate]);
 
     const [designs, setDesigns] = useState([
-        { background: "black", moon: `${mainUrl}/api/images/full1.png`, color: "white", smMoon: `${mainUrl}/images/m1.png`, active: true },
+        { background: "black", moon: `${mainUrl}/images/full1.png`, color: "white", smMoon: `${mainUrl}/images/m1.png`, active: true },
         // { background: "white", moon: `${mainUrl}/images/full2.png`, color: "black", smMoon: `${mainUrl}/images/m2.png`, active: false },
         // { background: "white", moon: `${mainUrl}/images/full3.png`, color: "black", smMoon: `${mainUrl}/images/m3.png`, active: false },
         // { background: "white", moon: `${mainUrl}/images/full4.png`, color: "black", smMoon: `${mainUrl}/images/m4.png`, active: false },
@@ -214,13 +214,13 @@ const App = () => {
     const searchCityHandler = (e) => {
         // console.log(e.target.value);
         async function getCityData() {
-            const url = `${mainUrl}/geo-names?name_startsWith=${e}&maxRows=5&username=ouzzall&type=json`;
+            const url = `${mainUrl}/api/geo-names?name_startsWith=${e}&maxRows=5&username=ouzzall&type=json`;
 
             try {
                 const response = await fetch(url);
                 const data = await response.json();
                 // console.log(data);
-                let result = data.geonames.map(city => {
+                let result = data.data.geonames.map(city => {
                     return { name: `${city.name}, ${city.adminName1}, ${city.countryName}`, value: `${city.name}, ${city.adminName1}, ${city.countryName}`, lat: city.lat, lng: city.lng };
                 });
                 // console.log(result);
