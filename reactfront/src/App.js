@@ -151,6 +151,11 @@ const App = () => {
         setFrameSize(event.target.value);
     };
 
+    const [starsEffect, setStartsEffect] = useState("no_stars");
+    const handleStarsEffect = (event) => {
+        setStartsEffect(event.target.value);
+    };
+
     const [selectedTab, setSelectedTab] = useState(0); // To handle the active tab state
     const handleTabs = (event, newValue) => {
         setSelectedTab(newValue);
@@ -198,12 +203,10 @@ const App = () => {
     }, [city, selectedDate]);
 
     const [designs, setDesigns] = useState([
-        { background: "black", moon: `${mainUrl}/images/full1.png`, color: "white", smMoon: `${mainUrl}/images/m1.png`, active: true },
-        // { background: "white", moon: `${mainUrl}/images/full2.png`, color: "black", smMoon: `${mainUrl}/images/m2.png`, active: false },
-        // { background: "white", moon: `${mainUrl}/images/full3.png`, color: "black", smMoon: `${mainUrl}/images/m3.png`, active: false },
-        // { background: "white", moon: `${mainUrl}/images/full4.png`, color: "black", smMoon: `${mainUrl}/images/m4.png`, active: false },
-        // { background: `url('${mainUrl}/images/desert_orange.png')`, moon: `${mainUrl}/images/full5.png`, color: "white", smMoon: `${mainUrl}/images/m5.png`, active: false },
-        // { background: `url('${mainUrl}/images/underwater_blue.png')`, moon: `${mainUrl}/images/full6.png`, color: "white", smMoon: `${mainUrl}/images/m6.png`, active: false },
+        { background: "#121824", imageBackground: `url('${mainUrl}/images/desert_orange.png')`, moon: `${mainUrl}/images/full1.png`, color: "white", smMoon: `${mainUrl}/images/m1.png`, active: true },
+        { background: "#111111", imageBackground: `url('${mainUrl}/images/desert_orange.png')`, moon: `${mainUrl}/images/full2.png`, color: "white", smMoon: `${mainUrl}/images/m1.png`, active: false },
+        { background: "#3b4655", imageBackground: `url('${mainUrl}/images/desert_orange.png')`, moon: `${mainUrl}/images/full3.png`, color: "white", smMoon: `${mainUrl}/images/m1.png`, active: false },
+        { background: "#224955", imageBackground: `url('${mainUrl}/images/desert_orange.png')`, moon: `${mainUrl}/images/full4.png`, color: "white", smMoon: `${mainUrl}/images/m1.png`, active: false },
     ]);
 
     const changeTabHandler = () => {
@@ -387,7 +390,7 @@ const App = () => {
                             <Box>
                                 <Box sx={{ p: 2, pb: 0.5 }}>
                                     <Typography variant="h6" sx={{ fontSize: { xs: "14px", md: "16px" }, mb: 1 }}>
-                                        Wählen Sie Ihr Design
+                                        Wähle den Hintergrund
                                     </Typography>
                                     <Grid container spacing={2.5}>
                                         {designs.map((design, index) => (
@@ -408,12 +411,12 @@ const App = () => {
                                                         setDesigns(temp);
                                                     }}
                                                     sx={{
-                                                        width: 32,
-                                                        height: 32,
-                                                        p: "4px",
+                                                        width: 38,
+                                                        height: 38,
+                                                        p: "6px",
                                                         borderRadius: "10px",
                                                         border: design.active ? "3px solid #9c27b0" : "3px solid #cccccc",
-                                                        backgroundColor: index === 0 ? "black" : "transparent" && index === 4 ? "#d09281" : "transparent" && index === 5 ? "#718f91" : "transparent",  // Black background for the first box
+                                                        backgroundColor: design.background,
                                                         cursor: "pointer",
                                                     }}
                                                 />
@@ -421,6 +424,15 @@ const App = () => {
                                         ))}
                                     </Grid>
                                     <Typography variant="h6" sx={{ fontSize: { xs: "14px", md: "16px" }, mt: 2 }}>
+                                        Effekt auswählen starten
+                                    </Typography>
+                                    <Box>
+                                        <FormGroup>
+                                            <FormControlLabel control={<Checkbox color="secondary" value="no_stars" checked={starsEffect === 'no_stars'} onChange={handleStarsEffect} />} label="No Stars" />
+                                            <FormControlLabel control={<Checkbox color="secondary" value="stars" checked={starsEffect === 'stars'} onChange={handleStarsEffect} />} label="Stars" />
+                                        </FormGroup>
+                                    </Box>
+                                    <Typography variant="h6" sx={{ fontSize: { xs: "14px", md: "16px" }, mt: 1 }}>
                                         Wählen Sie den Typ
                                     </Typography>
                                     <Box>
