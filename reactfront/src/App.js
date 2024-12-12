@@ -203,10 +203,10 @@ const App = () => {
     }, [city, selectedDate]);
 
     const [designs, setDesigns] = useState([
-        { background: "#121824", imageBackground: `url('${mainUrl}/images/desert_orange.png')`, moon: `${mainUrl}/images/full1.png`, color: "white", smMoon: `${mainUrl}/images/m1.png`, active: true },
-        { background: "#111111", imageBackground: `url('${mainUrl}/images/desert_orange.png')`, moon: `${mainUrl}/images/full2.png`, color: "white", smMoon: `${mainUrl}/images/m1.png`, active: false },
-        { background: "#3b4655", imageBackground: `url('${mainUrl}/images/desert_orange.png')`, moon: `${mainUrl}/images/full3.png`, color: "white", smMoon: `${mainUrl}/images/m1.png`, active: false },
-        { background: "#224955", imageBackground: `url('${mainUrl}/images/desert_orange.png')`, moon: `${mainUrl}/images/full4.png`, color: "white", smMoon: `${mainUrl}/images/m1.png`, active: false },
+        { background: "#121824", withStars: `url('${mainUrl}/images/midnight_blue_stars.png')`, withoutStars: `url('${mainUrl}/images/midnight_blue.png')`, color: "white", smMoon: `${mainUrl}/images/m1.png`, active: true },
+        { background: "#111111", withStars: `url('${mainUrl}/images/black_stars.png')`, withoutStars: `url('${mainUrl}/images/black.png')`, color: "white", smMoon: `${mainUrl}/images/m1.png`, active: false },
+        { background: "#3b4655", withStars: `url('${mainUrl}/images/grey_blue_stars.png')`, withoutStars: `url('${mainUrl}/images/grey_blue.png')`, color: "white", smMoon: `${mainUrl}/images/m1.png`, active: false },
+        { background: "#224955", withStars: `url('${mainUrl}/images/aquamarine_stars.png')`, withoutStars: `url('${mainUrl}/images/aquamarine.png')`, color: "white", smMoon: `${mainUrl}/images/m1.png`, active: false },
     ]);
 
     const changeTabHandler = () => {
@@ -270,6 +270,8 @@ const App = () => {
         ),
     };
 
+    console.log(starsEffect);
+
     return (
         <Box
             sx={{
@@ -298,7 +300,10 @@ const App = () => {
                         padding: { xs: '20px', sm: '20px', md: '25px', lg: '25px', xl: '25px' },
                         textAlign: "center",
                         boxShadow: "0px 4px 10px rgba(0,0,0,0.2)",
-                        background: activeDesign && activeDesign.background,
+                        background: activeDesign && (starsEffect == "no_stars" ? activeDesign.withoutStars : activeDesign.withStars),
+                        backgroundSize: 'cover', // Adjust background size to cover the div
+                        backgroundRepeat: 'no-repeat', // Prevent the background from repeating
+                        backgroundPosition: 'center', // Center the background image
                         color: activeDesign && activeDesign.color,
                         border: border === 0 ? "none" : "20px solid",
                         borderColor: border === 1 ? "#161715" : border === 2 ? "#e3e0de" : "none",
