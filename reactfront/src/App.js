@@ -300,7 +300,7 @@ const App = () => {
                         padding: { xs: '20px', sm: '20px', md: '25px', lg: '25px', xl: '25px' },
                         textAlign: "center",
                         boxShadow: "0px 4px 10px rgba(0,0,0,0.2)",
-                        background: activeDesign && (starsEffect == "no_stars" ? activeDesign.withoutStars : activeDesign.withStars),
+                        background: activeDesign && (starsEffect === "no_stars" ? activeDesign.withoutStars : activeDesign.withStars),
                         backgroundSize: 'cover', // Adjust background size to cover the div
                         backgroundRepeat: 'no-repeat', // Prevent the background from repeating
                         backgroundPosition: 'center', // Center the background image
