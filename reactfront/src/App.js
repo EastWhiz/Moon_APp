@@ -1,12 +1,13 @@
-import { Autocomplete, Box, Button, Checkbox, FormControl, FormControlLabel, FormGroup, Grid2 as Grid, Switch, Tab, Tabs, TextField, Typography } from "@mui/material";
+import { Autocomplete, Box, Button, Checkbox, FormControl, FormControlLabel, FormGroup, Grid2 as Grid, Tab, Tabs, TextField, Typography } from "@mui/material";
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { OrbitControls, Sphere, useTexture } from "@react-three/drei";
 import { Canvas, useFrame } from "@react-three/fiber";
 import dayjs from "dayjs";
 import { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
+import ToggleSwitch from "./ToggleSwitch";
 
 const mainUrl = "https://phpstack-1380969-5101925.cloudwaysapps.com";
 
@@ -103,7 +104,7 @@ const Moon = ({ moonData }) => {
     );
 };
 
-function useDivDimensions(id, delay = 300, frameSize, border) {
+function useDivDimensions(id, delay = 300, border) {
     const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
 
     useEffect(() => {
@@ -134,7 +135,7 @@ function useDivDimensions(id, delay = 300, frameSize, border) {
             window.removeEventListener("resize", handleResize);
             clearTimeout(timeout);
         };
-    }, [id, delay, frameSize, border]);
+    }, [id, delay, border]);
 
     return dimensions;
 }
@@ -142,19 +143,25 @@ function useDivDimensions(id, delay = 300, frameSize, border) {
 const App = () => {
 
     const [cityVisible, setCityVisible] = useState(true);
+    const handleCityVisible = () => {
+        setCityVisible(!cityVisible);
+    }
     const [dateVisible, setDateVisible] = useState(true);
+    const handleDateVisible = () => {
+        setDateVisible(!dateVisible);
+    }
 
     const [moon, setMoon] = useState({ range: [91, 104], position: [100, -100, 30], intensity: 3.6 });
 
-    const [frameSize, setFrameSize] = useState("5070");
+    const [frameSize, setFrameSize] = useState("21,0 cm x 29,7 cm (DINA 4)");
     const handleFrameSize = (event) => {
         setFrameSize(event.target.value);
     };
 
-    const [starsEffect, setStartsEffect] = useState("no_stars");
-    const handleStarsEffect = (event) => {
-        setStartsEffect(event.target.value);
-    };
+    const [starsEffect, setStarsEffect] = useState(false);
+    const handleStarsEffect = () => {
+        setStarsEffect(!starsEffect);
+    }
 
     const [selectedTab, setSelectedTab] = useState(0); // To handle the active tab state
     const handleTabs = (event, newValue) => {
@@ -240,8 +247,8 @@ const App = () => {
         return num + num * 0.55;
     }
 
-    const { width } = useDivDimensions("cardId", 50, frameSize, border); // Debounce delay of 300ms
-    const moonParent = useDivDimensions("moonParent", 50, frameSize, border); // Debounce delay of 300ms
+    const { width } = useDivDimensions("cardId", 50, border); // Debounce delay of 300ms
+    const moonParent = useDivDimensions("moonParent", 50, border); // Debounce delay of 300ms
     // console.log(moonParent);
     // console.log(width, height, increaseBySixtyPercent(width));
 
@@ -250,15 +257,16 @@ const App = () => {
     const activeDesign = designs.find(design => design.active === true);
 
     let price = 0;
-    if (frameSize === "5070")
-        price += 59.90;
-    else if (frameSize === "3040")
-        price += 49.90;
+    // PRICE CALCULATION IS IN PROGRESS
+    // if (frameSize === "5070")
+    //     price += 59.90;
+    // else if (frameSize === "3040")
+    //     price += 49.90;
 
-    if (border !== 0 && frameSize === "5070")
-        price += 32.90;
-    else if (border !== 0 && frameSize === "3040")
-        price += 29.90;
+    // if (border !== 0 && frameSize === "5070")
+    //     price += 32.90;
+    // else if (border !== 0 && frameSize === "3040")
+    //     price += 29.90;
 
     const defaultProps = {
         options: citiesList,
@@ -269,8 +277,6 @@ const App = () => {
             </li>
         ),
     };
-
-    console.log(starsEffect);
 
     return (
         <Box
@@ -295,12 +301,13 @@ const App = () => {
                     sx={{
                         display: "block",
                         position: "absolute",
-                        width: frameSize === "5070" ? { xs: '60%', sm: '85%', md: '65%', lg: '45%', xl: '40%' } : { xs: '58%', sm: '83%', md: '63%', lg: '43%', xl: '38%' },
+                        // width: frameSize === "5070" ? { xs: '60%', sm: '85%', md: '65%', lg: '45%', xl: '40%' } : { xs: '58%', sm: '83%', md: '63%', lg: '43%', xl: '38%' },
+                        width: { xs: '60%', sm: '85%', md: '65%', lg: '45%', xl: '40%' },
                         minWidth: { xs: '250px' },
                         padding: { xs: '20px', sm: '20px', md: '25px', lg: '25px', xl: '25px' },
                         textAlign: "center",
                         boxShadow: "0px 4px 10px rgba(0,0,0,0.2)",
-                        background: activeDesign && (starsEffect === "no_stars" ? activeDesign.withoutStars : activeDesign.withStars),
+                        background: activeDesign && (starsEffect ? activeDesign.withStars : activeDesign.withoutStars),
                         backgroundSize: 'cover', // Adjust background size to cover the div
                         backgroundRepeat: 'no-repeat', // Prevent the background from repeating
                         backgroundPosition: 'center', // Center the background image
@@ -310,7 +317,7 @@ const App = () => {
                         height: `${increaseBySixtyPercent(width)}px`
                     }}
                 >
-                    <Box style={{ width: "100%", height: "100%", border: "1px solid silver" }}>
+                    <Box style={{ width: "100%", height: "100%", border: "2px solid silver" }}>
                         <Grid container direction="column" alignItems="center" id="moonParent">
                             <Grid>
                                 <Canvas
@@ -431,19 +438,18 @@ const App = () => {
                                     <Typography variant="h6" sx={{ fontSize: { xs: "14px", md: "16px" }, mt: 2 }}>
                                         Effekt auswählen starten
                                     </Typography>
-                                    <Box>
-                                        <FormGroup>
-                                            <FormControlLabel control={<Checkbox color="secondary" value="no_stars" checked={starsEffect === 'no_stars'} onChange={handleStarsEffect} />} label="No Stars" />
-                                            <FormControlLabel control={<Checkbox color="secondary" value="stars" checked={starsEffect === 'stars'} onChange={handleStarsEffect} />} label="Stars" />
-                                        </FormGroup>
+                                    <Box mt={1.2} mb={2.5}>
+                                        <ToggleSwitch toggled={starsEffect} onClick={handleStarsEffect} />
                                     </Box>
                                     <Typography variant="h6" sx={{ fontSize: { xs: "14px", md: "16px" }, mt: 1 }}>
-                                        Wählen Sie den Typ
+                                        Wähle deine Größe
                                     </Typography>
                                     <Box>
                                         <FormGroup>
-                                            <FormControlLabel control={<Checkbox color="secondary" value="5070" checked={frameSize === '5070'} onChange={handleFrameSize} />} label="50x70 cm" />
-                                            <FormControlLabel control={<Checkbox color="secondary" value="3040" checked={frameSize === '3040'} onChange={handleFrameSize} />} label="30x40 cm" />
+                                            <FormControlLabel control={<Checkbox color="secondary" value="21,0 cm x 29,7 cm (DINA 4)" checked={frameSize === '21,0 cm x 29,7 cm (DINA 4)'} onChange={handleFrameSize} />} label="21,0 cm x 29,7 cm (DINA 4)" />
+                                            <FormControlLabel control={<Checkbox color="secondary" value="29,7 cm x 42,0 cm (DINA 3)" checked={frameSize === '29,7 cm x 42,0 cm (DINA 3)'} onChange={handleFrameSize} />} label="29,7 cm x 42,0 cm (DINA 3)" />
+                                            <FormControlLabel control={<Checkbox color="secondary" value="42,0 cm x 59,4 cm (DINA 2)" checked={frameSize === '42,0 cm x 59,4 cm (DINA 2)'} onChange={handleFrameSize} />} label="42,0 cm x 59,4 cm (DINA 2)" />
+                                            <FormControlLabel control={<Checkbox color="secondary" value="59,4 cm x 84,1 cm (DINA 1)" checked={frameSize === '59,4 cm x 84,1 cm (DINA 1)'} onChange={handleFrameSize} />} label="59,4 cm x 84,1 cm (DINA 1)" />
                                         </FormGroup>
                                     </Box>
                                 </Box>
@@ -451,12 +457,10 @@ const App = () => {
                         {selectedTab === 1 &&
                             <Box>
                                 <Box sx={{ p: 2 }}>
-                                    <Typography variant="h6" sx={{ fontSize: { xs: "14px", md: "16px" }, mb: 1 }}>
-                                        Legen Sie den Standort fest
-                                        <Box component="span" sx={{ mx: 2 }}>
-                                            <Switch checked={cityVisible} onClick={(e) => setCityVisible(e.target.checked)} color="secondary" />
-                                        </Box>
-                                    </Typography>
+                                    <Box sx={{ display: "flex", mt: 1 }}>
+                                        <Typography variant="h6" sx={{ fontSize: { xs: "14px", md: "16px" } }} mt={0.5} mb={2} mr={3}> Wo war dein Moment?</Typography>
+                                        <ToggleSwitch toggled={cityVisible} onClick={handleCityVisible} />
+                                    </Box>
                                     <FormControl fullWidth sx={{ mb: 2 }}>
                                         <Autocomplete
                                             {...defaultProps}
@@ -482,15 +486,13 @@ const App = () => {
                                             disableClearable
                                         />
                                     </FormControl>
-                                    <Typography variant="h6" sx={{ fontSize: { xs: "14px", md: "16px" }, mb: 1 }}>
-                                        Bestimmen Sie die Uhrzeit
-                                        <Box component="span" sx={{ mx: 2 }}>
-                                            <Switch checked={dateVisible} onClick={(e) => setDateVisible(e.target.checked)} color="secondary" />
-                                        </Box>
-                                    </Typography>
+                                    <Box sx={{ display: "flex", mt: 2 }}>
+                                        <Typography variant="h6" sx={{ fontSize: { xs: "14px", md: "16px" } }} mt={0.5} mb={2} mr={3}> Wann war dein Moment?</Typography>
+                                        <ToggleSwitch toggled={dateVisible} onClick={handleDateVisible} />
+                                    </Box>
                                     <LocalizationProvider dateAdapter={AdapterDayjs}>
-                                        <DateTimePicker
-                                            format="MM-DD-YYYY hh:mm A"  // Customize the format as you wish
+                                        <DatePicker
+                                            format="YYYY-MM-DD"  // Customize the format as you wish
                                             variant="standard"
                                             slotProps={{
                                                 textField: {
@@ -511,7 +513,7 @@ const App = () => {
                             <Box>
                                 <Box sx={{ p: 2 }}>
                                     <Typography variant="h6" sx={{ fontSize: { xs: "14px", md: "16px" }, mb: 1 }}>
-                                        Fügen Sie einen Titel hinzu (optional)
+                                        Gebe einen Titel ein (optional)
                                     </Typography>
                                     <TextField
                                         color="secondary"
@@ -522,7 +524,7 @@ const App = () => {
                                         variant="standard" sx={{ mb: 3 }} />
 
                                     <Typography variant="h6" sx={{ fontSize: { xs: "14px", md: "16px" }, mb: 1 }}>
-                                        Fügen Sie einen persönlichen Text hinzu (optional)
+                                        Schreibe einen persönlichen Text (optional)
                                     </Typography>
                                     <TextField fullWidth
                                         color="secondary"
@@ -538,7 +540,7 @@ const App = () => {
                             <Box>
                                 <Box sx={{ p: 2 }}>
                                     <Typography variant="h6" sx={{ fontSize: { xs: "14px", md: "16px" }, mb: 1 }}>
-                                        Fügen Sie einen Bilderrahmen hinzu
+                                        Füge einen Bilderrahmen hinzu
                                     </Typography>
                                     <Grid container spacing={2.5}>
                                         {[`${mainUrl}/images/no-border.PNG`, `${mainUrl}/images/black-border.PNG`, `${mainUrl}/images/light-border.PNG`].map((imageSrc, index) => (
@@ -560,7 +562,7 @@ const App = () => {
                                             </Grid>
                                         ))}
                                     </Grid>
-                                    <Typography variant="h6" sx={{ fontSize: { xs: "14px", md: "16px" }, mb: 1, mt: 3 }}>
+                                    {/* <Typography variant="h6" sx={{ fontSize: { xs: "14px", md: "16px" }, mb: 1, mt: 3 }}>
                                         Speichern Sie Ihr Poster für später
                                     </Typography>
                                     <TextField
@@ -571,7 +573,7 @@ const App = () => {
                                         id=""
                                         placeholder="E-Mail Adresse (optional)"
                                         variant="standard" sx={{ mb: 1 }}
-                                    />
+                                    /> */}
                                 </Box>
                             </Box>}
                         <Box>
@@ -596,13 +598,13 @@ const App = () => {
                                 fontSize: { xs: "14px", md: "16px" },
                                 "&:hover": { backgroundColor: "#9c27b0", },
                             }}>
-                                {selectedTab === 0 ? 'Select Date and Location' : selectedTab === 1 ? 'Write a Text' : selectedTab === 2 ? 'To the Extras' : selectedTab === 3 ? 'Add to Cart' : null}
+                                {selectedTab === 0 ? 'Ort und Datum festlegen' : selectedTab === 1 ? 'Personalisieren' : selectedTab === 2 ? 'Zu den Extras' : selectedTab === 3 ? 'In den Warenkorb' : null}
                             </Button>
                         </Box>
                     </Box>
                 </Box>
             </Box>
-        </Box>
+        </Box >
     );
 };
 
