@@ -4,6 +4,7 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { OrbitControls, Sphere, useTexture } from "@react-three/drei";
 import { Canvas, useFrame } from "@react-three/fiber";
+import LoadingButton from '@mui/lab/LoadingButton';
 import dayjs from "dayjs";
 import { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
@@ -168,12 +169,12 @@ const App = () => {
         setSelectedTab(newValue);
     };
 
-    const [title, setTitle] = useState();
+    const [title, setTitle] = useState("");
     const handleTitle = (event) => {
         setTitle(event.target.value);
     };
 
-    const [paragraphText, setParagraphText] = useState();
+    const [paragraphText, setParagraphText] = useState("");
     const handleParagraphText = (event) => {
         setParagraphText(event.target.value);
     };
@@ -223,9 +224,62 @@ const App = () => {
         setFrameSize(activeTile.priceEffect === "normal" ? "30" : "80");
     }, [tiles]);
 
-    const changeTabHandler = () => {
+    const [loading, setLoading] = useState(false);
+
+    const changeTabHandler = async () => {
         if (selectedTab !== 3)
             setSelectedTab(prevTab => prevTab + 1);
+        if (selectedTab === 3) {
+            setLoading(true);
+
+            let activeTile = tiles.find(tile => tile.active === true);
+            let activeDesign = designs.find(design => design.active === true);
+            console.log(activeTile);
+            console.log(activeDesign);
+            console.log(starsEffect);
+            console.log(city);
+            console.log(title);
+            console.log(paragraphText);
+            console.log((dayjs(selectedDate.$d).format('MM-DD-YYYY hh:mm A')));
+
+            let variantId = 51846764134723;
+            if (frameSize === "30" && activeTile.priceEffect === "normal") {
+                variantId = 51846764134723;
+            } else if (frameSize === "40" && activeTile.priceEffect === "normal") {
+                variantId = 51846764200259;
+            } else if (frameSize === "50" && activeTile.priceEffect === "normal") {
+                variantId = 51846764265795;
+            } else if (frameSize === "80" && activeTile.priceEffect === "normal") {
+                variantId = 51846764331331;
+            } else if (frameSize === "80" && activeTile.priceEffect === "increased") {
+                variantId = 51846764167491;
+            } else if (frameSize === "100" && activeTile.priceEffect === "increased") {
+                variantId = 51846764233027;
+            } else if (frameSize === "120" && activeTile.priceEffect === "increased") {
+                variantId = 51846764298563;
+            } else if (frameSize === "180" && activeTile.priceEffect === "increased") {
+                variantId = 51846764364099;
+            }
+
+            // console.log(variantId);
+            const formData = new FormData();
+            formData.set("id", variantId);
+            formData.set("quantity", 1);
+            formData.append(`properties[Date]`, dayjs(selectedDate.$d).format('MM-DD-YYYY hh:mm A'));
+            formData.append(`properties[Border]`, activeTile.title);
+            formData.append(`properties[Location]`, city ?? city.name);
+            formData.append(`properties[Title Text]`, title);
+            formData.append(`properties[Paragraph Text]`, paragraphText);
+            formData.append(`properties[Stars Effect]`, starsEffect ? 'Yes' : 'No');
+
+            const response = await fetch(window.Shopify.routes.root + 'cart/add.js', {
+                method: "POST",
+                body: formData,
+            });
+            const jsonData = await response.json();
+            setLoading(false);
+            console.log(jsonData);
+        }
     }
 
     const searchCityHandler = (e) => {
@@ -650,17 +704,19 @@ const App = () => {
                             }}>
                                 Preis: {parseInt(frameSize).toFixed(2)} €
                             </Typography>
-                            <Button variant="contained" onClick={changeTabHandler} fullWidth sx={{
-                                py: { xs: 1, md: 2 },
-                                textTransform: "none",
-                                backgroundColor: "#9c27b0",
-                                color: "#ffffff",
-                                fontWeight: "600",
-                                fontSize: { xs: "14px", md: "16px" },
-                                "&:hover": { backgroundColor: "#9c27b0", },
-                            }}>
-                                {selectedTab === 0 ? 'Ort und Datum festlegen' : selectedTab === 1 ? 'Personalisieren' : selectedTab === 2 ? 'Zu den Extras' : selectedTab === 3 ? 'In den Warenkorb' : null}
-                            </Button>
+                            {loading ?
+                                <LoadingButton sx={{ py: { xs: 1, md: 2 }, }} loading variant="contained" fullWidth>Submit</LoadingButton> :
+                                <Button variant="contained" loading="true" onClick={changeTabHandler} fullWidth sx={{
+                                    py: { xs: 1, md: 2 },
+                                    textTransform: "none",
+                                    backgroundColor: "#9c27b0",
+                                    color: "#ffffff",
+                                    fontWeight: "600",
+                                    fontSize: { xs: "14px", md: "16px" },
+                                    "&:hover": { backgroundColor: "#9c27b0", },
+                                }}>
+                                    {selectedTab === 0 ? 'Ort und Datum festlegen' : selectedTab === 1 ? 'Personalisieren' : selectedTab === 2 ? 'Zu den Extras' : selectedTab === 3 ? 'In den Warenkorb' : null}
+                                </Button>}
                         </Box>
                     </Box>
                 </Box>

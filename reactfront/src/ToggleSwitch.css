@@ -81,6 +81,11 @@ div:empty {
 }
 
 /* Global CSS */
+
+.MuiButtonBase-root {
+    font-size: 14px;
+}
+
 .MuiPickersCalendarHeader-label {
     font-size: 14px;
     /* Adjust calendar font size */
@@ -111,5 +116,3 @@ div:empty {
     outline-offset: none !important;
     box-shadow: none !important;
 }
-
-/*# sourceMappingURL=main.787d4937.css.map*/
