@@ -264,7 +264,7 @@ const App = () => {
     const activeDesign = designs.find(design => design.active === true);
 
     const activeTile = tiles.find(tile => tile.active === true);
-    console.log(activeTile);
+    // console.log(activeTile);
 
     const defaultProps = {
         options: citiesList,
@@ -285,7 +285,7 @@ const App = () => {
             <Box sx={{
                 width: { xs: '100%', sm: '60%', md: '65%' },
                 overflow: 'hidden',
-                background: "url('wall2.jfif')",
+                // background: "url('wall2.jfif')",
                 backgroundRepeat: "no-repeat",
                 backgroundSize: 'cover',
                 display: 'flex',
@@ -547,30 +547,33 @@ const App = () => {
                                     <Grid container spacing={2.5}>
                                         {tiles.map((imageSrc, index) => (
                                             <Grid key={index}>
-                                                <Box
-                                                    component="img"
-                                                    src={imageSrc.image}
-                                                    // alt={`Image ${index + 1}`}
-                                                    onClick={() => {
-                                                        let temp = [...tiles];
-                                                        tiles.forEach((element, indexInside) => {
-                                                            if (indexInside === index) {
-                                                                temp[indexInside] = { ...temp[indexInside], active: true };
-                                                            } else {
-                                                                temp[indexInside] = { ...temp[indexInside], active: false };
-                                                            }
-                                                        });
-                                                        setTiles(temp);
-                                                    }}
-                                                    sx={{
-                                                        width: 46,
-                                                        height: 46,
-                                                        p: "6px 16px",
-                                                        borderRadius: "10px",
-                                                        border: imageSrc.active ? "3px solid #9c27b0" : "3px solid #cccccc", // Highlight the first image
-                                                        cursor: "pointer",
-                                                    }}
-                                                />
+                                                <Box onClick={() => {
+                                                    let temp = [...tiles];
+                                                    tiles.forEach((element, indexInside) => {
+                                                        if (indexInside === index) {
+                                                            temp[indexInside] = { ...temp[indexInside], active: true };
+                                                        } else {
+                                                            temp[indexInside] = { ...temp[indexInside], active: false };
+                                                        }
+                                                    });
+                                                    setTiles(temp);
+                                                }} sx={{
+                                                    p: "6px 16px 4px 16px",
+                                                    borderRadius: "10px",
+                                                    border: imageSrc.active ? "3px solid #9c27b0" : "3px solid #cccccc", // Highlight the first image
+                                                    cursor: "pointer",
+                                                    mb: 0.5
+                                                }}>
+                                                    <Box
+                                                        component="img"
+                                                        src={imageSrc.image}
+                                                        // alt={`Image ${index + 1}`}
+                                                        sx={{
+                                                            width: 46,
+                                                            height: 46,
+                                                        }}
+                                                    />
+                                                </Box>
                                                 <Box className="roboto-regular" sx={{
                                                     fontSize: "12px",
                                                     textAlign: "center", // Optional: Center-align the text
