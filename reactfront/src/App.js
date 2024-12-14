@@ -270,7 +270,11 @@ const App = () => {
         options: citiesList,
         getOptionLabel: (option) => option?.name || '',
         renderOption: (props, option) => (
-            <li {...props} key={option?.lat}>
+            <li
+                {...props}
+                key={option?.lat}
+                style={{ fontSize: '16px' }}
+            >
                 {option?.name}
             </li>
         ),
@@ -405,31 +409,33 @@ const App = () => {
                                     <Grid container spacing={2.5}>
                                         {designs.map((design, index) => (
                                             <Grid key={index}>
-                                                <Box
-                                                    component="img"
-                                                    src={design.smMoon}
-                                                    // alt={`Image ${index + 1}`}
-                                                    onClick={() => {
-                                                        let temp = [...designs];
-                                                        designs.forEach((element, indexInside) => {
-                                                            if (indexInside === index) {
-                                                                temp[indexInside] = { ...temp[indexInside], active: true };
-                                                            } else {
-                                                                temp[indexInside] = { ...temp[indexInside], active: false };
-                                                            }
-                                                        });
-                                                        setDesigns(temp);
-                                                    }}
-                                                    sx={{
-                                                        width: 38,
-                                                        height: 38,
-                                                        p: "6px",
-                                                        borderRadius: "10px",
-                                                        border: design.active ? "3px solid #9c27b0" : "3px solid #cccccc",
-                                                        backgroundColor: design.background,
-                                                        cursor: "pointer",
-                                                    }}
-                                                />
+                                                <Box sx={{
+                                                    p: "8px 8px 0px",
+                                                    borderRadius: "10px",
+                                                    border: design.active ? "3px solid #9c27b0" : "3px solid #cccccc",
+                                                    backgroundColor: design.background,
+                                                    cursor: "pointer",
+                                                }} onClick={() => {
+                                                    let temp = [...designs];
+                                                    designs.forEach((element, indexInside) => {
+                                                        if (indexInside === index) {
+                                                            temp[indexInside] = { ...temp[indexInside], active: true };
+                                                        } else {
+                                                            temp[indexInside] = { ...temp[indexInside], active: false };
+                                                        }
+                                                    });
+                                                    setDesigns(temp);
+                                                }}>
+                                                    <Box
+                                                        component="img"
+                                                        src={design.smMoon}
+                                                        // alt={`Image ${index + 1}`}
+                                                        sx={{
+                                                            width: 38,
+                                                            height: 38,
+                                                        }}
+                                                    />
+                                                </Box>
                                             </Grid>
                                         ))}
                                     </Grid>
@@ -446,10 +452,10 @@ const App = () => {
                                         <FormGroup>
                                             {activeTile &&
                                                 <>
-                                                    <FormControlLabel control={<Checkbox color="secondary" value={activeTile.priceEffect === "normal" ? 30 : 80} checked={frameSize === (activeTile.priceEffect === "normal" ? "30" : "80")} onChange={handleFrameSize} />} label="21,0 cm x 29,7 cm (DINA 4)" />
-                                                    <FormControlLabel control={<Checkbox color="secondary" value={activeTile.priceEffect === "normal" ? 40 : 100} checked={frameSize === (activeTile.priceEffect === "normal" ? "40" : "100")} onChange={handleFrameSize} />} label="29,7 cm x 42,0 cm (DINA 3)" />
-                                                    <FormControlLabel control={<Checkbox color="secondary" value={activeTile.priceEffect === "normal" ? 50 : 120} checked={frameSize === (activeTile.priceEffect === "normal" ? "50" : "120")} onChange={handleFrameSize} />} label="42,0 cm x 59,4 cm (DINA 2)" />
-                                                    <FormControlLabel control={<Checkbox color="secondary" value={activeTile.priceEffect === "normal" ? 80 : 180} checked={frameSize === (activeTile.priceEffect === "normal" ? "80" : "180")} onChange={handleFrameSize} />} label="59,4 cm x 84,1 cm (DINA 1)" />
+                                                    <FormControlLabel control={<Checkbox color="secondary" value={activeTile.priceEffect === "normal" ? 30 : 80} checked={frameSize === (activeTile.priceEffect === "normal" ? "30" : "80")} onChange={handleFrameSize} />} label={<span style={{ fontSize: "16px" }}>21,0 cm x 29,7 cm (DINA 4)</span>} />
+                                                    <FormControlLabel control={<Checkbox color="secondary" value={activeTile.priceEffect === "normal" ? 40 : 100} checked={frameSize === (activeTile.priceEffect === "normal" ? "40" : "100")} onChange={handleFrameSize} />} label={<span style={{ fontSize: "16px" }}>29,7 cm x 42,0 cm (DINA 3)</span>} />
+                                                    <FormControlLabel control={<Checkbox color="secondary" value={activeTile.priceEffect === "normal" ? 50 : 120} checked={frameSize === (activeTile.priceEffect === "normal" ? "50" : "120")} onChange={handleFrameSize} />} label={<span style={{ fontSize: "16px" }}>42,0 cm x 59,4 cm (DINA 2)</span>} />
+                                                    <FormControlLabel control={<Checkbox color="secondary" value={activeTile.priceEffect === "normal" ? 80 : 180} checked={frameSize === (activeTile.priceEffect === "normal" ? "80" : "180")} onChange={handleFrameSize} />} label={<span style={{ fontSize: "16px" }}>59,4 cm x 84,1 cm (DINA 1)</span>} />
                                                 </>
                                             }
                                         </FormGroup>
@@ -466,6 +472,17 @@ const App = () => {
                                     <FormControl fullWidth sx={{ mb: 2 }}>
                                         <Autocomplete
                                             {...defaultProps}
+                                            noOptionsText={<span style={{ fontSize: '16px', padding: '8px' }}>No options</span>} // Custom text with styles
+                                            slotProps={{
+                                                paper: {
+                                                    sx: {
+                                                        "& .MuiAutocomplete-noOptions": {
+                                                            fontSize: "16px",
+                                                            padding: "8px",
+                                                        },
+                                                    },
+                                                },
+                                            }}
                                             value={city}
                                             onInputChange={(e, newInputValue) => {
                                                 clearTimeout(timeout);
@@ -483,6 +500,20 @@ const App = () => {
                                                     variant="standard"
                                                     color="secondary"
                                                     placeholder="Stadt suchen"
+                                                    sx={{
+                                                        "& .MuiInputBase-input": {
+                                                            fontSize: "16px",
+                                                        },
+                                                        "& .MuiOutlinedInput-root": {
+                                                            "&:hover .MuiOutlinedInput-notchedOutline": {
+                                                                borderColor: "transparent", // Remove hover border color
+                                                            },
+                                                            "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                                                                borderColor: "transparent", // Remove focus border color
+                                                                boxShadow: "none", // Remove box shadow on focus
+                                                            },
+                                                        },
+                                                    }}
                                                 />
                                             )}
                                             disableClearable
@@ -498,7 +529,12 @@ const App = () => {
                                             variant="standard"
                                             slotProps={{
                                                 textField: {
-                                                    sx: { width: '100%' },
+                                                    sx: {
+                                                        width: '100%',
+                                                        "& .MuiInputBase-input": {
+                                                            fontSize: "16px",
+                                                        },
+                                                    },
                                                     variant: "standard",
                                                     color: "secondary"
                                                 },
@@ -523,7 +559,14 @@ const App = () => {
                                         value={title}
                                         onChange={handleTitle}
                                         placeholder="Liebe ist alles"
-                                        variant="standard" sx={{ mb: 3 }} />
+                                        variant="standard"
+                                        sx={{
+                                            mb: 3,
+                                            "& .MuiInputBase-input": {
+                                                fontSize: "16px",
+                                            },
+                                        }}
+                                    />
 
                                     <Typography variant="h6" sx={{ fontSize: { xs: "14px", md: "16px" }, mb: 1 }}>
                                         Schreibe einen persönlichen Text (optional)
@@ -533,7 +576,13 @@ const App = () => {
                                         value={paragraphText}
                                         placeholder="Liebe ist, wenn zwei Herzen im gleichen Takt schlagen"
                                         onChange={handleParagraphText}
-                                        variant="standard" sx={{ mb: 1, }}
+                                        variant="standard"
+                                        sx={{
+                                            mb: 1,
+                                            "& .MuiInputBase-input": {
+                                                fontSize: "16px",
+                                            },
+                                        }}
                                     />
                                 </Box>
                             </Box>
@@ -558,7 +607,7 @@ const App = () => {
                                                     });
                                                     setTiles(temp);
                                                 }} sx={{
-                                                    p: "6px 16px 4px 16px",
+                                                    p: "8px 18px 0px",
                                                     borderRadius: "10px",
                                                     border: imageSrc.active ? "3px solid #9c27b0" : "3px solid #cccccc", // Highlight the first image
                                                     cursor: "pointer",
@@ -581,6 +630,7 @@ const App = () => {
                                                     wordWrap: "break-word", // Breaks long words
                                                     maxWidth: "85px", // Matches the width of the image
                                                     overflow: "hidden", // Prevents text from overflowing
+                                                    lineHeight: "1.2"
                                                 }}>{imageSrc.title}</Box>
                                             </Grid>
                                         ))}

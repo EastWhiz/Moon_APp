@@ -1,77 +1,115 @@
 .toggle-container {
-    width: 95px;
-    height: 35px;
+    align-items: center;
     background-color: #9c27b0;
-    /* Default background for 'on' state */
     border-radius: 20px;
-    position: relative;
     cursor: pointer;
     display: flex;
-    align-items: center;
+    height: 35px;
     justify-content: center;
-    padding: 0 10px;
     overflow: hidden;
-    transition: background-color 0.3s ease;
-    /* Smooth transition for background color */
+    padding: 0 10px;
+    position: relative;
+    transition: background-color .3s ease;
+    width: 115px
 }
 
 .toggle-container.off {
-    background-color: #b0b0b0;
-    /* Grey background for 'off' state */
+    background-color: #b0b0b0
 }
 
 .toggle-text-container {
-    position: absolute;
-    width: 100%;
+    color: #fff;
     display: flex;
+    font-size: 12px;
     justify-content: space-between;
     padding: 0 15px;
-    font-size: 12px;
-    color: white;
-    transition: opacity 0.3s ease, transform 0.3s ease;
     pointer-events: none;
+    position: absolute;
+    transition: opacity .3s ease, transform .3s ease;
+    width: 130%
 }
 
 .toggle-text-on {
+    transform: translateX(-10px)
+}
+
+.toggle-text-off,
+.toggle-text-on {
     opacity: 0;
-    transform: translateX(-10px);
-    transition: opacity 0.3s ease, transform 0.3s ease;
+    transition: opacity .3s ease, transform .3s ease
 }
 
 .toggle-text-off {
-    opacity: 0;
-    transform: translateX(10px);
-    transition: opacity 0.3s ease, transform 0.3s ease;
+    transform: translateX(10px)
 }
 
 .toggle-container.on .toggle-text-on {
     opacity: 1;
-    transform: translateX(20px);
+    transform: translateX(20px)
 }
 
 .toggle-container.off .toggle-text-off {
     opacity: 1;
-    transform: translateX(-10px);
+    transform: translateX(-15px)
 }
 
 .toggle {
-    width: 27px;
-    height: 27px;
+    align-items: center;
+    background-color: #fff;
     border-radius: 50%;
+    display: flex;
+    height: 27px;
+    justify-content: center;
     position: absolute;
     top: 4px;
-    transition: all 0.3s ease;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: #ffffff;
-    z-index: 2;
+    transition: all .3s ease;
+    width: 27px;
+    z-index: 2
 }
 
 .toggle.on {
-    left: 83.5px;
+    left: 83.5px
 }
 
 .toggle.off {
-    left: 5px;
+    left: 5px
 }
+
+div:empty {
+    display: inline;
+    display: initial
+}
+
+/* Global CSS */
+.MuiPickersCalendarHeader-label {
+    font-size: 14px;
+    /* Adjust calendar font size */
+}
+
+.MuiPickersDay-root {
+    font-size: 14px;
+    /* Adjust font size for days */
+}
+
+.MuiDayCalendar-weekDayLabel {
+    font-size: 14px;
+    /* Adjust font size for years */
+}
+
+.MuiPickersArrowSwitcher-leftArrowIcon {
+    font-size: 18px;
+    /* Adjust font size for years */
+}
+
+.MuiPickersArrowSwitcher-rightArrowIcon {
+    font-size: 18px;
+    /* Adjust font size for years */
+}
+
+:focus-visible {
+    outline: none !important;
+    outline-offset: none !important;
+    box-shadow: none !important;
+}
+
+/*# sourceMappingURL=main.787d4937.css.map*/
