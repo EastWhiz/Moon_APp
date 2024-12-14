@@ -216,6 +216,12 @@ const App = () => {
         { background: "#224955", withStars: `url('${mainUrl}/images/aquamarine_stars.png')`, withoutStars: `url('${mainUrl}/images/aquamarine.png')`, color: "white", smMoon: `${mainUrl}/images/m1.png`, active: false },
     ]);
 
+    const [tiles, setTiles] = useState([
+        { title: "Kein Zubehör", image: `${mainUrl}/images/no-border.PNG`, active: true },
+        { title: "Schwarzer Holzrahmen", image: `${mainUrl}/images/black-border.PNG`, active: false },
+        { title: "Weißer Holzrahmen", image: `${mainUrl}/images/light-border.PNG`, active: false }
+    ]);
+
     const changeTabHandler = () => {
         if (selectedTab !== 3)
             setSelectedTab(prevTab => prevTab + 1);
@@ -543,37 +549,43 @@ const App = () => {
                                         Füge einen Bilderrahmen hinzu
                                     </Typography>
                                     <Grid container spacing={2.5}>
-                                        {[`${mainUrl}/images/no-border.PNG`, `${mainUrl}/images/black-border.PNG`, `${mainUrl}/images/light-border.PNG`].map((imageSrc, index) => (
+                                        {tiles.map((imageSrc, index) => (
                                             <Grid key={index}>
                                                 <Box
                                                     component="img"
-                                                    src={imageSrc}
+                                                    src={imageSrc.image}
                                                     // alt={`Image ${index + 1}`}
-                                                    onClick={() => handleBorder(index)}
+                                                    onClick={() => {
+                                                        let temp = [...tiles];
+                                                        tiles.forEach((element, indexInside) => {
+                                                            if (indexInside === index) {
+                                                                temp[indexInside] = { ...temp[indexInside], active: true };
+                                                            } else {
+                                                                temp[indexInside] = { ...temp[indexInside], active: false };
+                                                            }
+                                                        });
+                                                        setTiles(temp);
+                                                    }}
                                                     sx={{
                                                         width: 46,
                                                         height: 46,
-                                                        p: "2px",
+                                                        p: "6px 16px",
                                                         borderRadius: "10px",
-                                                        border: index === border ? "3px solid #9c27b0" : "3px solid #cccccc", // Highlight the first image
+                                                        border: imageSrc.active ? "3px solid #9c27b0" : "3px solid #cccccc", // Highlight the first image
                                                         cursor: "pointer",
                                                     }}
                                                 />
+                                                <Box className="roboto-regular" sx={{
+                                                    fontSize: "12px",
+                                                    textAlign: "center", // Optional: Center-align the text
+                                                    whiteSpace: "normal", // Allows text to wrap
+                                                    wordWrap: "break-word", // Breaks long words
+                                                    maxWidth: "85px", // Matches the width of the image
+                                                    overflow: "hidden", // Prevents text from overflowing
+                                                }}>{imageSrc.title}</Box>
                                             </Grid>
                                         ))}
                                     </Grid>
-                                    {/* <Typography variant="h6" sx={{ fontSize: { xs: "14px", md: "16px" }, mb: 1, mt: 3 }}>
-                                        Speichern Sie Ihr Poster für später
-                                    </Typography>
-                                    <TextField
-                                        color="secondary"
-                                        type="email"
-                                        required
-                                        fullWidth
-                                        id=""
-                                        placeholder="E-Mail Adresse (optional)"
-                                        variant="standard" sx={{ mb: 1 }}
-                                    /> */}
                                 </Box>
                             </Box>}
                         <Box>
