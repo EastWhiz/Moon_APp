@@ -286,14 +286,14 @@ const App = () => {
     const searchCityHandler = (e) => {
         // console.log(e.target.value);
         async function getCityData() {
-            const url = `${mainUrl} /api/geo - names ? name_startsWith = ${e}& maxRows=5 & username=ouzzall & type=json`;
+            const url = `${mainUrl}/api/geo-names?name_startsWith=${e}&maxRows=5&username=ouzzall&type=json`;
 
             try {
                 const response = await fetch(url);
                 const data = await response.json();
                 // console.log(data);
                 let result = data.data.geonames.map(city => {
-                    return { name: `${city.name}, ${city.adminName1}, ${city.countryName} `, value: `${city.name}, ${city.adminName1}, ${city.countryName} `, lat: city.lat, lng: city.lng };
+                    return { name: `${city.name}, ${city.adminName1}, ${city.countryName}`, value: `${city.name}, ${city.adminName1}, ${city.countryName}`, lat: city.lat, lng: city.lng };
                 });
                 // console.log(result);
                 setCitiesList(result);
@@ -371,7 +371,7 @@ const App = () => {
                         color: activeDesign && activeDesign.color,
                         border: activeTile.priceEffect === "normal" ? "none" : "20px solid",
                         borderColor: activeTile.image.includes('light') ? "#f0f0f0" : activeTile.image.includes('black') ? "#161715" : "none",
-                        height: `${increaseBySixtyPercent(width)} px`
+                        height: `${increaseBySixtyPercent(width)}px`
                     }}
                 >
                     <Box style={{ width: "100%", height: "100%", border: "2px solid silver" }}>
@@ -379,7 +379,7 @@ const App = () => {
                             <Grid>
                                 <Canvas
                                     camera={{ position: [0, 0, 4], fov: 75 }}
-                                    style={{ height: `${moonParent.width * 0.95} px`, width: `${moonParent.width} px` }}
+                                    style={{ height: `${moonParent.width * 0.95}px`, width: `${moonParent.width}px` }}
                                 >
                                     <OrbitControls enablePan={false} enableZoom={false} enableRotate={false}
                                         touches={{ ONE: THREE.TOUCH.ROTATE, TWO: THREE.TOUCH.DOLLY_ROTATE }}
@@ -484,7 +484,7 @@ const App = () => {
                                                     <Box
                                                         component="img"
                                                         src={design.smMoon}
-                                                        // alt={`Image ${ index + 1 } `}
+                                                        // alt={`Image ${index + 1}`}
                                                         sx={{
                                                             width: 38,
                                                             height: 38,
@@ -671,7 +671,7 @@ const App = () => {
                                                     <Box
                                                         component="img"
                                                         src={imageSrc.image}
-                                                        // alt={`Image ${ index + 1 } `}
+                                                        // alt={`Image ${index + 1}`}
                                                         sx={{
                                                             width: 46,
                                                             height: 46,
