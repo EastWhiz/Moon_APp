@@ -182,7 +182,6 @@ const App = () => {
 
     const [citiesList, setCitiesList] = useState([]);
     const [city, setCity] = useState("");
-    const [border, setBorder] = useState(0);
 
     useEffect(() => {
         async function getData() {
