@@ -61,7 +61,7 @@ const Moon = ({ moonData }) => {
     // console.log(moonData);
     const moonRef = useRef();
 
-    const textureURL = "https://s3-us-west-2.amazonaws.com/s.cdpn.io/17271/lroc_color_poles_1k.jpg";
+    const textureURL = "https://ygvxwv-fv.myshopify.com/cdn/shop/t/2/assets/moon_textures.jpg";
 
     const [texture] = useTexture([textureURL]);
 
