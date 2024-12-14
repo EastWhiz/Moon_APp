@@ -267,7 +267,7 @@ const App = () => {
             formData.set("quantity", 1);
             formData.append(`properties[Date]`, dayjs(selectedDate.$d).format('MM-DD-YYYY hh:mm A'));
             formData.append(`properties[Border]`, activeTile.title);
-            formData.append(`properties[Location]`, city ?? city.name);
+            formData.append(`properties[Location]`, city ? city.name : '');
             formData.append(`properties[Title Text]`, title);
             formData.append(`properties[Paragraph Text]`, paragraphText);
             formData.append(`properties[Stars Effect]`, starsEffect ? 'Yes' : 'No');
