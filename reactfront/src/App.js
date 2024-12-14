@@ -104,7 +104,7 @@ const Moon = ({ moonData }) => {
     );
 };
 
-function useDivDimensions(id, delay = 300, border) {
+function useDivDimensions(id, delay = 300, tiles) {
     const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
 
     useEffect(() => {
@@ -135,7 +135,7 @@ function useDivDimensions(id, delay = 300, border) {
             window.removeEventListener("resize", handleResize);
             clearTimeout(timeout);
         };
-    }, [id, delay, border]);
+    }, [id, delay, tiles]);
 
     return dimensions;
 }
@@ -153,7 +153,7 @@ const App = () => {
 
     const [moon, setMoon] = useState({ range: [91, 104], position: [100, -100, 30], intensity: 3.6 });
 
-    const [frameSize, setFrameSize] = useState("21,0 cm x 29,7 cm (DINA 4)");
+    const [frameSize, setFrameSize] = useState("30");
     const handleFrameSize = (event) => {
         setFrameSize(event.target.value);
     };
@@ -183,9 +183,6 @@ const App = () => {
     const [citiesList, setCitiesList] = useState([]);
     const [city, setCity] = useState("");
     const [border, setBorder] = useState(0);
-    const handleBorder = (index) => {
-        setBorder(index);
-    };
 
     useEffect(() => {
         async function getData() {
@@ -217,10 +214,15 @@ const App = () => {
     ]);
 
     const [tiles, setTiles] = useState([
-        { title: "Kein Zubehör", image: `${mainUrl}/images/no-border.PNG`, active: true },
-        { title: "Schwarzer Holzrahmen", image: `${mainUrl}/images/black-border.PNG`, active: false },
-        { title: "Weißer Holzrahmen", image: `${mainUrl}/images/light-border.PNG`, active: false }
+        { priceEffect: "normal", title: "Kein Zubehör", image: `${mainUrl}/images/no-border.PNG`, active: true },
+        { priceEffect: "increased", title: "Schwarzer Holzrahmen", image: `${mainUrl}/images/black-border.PNG`, active: false },
+        { priceEffect: "increased", title: "Weißer Holzrahmen", image: `${mainUrl}/images/light-border.PNG`, active: false }
     ]);
+
+    useEffect(() => {
+        let activeTile = tiles.find(tile => tile.active === true)
+        setFrameSize(activeTile.priceEffect === "normal" ? "30" : "80");
+    }, [tiles]);
 
     const changeTabHandler = () => {
         if (selectedTab !== 3)
@@ -253,8 +255,8 @@ const App = () => {
         return num + num * 0.55;
     }
 
-    const { width } = useDivDimensions("cardId", 50, border); // Debounce delay of 300ms
-    const moonParent = useDivDimensions("moonParent", 50, border); // Debounce delay of 300ms
+    const { width } = useDivDimensions("cardId", 50, tiles); // Debounce delay of 300ms
+    const moonParent = useDivDimensions("moonParent", 50, tiles); // Debounce delay of 300ms
     // console.log(moonParent);
     // console.log(width, height, increaseBySixtyPercent(width));
 
@@ -262,17 +264,8 @@ const App = () => {
 
     const activeDesign = designs.find(design => design.active === true);
 
-    let price = 0;
-    // PRICE CALCULATION IS IN PROGRESS
-    // if (frameSize === "5070")
-    //     price += 59.90;
-    // else if (frameSize === "3040")
-    //     price += 49.90;
-
-    // if (border !== 0 && frameSize === "5070")
-    //     price += 32.90;
-    // else if (border !== 0 && frameSize === "3040")
-    //     price += 29.90;
+    const activeTile = tiles.find(tile => tile.active === true);
+    console.log(activeTile);
 
     const defaultProps = {
         options: citiesList,
@@ -318,8 +311,8 @@ const App = () => {
                         backgroundRepeat: 'no-repeat', // Prevent the background from repeating
                         backgroundPosition: 'center', // Center the background image
                         color: activeDesign && activeDesign.color,
-                        border: border === 0 ? "none" : "20px solid",
-                        borderColor: border === 1 ? "#161715" : border === 2 ? "#e3e0de" : "none",
+                        border: activeTile.priceEffect === "normal" ? "none" : "20px solid",
+                        borderColor: activeTile.image.includes('light') ? "#f0f0f0" : activeTile.image.includes('black') ? "#161715" : "none",
                         height: `${increaseBySixtyPercent(width)}px`
                     }}
                 >
@@ -452,10 +445,14 @@ const App = () => {
                                     </Typography>
                                     <Box>
                                         <FormGroup>
-                                            <FormControlLabel control={<Checkbox color="secondary" value="21,0 cm x 29,7 cm (DINA 4)" checked={frameSize === '21,0 cm x 29,7 cm (DINA 4)'} onChange={handleFrameSize} />} label="21,0 cm x 29,7 cm (DINA 4)" />
-                                            <FormControlLabel control={<Checkbox color="secondary" value="29,7 cm x 42,0 cm (DINA 3)" checked={frameSize === '29,7 cm x 42,0 cm (DINA 3)'} onChange={handleFrameSize} />} label="29,7 cm x 42,0 cm (DINA 3)" />
-                                            <FormControlLabel control={<Checkbox color="secondary" value="42,0 cm x 59,4 cm (DINA 2)" checked={frameSize === '42,0 cm x 59,4 cm (DINA 2)'} onChange={handleFrameSize} />} label="42,0 cm x 59,4 cm (DINA 2)" />
-                                            <FormControlLabel control={<Checkbox color="secondary" value="59,4 cm x 84,1 cm (DINA 1)" checked={frameSize === '59,4 cm x 84,1 cm (DINA 1)'} onChange={handleFrameSize} />} label="59,4 cm x 84,1 cm (DINA 1)" />
+                                            {activeTile &&
+                                                <>
+                                                    <FormControlLabel control={<Checkbox color="secondary" value={activeTile.priceEffect === "normal" ? 30 : 80} checked={frameSize === (activeTile.priceEffect === "normal" ? "30" : "80")} onChange={handleFrameSize} />} label="21,0 cm x 29,7 cm (DINA 4)" />
+                                                    <FormControlLabel control={<Checkbox color="secondary" value={activeTile.priceEffect === "normal" ? 40 : 100} checked={frameSize === (activeTile.priceEffect === "normal" ? "40" : "100")} onChange={handleFrameSize} />} label="29,7 cm x 42,0 cm (DINA 3)" />
+                                                    <FormControlLabel control={<Checkbox color="secondary" value={activeTile.priceEffect === "normal" ? 50 : 120} checked={frameSize === (activeTile.priceEffect === "normal" ? "50" : "120")} onChange={handleFrameSize} />} label="42,0 cm x 59,4 cm (DINA 2)" />
+                                                    <FormControlLabel control={<Checkbox color="secondary" value={activeTile.priceEffect === "normal" ? 80 : 180} checked={frameSize === (activeTile.priceEffect === "normal" ? "80" : "180")} onChange={handleFrameSize} />} label="59,4 cm x 84,1 cm (DINA 1)" />
+                                                </>
+                                            }
                                         </FormGroup>
                                     </Box>
                                 </Box>
@@ -599,7 +596,7 @@ const App = () => {
                                 textAlign: "center",
                                 fontSize: { xs: "14px", md: "16px" },
                             }}>
-                                Preis: {price.toFixed(2)} €
+                                Preis: {parseInt(frameSize).toFixed(2)} €
                             </Typography>
                             <Button variant="contained" onClick={changeTabHandler} fullWidth sx={{
                                 py: { xs: 1, md: 2 },
