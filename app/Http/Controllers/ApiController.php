@@ -19,14 +19,14 @@ class ApiController extends Controller
         // Set the API endpoint
         $url = 'https://api.astronomyapi.com/api/v2/bodies/positions/moon';
 
-        $carbonDate = Carbon::createFromFormat('d-m-Y h:i A', $request->date);
+        $carbonDate = Carbon::createFromFormat('m-d-Y h:i A', $request->date);
 
         // API request parameters based on the table you shared
         $latitude = $request->latitude;  // Replace with observer's latitude
         $longitude = $request->longitude;  // Replace with observer's longitude
         $elevation = 1; // replace with actual elevation
-        $from_date = $carbonDate->format('Y-d-m'); // replace with actual start date
-        $to_date = $carbonDate->format('Y-d-m'); // replace with actual end date
+        $from_date = $carbonDate->format('Y-m-d'); // replace with actual start date
+        $to_date = $carbonDate->format('Y-m-d'); // replace with actual end date
         $time = $carbonDate->format('H:i:s'); // replace with actual time
         // logger(json_encode([$from_date, $to_date, $time]));
         $output = 'table'; // or 'rows, table'
@@ -47,11 +47,8 @@ class ApiController extends Controller
             'output' => $output,
         ]);
 
-        return response([
-            'status' => true,
-            'message' => 'Moon lat and lng is received',
-            'data' => $response->json()['data']
-        ], 200);
+        return
+        $response->json();
     }
 
     public function getMoonPicture(Request $request)
