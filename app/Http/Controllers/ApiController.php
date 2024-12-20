@@ -8,6 +8,16 @@ use Illuminate\Support\Facades\Http;
 
 class ApiController extends Controller
 {
+    private function calculateMoonRotation($phaseAngle, $latitude)
+    {
+        if ($latitude >= 0) { // Northern Hemisphere
+            return fmod($phaseAngle, 360);
+        } else { // Southern Hemisphere
+            return fmod(($phaseAngle + 180), 360);
+        }
+    }
+
+
     public function getMoonAppearance(Request $request)
     {
         $applicationId = "9e723f28-35b6-4e2b-9cc2-68f2e6139c79";
@@ -47,8 +57,13 @@ class ApiController extends Controller
             'output' => $output,
         ]);
 
-        return
-        $response->json();
+        $data = $response->json();
+
+        $phaseAngle = $data['data']['table']['rows'][0]['cells'][0]['extraInfo']['phase']['angel'];
+        $rotationDegree = $this->calculateMoonRotation($phaseAngle, $latitude);
+        logger("Rotate the Moon image by " . round($rotationDegree, 2) . "° clockwise.");
+
+        return $data;
     }
 
     public function getMoonPicture(Request $request)
