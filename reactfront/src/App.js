@@ -444,6 +444,14 @@ const App = () => {
                 minHeight: '90vh', display: 'flex', justifyContent: 'center', flexDirection: { xs: 'column', sm: 'row', md: 'row' },
             }}
         >
+            <style>
+                {`
+                    canvas {
+                        width: ${moonParent.width}px !important;
+                        height: ${moonParent.width}px !important;
+                    }
+                `}
+            </style>
             <Box sx={{
                 width: { xs: '100%', sm: '60%', md: '65%' },
                 overflow: 'hidden',
