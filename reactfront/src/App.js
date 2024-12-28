@@ -12,41 +12,41 @@ import ToggleSwitch from "./ToggleSwitch";
 
 const mainUrl = "https://phpstack-1380969-5101925.cloudwaysapps.com";
 
-const getMoonPosition = (moonData, city) => {
+const getMoonPosition = (moonData) => {
 
     // console.log(city);
     // console.log(moonData);
 
-    let centerValue = city.lng ? parseInt(city.lng) : -100;
+    // let 74 = city.lng ? parseInt(city.lng) : -100;
     const positionMapping = [
-        { range: [0, 13], position: [100, centerValue, -240], intensity: 10 },
-        { range: [13, 26], position: [100, centerValue, -210], intensity: 9 },
-        { range: [26, 39], position: [100, centerValue, -170], intensity: 8 },
-        { range: [39, 52], position: [100, centerValue, -130], intensity: 7 },
-        { range: [52, 65], position: [100, centerValue, -90], intensity: 6 },
-        { range: [65, 78], position: [100, centerValue, -50], intensity: 5 },
-        { range: [78, 91], position: [100, centerValue, -10], intensity: 4 },
-        { range: [91, 104], position: [100, centerValue, 30], intensity: 3.6 },
-        { range: [104, 117], position: [100, centerValue, 70], intensity: 3.5 },
-        { range: [117, 130], position: [100, centerValue, 110], intensity: 3.4 },
-        { range: [130, 143], position: [100, centerValue, 150], intensity: 3.2 },
-        { range: [143, 156], position: [100, centerValue, 190], intensity: 3.2 },
-        { range: [156, 169], position: [100, centerValue, 240], intensity: 3.1 },
-        { range: [169, 182], position: [100, centerValue, 250], intensity: 3 },
-        { range: [182, 195], position: [-100, centerValue, 250], intensity: 3 },
-        { range: [195, 208], position: [-100, centerValue, 240], intensity: 3.1 },
-        { range: [208, 221], position: [-100, centerValue, 190], intensity: 3.2 },
-        { range: [221, 234], position: [-100, centerValue, 150], intensity: 3.3 },
-        { range: [234, 247], position: [-100, centerValue, 110], intensity: 3.4 },
-        { range: [247, 260], position: [-100, centerValue, 70], intensity: 3.5 },
-        { range: [260, 273], position: [-100, centerValue, 30], intensity: 3.6 },
-        { range: [273, 286], position: [-100, centerValue, -10], intensity: 4 },
-        { range: [286, 299], position: [-100, centerValue, -50], intensity: 5 },
-        { range: [299, 312], position: [-100, centerValue, -90], intensity: 6 },
-        { range: [312, 325], position: [-100, centerValue, -130], intensity: 7 },
-        { range: [325, 338], position: [-100, centerValue, -170], intensity: 8 },
-        { range: [338, 351], position: [-100, centerValue, -210], intensity: 9 },
-        { range: [351, 360], position: [-100, centerValue, -240], intensity: 10 },
+        { range: [0, 13], day: 3 },
+        { range: [13, 26], day: 3.5 },
+        { range: [26, 39], day: 4 },
+        { range: [39, 52], day: 4.5 },
+        { range: [52, 65], day: 5 },
+        { range: [65, 78], day: 5.5 },
+        { range: [78, 91], day: 6 },
+        { range: [91, 104], day: 6.5 },
+        { range: [104, 117], day: 7.5 },
+        { range: [117, 130], day: 8 },
+        { range: [130, 143], day: 8.5 },
+        { range: [143, 156], day: 9 },
+        { range: [156, 169], day: 10 },
+        { range: [169, 182], day: 11 },
+        { range: [182, 195], day: 12 },
+        { range: [195, 208], day: 18 },
+        { range: [208, 221], day: 19 },
+        { range: [221, 234], day: 20 },
+        { range: [234, 247], day: 21 },
+        { range: [247, 260], day: 22 },
+        { range: [260, 273], day: 23 },
+        { range: [273, 286], day: 23.5 },
+        { range: [286, 299], day: 24 },
+        { range: [299, 312], day: 24.5 },
+        { range: [312, 325], day: 25 },
+        { range: [325, 338], day: 25.5 },
+        { range: [338, 351], day: 26 },
+        { range: [351, 360], day: 27 },
     ];
 
     // Find the corresponding position based on elongation
@@ -54,17 +54,33 @@ const getMoonPosition = (moonData, city) => {
     // console.log(positionData);
 
     // Return the position or a default value if not found
-    return positionData ? positionData : { range: [91, 104], position: [100, -100, 30], intensity: 3.6 };
+    return positionData ? positionData : { range: [78, 91], day: 8 };
 };
 
 const Moon = ({ moonData }) => {
 
     // console.log(moonData);
+    // console.clear();
+    // console.log(moonData.day);
     const moonRef = useRef();
 
     const textureURL = "https://ygvxwv-fv.myshopify.com/cdn/shop/t/2/assets/moon_textures.jpg";
 
     const [texture] = useTexture([textureURL]);
+
+    // Calculate the light position based on the day
+    const angle = (moonData.day / 30) * 2 * Math.PI;
+
+    // Adjust the angle calculation for day 1 (start of the moon's phase)
+    const adjustedAngle = angle - Math.PI / 2;  // Start the angle from the left of the moon (thin moon)
+
+    // console.log(adjustedAngle); // Optional log to check the angle
+
+    // Light position calculation based on the phase
+    const lightX = Math.cos(adjustedAngle) * 5; // Horizontal movement of light
+    const lightZ = Math.sin(adjustedAngle) * 5; // Vertical movement of light
+
+    // console.log(lightX, lightZ); // Optional log to check light position
 
     useFrame(() => {
         if (moonRef.current) {
@@ -75,7 +91,7 @@ const Moon = ({ moonData }) => {
 
     return (
         <>
-            <Sphere args={[2, 60, 60]} ref={moonRef} rotation={[0, 600, 0]}>
+            <Sphere args={[2, 60, 60]} ref={moonRef} rotation={[0.05, -1.8, 0]}>
                 <meshPhongMaterial
                     attach="material"
                     color={0xffffff}
@@ -91,14 +107,15 @@ const Moon = ({ moonData }) => {
 
             <directionalLight
                 color={0xffffff}
-                intensity={moonData.intensity}
-                position={moonData.position}
+                intensity={10}
+                // position={[-1, 0, 0]} // Position the light to the left
+                position={[lightX, 0, lightZ]} // Dynamic position based on phase
             />
 
             <hemisphereLight
                 skyColor={new THREE.Color(0.5, 0.5, 0.5)}  // Lighter, more blue sky color
                 groundColor={new THREE.Color(0.5, 0.5, 0.5)}  // More saturated blue ground color
-                intensity={0.2}
+                intensity={0.3}
                 position={[0, 0, 0]}
             />
         </>
@@ -152,7 +169,7 @@ const App = () => {
         setDateVisible(!dateVisible);
     }
 
-    const [moon, setMoon] = useState({ range: [91, 104], position: [100, -100, 30], intensity: 3.6 });
+    const [moon, setMoon] = useState({ range: [78, 91], day: 8 });
 
     const [frameSize, setFrameSize] = useState("30");
     const handleFrameSize = (event) => {
@@ -195,6 +212,7 @@ const App = () => {
 
                 const result = await response.json();
                 // console.log(result.data..table.rows[0].cells[0]);
+                // console.log(getMoonPosition(result.data.table.rows[0].cells[0], city));
                 setMoon(getMoonPosition(result.data.table.rows[0].cells[0], city));
             } catch (error) {
                 console.error(error.message);
@@ -304,6 +322,15 @@ const App = () => {
         getCityData()
     }
 
+    // const [currentDay, setCurrentDay] = useState(2);
+
+    // useEffect(() => {
+    //     const interval = setInterval(() => {
+    //         setCurrentDay((prev) => (prev === 28 ? 2 : prev + 1)); // Cycle from Day 3 to Day 27
+    //     }, 1000); // Adjust interval as needed
+
+    //     return () => clearInterval(interval);
+    // }, []);
 
     const increaseBySixtyPercent = (num) => {
         return num + num * 0.55;
@@ -384,6 +411,7 @@ const App = () => {
                                     <OrbitControls enablePan={false} enableZoom={false} enableRotate={false}
                                         touches={{ ONE: THREE.TOUCH.ROTATE, TWO: THREE.TOUCH.DOLLY_ROTATE }}
                                     />
+                                     {/* day={currentDay} */}
                                     <Moon moonData={moon} />
                                 </Canvas>
                             </Grid>
