@@ -53,6 +53,8 @@ class ApiController extends Controller
             'elevation' => $elevation,
             'from_date' => $from_date,
             'to_date' => $to_date,
+            // 'from_date' => "2024-12-01",
+            // 'to_date' => "2024-12-31",
             'time' => $time,
             'output' => $output,
         ]);
@@ -62,6 +64,14 @@ class ApiController extends Controller
         $phaseAngle = $data['data']['table']['rows'][0]['cells'][0]['extraInfo']['phase']['angel'];
         $rotationDegree = $this->calculateMoonRotation($phaseAngle, $latitude);
         logger("Rotate the Moon image by " . round($rotationDegree, 2) . "° clockwise.");
+
+        // $finalData = [];
+        // foreach ($data['data']['table']['rows'][0]['cells'] as $key => $dat) {
+        //     $finalData[] = [
+        //         'azimuth' => $dat['position']['horizontal']['azimuth']['degrees'],
+        //         'fraction' => $dat['extraInfo']['phase']['fraction'],
+        //     ];
+        // }
 
         return $data;
     }

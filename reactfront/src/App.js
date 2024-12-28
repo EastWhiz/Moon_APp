@@ -12,6 +12,72 @@ import ToggleSwitch from "./ToggleSwitch";
 
 const mainUrl = "https://phpstack-1380969-5101925.cloudwaysapps.com";
 
+function calculateMoonRotation(moonData, observerLatitude, observerLongitude, date) {
+    const toRadians = (deg) => (deg * Math.PI) / 180;
+    const toDegrees = (rad) => (rad * 180) / Math.PI;
+
+    const dayOfYear = (date) => {
+        const start = new Date(date.getFullYear(), 0, 0);
+        const diff = date - start + (start.getTimezoneOffset() - date.getTimezoneOffset()) * 60 * 1000;
+        return Math.floor(diff / (1000 * 60 * 60 * 24));
+    };
+
+    // Calculate Sun's RA and Dec
+    const calculateSunPosition = (date) => {
+        const N = dayOfYear(date); // Day of the year
+
+        // Declination of the Sun
+        const declination = -23.44 * Math.cos(toRadians((360 / 365) * (N + 10)));
+
+        // Equation of Time
+        const equationOfTime = 7.5 * Math.sin(toRadians((360 / 365) * (N - 2)));
+
+        // Right Ascension of the Sun
+        const RA = (180 + equationOfTime) % 360; // RA in degrees
+        return {
+            ra: RA / 15, // Convert RA to hours
+            dec: declination, // Declination in degrees
+        };
+    };
+
+    const sunPosition = calculateSunPosition(date);
+
+    // Convert date to UTC hours
+    const utcHours = date.getUTCHours() + date.getUTCMinutes() / 60;
+
+    // Local Sidereal Time (LST) in degrees
+    const LST = (100.46 + 0.985647 * dayOfYear(date) + observerLongitude + 15 * utcHours) % 360;
+
+    // Extract Moon's equatorial coordinates
+    const moonRA = parseFloat(moonData.position.equatorial.rightAscension.hours);
+    const moonDec = parseFloat(moonData.position.equatorial.declination.degrees);
+
+    // Hour Angle (H) in degrees
+    const H = (LST - moonRA * 15) % 360; // Convert Moon's RA from hours to degrees
+
+    // Observer's latitude in radians
+    const observerLatRad = toRadians(observerLatitude);
+
+    // Calculate the parallactic angle using refined spherical trigonometry
+    const Hrad = toRadians(H); // Hour angle in radians
+    const parallacticAngle = Math.atan2(
+        Math.sin(Hrad),
+        Math.tan(observerLatRad) * Math.cos(toRadians(moonDec)) -
+        Math.sin(toRadians(moonDec)) * Math.cos(Hrad)
+    );
+
+    // Normalize parallactic angle to [-180°, 180°]
+    const normalizedAngle = ((toDegrees(parallacticAngle) + 180) % 360) - 180;
+
+    return {
+        rotationAngle: normalizedAngle.toFixed(2), // Rotation angle in degrees
+        sunPosition: {
+            ra: sunPosition.ra.toFixed(2), // Sun's RA in hours
+            dec: sunPosition.dec.toFixed(2), // Sun's Dec in degrees
+        },
+    };
+}
+
 const getMoonPosition = (moonData) => {
 
     // console.log(city);
@@ -170,6 +236,7 @@ const App = () => {
     }
 
     const [moon, setMoon] = useState({ range: [78, 91], day: 8 });
+    const [rotateValue, setRotateValue] = useState(false);
 
     const [frameSize, setFrameSize] = useState("30");
     const handleFrameSize = (event) => {
@@ -211,9 +278,18 @@ const App = () => {
                 }
 
                 const result = await response.json();
-                // console.log(result.data..table.rows[0].cells[0]);
+                // console.log(result.data.table.rows[0].cells[0]);
                 // console.log(getMoonPosition(result.data.table.rows[0].cells[0], city));
                 setMoon(getMoonPosition(result.data.table.rows[0].cells[0], city));
+                // console.log(calculateMoonRotation(parseFloat(result.data.table.rows[0].cells[0].extraInfo.phase.fraction), parseFloat(result.data.table.rows[0].cells[0].position.horizontal.azimuth.degrees)));
+                // setRotateValue(result.data.table.rows[0].cells[0]);
+                let functionResponse = calculateMoonRotation(
+                    result.data.table.rows[0].cells[0],
+                    parseFloat(city.lat),
+                    parseFloat(city.lng),
+                    new Date(dayjs(selectedDate.$d).format('MM-DD-YYYY hh:mm A'))
+                )
+                setRotateValue(parseFloat(functionResponse.rotationAngle));
             } catch (error) {
                 console.error(error.message);
             }
@@ -406,12 +482,13 @@ const App = () => {
                             <Grid>
                                 <Canvas
                                     camera={{ position: [0, 0, 4], fov: 75 }}
-                                    style={{ height: `${moonParent.width * 0.95}px`, width: `${moonParent.width}px` }}
+                                    // `${moonParent.width * 0.95}px`
+                                    style={{ height: `${moonParent.width}px`, width: `${moonParent.width}px`, rotate: rotateValue ? `${rotateValue}deg` : `0deg` }}
                                 >
                                     <OrbitControls enablePan={false} enableZoom={false} enableRotate={false}
                                         touches={{ ONE: THREE.TOUCH.ROTATE, TWO: THREE.TOUCH.DOLLY_ROTATE }}
                                     />
-                                     {/* day={currentDay} */}
+                                    {/* day={currentDay} */}
                                     <Moon moonData={moon} />
                                 </Canvas>
                             </Grid>
