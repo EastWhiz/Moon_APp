@@ -1,4 +1,4 @@
-import { Autocomplete, Box, Button, Checkbox, FormControl, FormControlLabel, FormGroup, Grid2 as Grid, Tab, Tabs, TextField, Typography } from "@mui/material";
+import { Autocomplete, Box, Button, Checkbox, Divider, FormControl, FormControlLabel, FormGroup, Grid2 as Grid, TextField, Typography, useMediaQuery } from "@mui/material";
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -9,6 +9,9 @@ import dayjs from "dayjs";
 import { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
 import ToggleSwitch from "./ToggleSwitch";
+import './styles.css';
+import { useTheme } from "@emotion/react";
+import Switch from "react-switch";
 
 const mainUrl = "https://phpstack-1380969-5101925.cloudwaysapps.com";
 
@@ -226,6 +229,9 @@ function useDivDimensions(id, delay = 300, tiles) {
 
 const App = () => {
 
+    const theme = useTheme();
+    const isMobile = useMediaQuery(theme.breakpoints.down("sm")); // 'sm' is for small screens
+
     const [cityVisible, setCityVisible] = useState(true);
     const handleCityVisible = () => {
         setCityVisible(!cityVisible);
@@ -249,9 +255,6 @@ const App = () => {
     }
 
     const [selectedTab, setSelectedTab] = useState(0); // To handle the active tab state
-    const handleTabs = (event, newValue) => {
-        setSelectedTab(newValue);
-    };
 
     const [title, setTitle] = useState("");
     const handleTitle = (event) => {
@@ -527,60 +530,33 @@ const App = () => {
 
             <Box sx={{ width: { xs: '100%', sm: '40%', md: '35%' }, pt: 0 }}>
                 <Box>
-                    <Tabs style={{ border: "1px solid #ccc", minWidth: "100px" }} value={selectedTab} onChange={handleTabs} indicatorColor="none">
-                        <Tab label="Design" sx={{
-                            borderRight: '1px solid #ccc',
-                            width: "25%",
-                            minWidth: "unset",
-                            padding: { xs: "10px 0", sm: "16px 0", md: '16px 0' },
-                            fontSize: { xs: "14px", sm: "22px", md: '22px' },
-                            textTransform: "capitalize",
-                            '&.Mui-selected': { backgroundColor: '#9c27b0', color: 'white', },
-                        }} />
-                        <Tab label="Moment" sx={{
-                            borderRight: '1px solid #ccc',
-                            width: "25%",
-                            minWidth: "unset",
-                            padding: { xs: "10px 0", sm: "16px 0", md: '16px 0' },
-                            fontSize: { xs: "14px", sm: "22px", md: '22px' },
-                            textTransform: "capitalize",
-                            '&.Mui-selected': { backgroundColor: '#9c27b0', color: 'white', },
-                        }} />
-                        <Tab label="Text" sx={{
-                            borderRight: '1px solid #ccc',
-                            width: "25%",
-                            minWidth: "unset",
-                            padding: { xs: "10px 0", sm: "16px 0", md: '16px 0' },
-                            fontSize: { xs: "14px", sm: "22px", md: '22px' },
-                            textTransform: "capitalize",
-                            '&.Mui-selected': { backgroundColor: '#9c27b0', color: 'white', },
-                        }} />
-                        <Tab label="Extras" sx={{
-                            width: "25%",
-                            minWidth: "unset",
-                            padding: { xs: "10px 0", sm: "16px 0", md: '16px 0' },
-                            fontSize: { xs: "14px", sm: "22px", md: '22px' },
-                            textTransform: "capitalize",
-                            '&.Mui-selected': {
-                                backgroundColor: '#9c27b0', color: 'white',
-                            },
-                        }} />
-                    </Tabs>
-
+                    <Box className="catamaran-regular little-heading">Mondphasen Poster personalisieren</Box>
+                    <Box className="tabs-outerside">
+                        <Box className={`catamaran-regular tabs-heading ${selectedTab === 0 ? 'active-tab' : ''}`} onClick={() => setSelectedTab(0)}>Designs</Box>
+                        <Box className={`catamaran-regular tabs-heading ${selectedTab === 1 ? 'active-tab' : ''}`} onClick={() => setSelectedTab(1)}>Texte</Box>
+                        <Box className={`catamaran-regular tabs-heading ${selectedTab === 2 ? 'active-tab' : ''}`} onClick={() => setSelectedTab(2)}>{isMobile ? 'Größe' : 'Größe & Rahmen'}</Box>
+                        {isMobile && <Box className={`catamaran-regular tabs-heading ${selectedTab === 3 ? 'active-tab' : ''}`} onClick={() => setSelectedTab(3)}>Rahmen</Box>}
+                    </Box>
                     <Box>
                         {selectedTab === 0 &&
                             <Box>
                                 <Box sx={{ p: 2, pb: 0.5 }}>
-                                    <Typography variant="h6" sx={{ fontSize: { xs: "14px", md: "16px" }, mb: 1 }}>
-                                        Wähle den Hintergrund
+                                    <Typography variant="h6" sx={{ fontSize: { xs: "14px", md: "16px" }, mb: 3.0 }}>
+                                        Hintergrund auswählen
                                     </Typography>
-                                    <Grid container spacing={2.5}>
+                                    <Grid container spacing={2.0}>
                                         {designs.map((design, index) => (
                                             <Grid key={index}>
                                                 <Box sx={{
-                                                    p: "8px 8px 0px",
-                                                    borderRadius: "10px",
-                                                    border: design.active ? "3px solid #9c27b0" : "3px solid #cccccc",
+                                                    display: "flex", // Add Flexbox
+                                                    justifyContent: "center", // Center horizontally
+                                                    alignItems: "center", // Center vertically
+                                                    width: "54px",
+                                                    height: "70px",
+                                                    borderRadius: "4px",
+                                                    border: design.active ? "2px solid rgba(231, 197, 9, 1)" : "",
+                                                    margin: design.active ? "" : "2px",
+                                                    boxShadow: design.active ? "0px 8px 8px 0px rgba(0, 0, 0, 0.09)" : "",
                                                     backgroundColor: design.background,
                                                     cursor: "pointer",
                                                 }} onClick={() => {
@@ -599,21 +575,34 @@ const App = () => {
                                                         src={design.smMoon}
                                                         // alt={`Image ${index + 1}`}
                                                         sx={{
-                                                            width: 38,
-                                                            height: 38,
+                                                            width: 24,
+                                                            height: 24,
                                                         }}
                                                     />
                                                 </Box>
                                             </Grid>
                                         ))}
                                     </Grid>
-                                    <Typography variant="h6" sx={{ fontSize: { xs: "14px", md: "16px" }, mt: 2 }}>
-                                        Effekt auswählen starten
-                                    </Typography>
-                                    <Box mt={1.2} mb={2.5}>
-                                        <ToggleSwitch toggled={starsEffect} onClick={handleStarsEffect} />
+                                    <Box mt={3.0} mb={isMobile ? 1 : 20} sx={{ display: "flex" }}>
+                                        <Switch
+                                            onChange={handleStarsEffect}
+                                            checked={starsEffect}
+                                            className={starsEffect ? 'react-switch-transparent' : 'react-switch'}
+                                            onColor="#E7C509"
+                                            onHandleColor="#FFFFFF"
+                                            offColor="#FFFFFF"
+                                            offHandleColor="#838B93"
+                                            handleDiameter={21}
+                                            uncheckedIcon={false}
+                                            checkedIcon={false}
+                                            boxShadow=""
+                                            activeBoxShadow=""
+                                            height={26}
+                                            width={52}
+                                        />
+                                        <Box className={`catamaran-regular`} sx={{ marginLeft: "16px", marginTop: "2px", fontSize: "16px" }}>Sterne ausblenden</Box>
                                     </Box>
-                                    <Typography variant="h6" sx={{ fontSize: { xs: "14px", md: "16px" }, mt: 1 }}>
+                                    {/* <Typography variant="h6" sx={{ fontSize: { xs: "14px", md: "16px" }, mt: 1 }}>
                                         Wähle deine Größe
                                     </Typography>
                                     <Box>
@@ -627,7 +616,7 @@ const App = () => {
                                                 </>
                                             }
                                         </FormGroup>
-                                    </Box>
+                                    </Box> */}
                                 </Box>
                             </Box>}
                         {selectedTab === 1 &&
@@ -791,7 +780,7 @@ const App = () => {
                                                         }}
                                                     />
                                                 </Box>
-                                                <Box className="roboto-regular" sx={{
+                                                <Box className="catamaran-regular" sx={{
                                                     fontSize: "12px",
                                                     textAlign: "center", // Optional: Center-align the text
                                                     whiteSpace: "normal", // Allows text to wrap
@@ -805,32 +794,32 @@ const App = () => {
                                     </Grid>
                                 </Box>
                             </Box>}
-                        <Box>
-                            <Typography variant="body2" sx={{
-                                mt: 2,
-                                mb: 4,
-                                borderTop: "2px solid #474665",
-                                borderBottom: "2px solid #474665",
-                                color: "#474665",
-                                py: "6px",
-                                textAlign: "center",
-                                fontSize: { xs: "14px", md: "16px" },
-                            }}>
-                                Preis: {parseInt(frameSize).toFixed(2)} €
-                            </Typography>
+                        <Box sx={{ padding: "16px" }}>
                             {loading ?
                                 <LoadingButton sx={{ py: { xs: 1, md: 2 }, }} loading variant="contained" fullWidth>Submit</LoadingButton> :
-                                <Button variant="contained" loading="true" onClick={changeTabHandler} fullWidth sx={{
-                                    py: { xs: 1, md: 2 },
-                                    textTransform: "none",
-                                    backgroundColor: "#9c27b0",
-                                    color: "#ffffff",
-                                    fontWeight: "600",
-                                    fontSize: { xs: "14px", md: "16px" },
-                                    "&:hover": { backgroundColor: "#9c27b0", },
-                                }}>
-                                    {selectedTab === 0 ? 'Ort und Datum festlegen' : selectedTab === 1 ? 'Personalisieren' : selectedTab === 2 ? 'Zu den Extras' : selectedTab === 3 ? 'In den Warenkorb' : null}
-                                </Button>}
+                                <Box className="catamaran-regular big-button" onClick={changeTabHandler} >
+                                    {selectedTab === 0 ? 'Nächster Schritt →' : selectedTab === 1 ? 'Personalisieren' : selectedTab === 2 ? 'Zu den Extras' : selectedTab === 3 ? 'In den Warenkorb' : null}
+                                </Box>
+                            }
+                            <Box className="catamaran-regular" sx={{
+                                mt: 3,
+                                mb: 3,
+                                color: "#000000",
+                                py: "6px",
+                                textAlign: "center",
+                                fontSize: { xs: "16px", md: "18px" },
+                            }}>
+                                Aktueller Preis: {parseInt(frameSize).toFixed(2)}€
+                            </Box>
+                            <Divider />
+                            <Box className="catamaran-regular" sx={{
+                                mt: 2,
+                                color: "#838B93",
+                                textAlign: "center",
+                                fontSize: { xs: "11px", md: "11px" },
+                            }}>
+                                Versand durch
+                            </Box>
                         </Box>
                     </Box>
                 </Box>
