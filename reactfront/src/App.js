@@ -544,45 +544,51 @@ const App = () => {
                                     <Typography variant="h6" sx={{ fontSize: { xs: "14px", md: "16px" }, mb: 3.0 }}>
                                         Hintergrund auswählen
                                     </Typography>
-                                    <Grid container spacing={2.0}>
-                                        {designs.map((design, index) => (
-                                            <Grid key={index}>
-                                                <Box sx={{
-                                                    display: "flex", // Add Flexbox
-                                                    justifyContent: "center", // Center horizontally
-                                                    alignItems: "center", // Center vertically
-                                                    width: "54px",
-                                                    height: "70px",
-                                                    borderRadius: "4px",
-                                                    border: design.active ? "2px solid rgba(231, 197, 9, 1)" : "",
-                                                    margin: design.active ? "" : "2px",
-                                                    boxShadow: design.active ? "0px 8px 8px 0px rgba(0, 0, 0, 0.09)" : "",
-                                                    backgroundColor: design.background,
-                                                    cursor: "pointer",
-                                                }} onClick={() => {
-                                                    let temp = [...designs];
-                                                    designs.forEach((element, indexInside) => {
-                                                        if (indexInside === index) {
-                                                            temp[indexInside] = { ...temp[indexInside], active: true };
-                                                        } else {
-                                                            temp[indexInside] = { ...temp[indexInside], active: false };
-                                                        }
-                                                    });
-                                                    setDesigns(temp);
-                                                }}>
-                                                    <Box
-                                                        component="img"
-                                                        src={design.smMoon}
-                                                        // alt={`Image ${index + 1}`}
-                                                        sx={{
-                                                            width: 24,
-                                                            height: 24,
-                                                        }}
-                                                    />
-                                                </Box>
-                                            </Grid>
-                                        ))}
-                                    </Grid>
+                                    <Box sx={{ display: isMobile ? '' : 'flex', justifyContent: "space-between" }}>
+                                        <Grid container spacing={2.0}>
+                                            {designs.map((design, index) => (
+                                                <Grid key={index}>
+                                                    <Box sx={{
+                                                        display: "flex", // Add Flexbox
+                                                        justifyContent: "center", // Center horizontally
+                                                        alignItems: "center", // Center vertically
+                                                        width: "54px",
+                                                        height: "70px",
+                                                        borderRadius: "4px",
+                                                        border: design.active ? "2px solid rgba(231, 197, 9, 1)" : "",
+                                                        margin: design.active ? "" : "2px",
+                                                        boxShadow: design.active ? "0px 8px 8px 0px rgba(0, 0, 0, 0.09)" : "",
+                                                        backgroundColor: design.background,
+                                                        cursor: "pointer",
+                                                    }} onClick={() => {
+                                                        let temp = [...designs];
+                                                        designs.forEach((element, indexInside) => {
+                                                            if (indexInside === index) {
+                                                                temp[indexInside] = { ...temp[indexInside], active: true };
+                                                            } else {
+                                                                temp[indexInside] = { ...temp[indexInside], active: false };
+                                                            }
+                                                        });
+                                                        setDesigns(temp);
+                                                    }}>
+                                                        <Box
+                                                            component="img"
+                                                            src={design.smMoon}
+                                                            // alt={`Image ${index + 1}`}
+                                                            sx={{
+                                                                width: 24,
+                                                                height: 24,
+                                                            }}
+                                                        />
+                                                    </Box>
+                                                </Grid>
+                                            ))}
+                                        </Grid>
+                                        <Box className="catamaran-regular" sx={{ fontSize: "16px", display: "flex", alignItems: "center", marginTop: isMobile ? '18px' : '' }}>
+                                            Midnight Glow
+                                        </Box>
+                                    </Box>
+
                                     <Box mt={3.0} mb={isMobile ? 1 : 20} sx={{ display: "flex" }}>
                                         <Switch
                                             onChange={handleStarsEffect}
