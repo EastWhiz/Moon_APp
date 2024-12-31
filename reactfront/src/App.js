@@ -812,13 +812,11 @@ const App = () => {
                                 Aktueller Preis: {parseInt(frameSize).toFixed(2)}€
                             </Box>
                             <Divider />
-                            <Box className="catamaran-regular" sx={{
-                                mt: 2,
-                                color: "#838B93",
-                                textAlign: "center",
-                                fontSize: { xs: "11px", md: "11px" },
-                            }}>
-                                Versand durch
+                            <Box m={2} sx={{ display: "flex", justifyContent: "center" }}>
+                                <Box className="catamaran-regular" sx={{ color: "#838B93", textAlign: "center", fontSize: { xs: "11px", md: "11px" } }} >
+                                    Versand durch
+                                </Box>
+                                <Box component="img" src={`${mainUrl}/images/dhl.png`} sx={{ marginLeft: "10px", height: 18 }} />
                             </Box>
                         </Box>
                     </Box>
