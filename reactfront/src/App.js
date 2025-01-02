@@ -135,7 +135,13 @@ const Moon = ({ moonData }) => {
     // console.log(moonData.day);
     const moonRef = useRef();
 
+    // ASSETS
     const textureURL = "https://ygvxwv-fv.myshopify.com/cdn/shop/t/2/assets/moon_textures.jpg";
+    // const textureURL = "https://ygvxwv-fv.myshopify.com/cdn/shop/t/2/assets/moon_textures_two.jpg";
+    // const dancing_script = "https://ygvxwv-fv.myshopify.com/cdn/shop/t/2/assets/dancing_script.ttf";
+    // const italiana = "https://ygvxwv-fv.myshopify.com/cdn/shop/t/2/assets/italiana.ttf";
+    // const assets = "https://ygvxwv-fv.myshopify.com/cdn/shop/t/2/assets/outfit.ttf";
+    // const tangerine = "https://ygvxwv-fv.myshopify.com/cdn/shop/t/2/assets/tangerine.ttf";
 
     const [texture] = useTexture([textureURL]);
 
@@ -266,13 +272,13 @@ const App = () => {
     ];
 
     const [title, setTitle] = useState("");
-    const [titleFont, setTitleFont] = useState("");
+    const [titleFont, setTitleFont] = useState("dancing_script");
     const handleTitle = (event) => {
         setTitle(event.target.value);
     };
 
     const [paragraphText, setParagraphText] = useState("");
-    const [paragraphTextFont, setParagraphTextFont] = useState("");
+    const [paragraphTextFont, setParagraphTextFont] = useState("dancing_script");
     const handleParagraphText = (event) => {
         setParagraphText(event.target.value);
     };
@@ -805,9 +811,9 @@ const App = () => {
                                                         }}
                                                     />
                                                 </Box>
-                                                <Box>
+                                                <Box sx={{ mb: 2.5 }}>
                                                     {insideFonts.map((value, index) => (
-                                                        <Box component="img" src={value.link} sx={{ width: 46, height: 46 }} />
+                                                        <Box className={`font-box ${value.name == titleFont ? 'font-box-active' : ''}`} component="img" src={value.link} sx={{ width: 46, height: 46 }} onClick={() => setTitleFont(value.name)} />
                                                     ))}
                                                 </Box>
                                             </Box>
@@ -819,14 +825,16 @@ const App = () => {
                                                     placeholder="z.B. Liebe ist alles"
                                                     onChange={handleParagraphText}
                                                     sx={{
-                                                        mb: 1,
+                                                        mb: 3,
                                                         "& .MuiInputBase-input": {
                                                             fontSize: "16px",
                                                         },
                                                     }}
                                                 />
                                                 <Box>
-
+                                                    {insideFonts.map((value, index) => (
+                                                        <Box className={`font-box ${value.name == paragraphTextFont ? 'font-box-active' : ''}`} component="img" src={value.link} sx={{ width: 46, height: 46 }} onClick={() => setParagraphTextFont(value.name)} />
+                                                    ))}
                                                 </Box>
                                             </Box>
                                         }
