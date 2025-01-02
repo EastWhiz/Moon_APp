@@ -1,4 +1,4 @@
-import { Autocomplete, Box, Button, Checkbox, Divider, FormControl, FormControlLabel, FormGroup, Grid2 as Grid, TextField, Typography, useMediaQuery } from "@mui/material";
+import { Autocomplete, Box, Button, Checkbox, Divider, FormControl, FormControlLabel, FormGroup, FormHelperText, Grid2 as Grid, InputAdornment, OutlinedInput, TextField, Typography, useMediaQuery } from "@mui/material";
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -8,10 +8,12 @@ import LoadingButton from '@mui/lab/LoadingButton';
 import dayjs from "dayjs";
 import { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
-import ToggleSwitch from "./ToggleSwitch";
 import './styles.css';
 import { useTheme } from "@emotion/react";
 import Switch from "react-switch";
+import ExpandLessIcon from '@mui/icons-material/ExpandLess';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 
 const mainUrl = "https://phpstack-1380969-5101925.cloudwaysapps.com";
 
@@ -256,12 +258,21 @@ const App = () => {
 
     const [selectedTab, setSelectedTab] = useState(0); // To handle the active tab state
 
+    const insideFonts = [
+        { name: 'dancing_script', link: `${mainUrl}/images/dancing_script.png` },
+        { name: 'italiana', link: `${mainUrl}/images/italiana.png` },
+        { name: 'outfit', link: `${mainUrl}/images/outfit.png` },
+        { name: 'tangerine', link: `${mainUrl}/images/tangerine.png` },
+    ];
+
     const [title, setTitle] = useState("");
+    const [titleFont, setTitleFont] = useState("");
     const handleTitle = (event) => {
         setTitle(event.target.value);
     };
 
     const [paragraphText, setParagraphText] = useState("");
+    const [paragraphTextFont, setParagraphTextFont] = useState("");
     const handleParagraphText = (event) => {
         setParagraphText(event.target.value);
     };
@@ -322,6 +333,13 @@ const App = () => {
     }, [tiles]);
 
     const [loading, setLoading] = useState(false);
+
+    const [menus, setMenus] = useState([
+        { title: "Datum eingeben *", status: true },
+        { title: "Ort eingeben *", status: false },
+        { title: "Titel eingeben (optional)", status: false },
+        { title: "Beschreibung eingeben (optional)", status: false }
+    ]);
 
     const changeTabHandler = async () => {
         if (selectedTab !== 3)
@@ -626,130 +644,195 @@ const App = () => {
                                 </Box>
                             </Box>}
                         {selectedTab === 1 &&
-                            <Box>
-                                <Box sx={{ p: 2 }}>
-                                    <Box sx={{ display: "flex", mt: 1 }}>
-                                        <Typography variant="h6" sx={{ fontSize: { xs: "14px", md: "16px" } }} mt={0.5} mb={2} mr={3}> Wo war dein Moment?</Typography>
-                                        <ToggleSwitch toggled={cityVisible} onClick={handleCityVisible} />
-                                    </Box>
-                                    <FormControl fullWidth sx={{ mb: 2 }}>
-                                        <Autocomplete
-                                            {...defaultProps}
-                                            noOptionsText={<span style={{ fontSize: '16px', padding: '8px' }}>No options</span>} // Custom text with styles
-                                            slotProps={{
-                                                paper: {
-                                                    sx: {
-                                                        "& .MuiAutocomplete-noOptions": {
-                                                            fontSize: "16px",
-                                                            padding: "8px",
-                                                        },
-                                                    },
-                                                },
-                                            }}
-                                            value={city}
-                                            onInputChange={(e, newInputValue) => {
-                                                clearTimeout(timeout);
-                                                timeout = setTimeout(() => {
-                                                    searchCityHandler(newInputValue); // Pass new input value to search
-                                                }, 500);
-                                            }}
-                                            onChange={(event, newValue) => {
-                                                // console.log(event, newValue);
-                                                setCity(newValue);
-                                                setCitiesList([]);
-                                            }}
-                                            renderInput={(params) => (
-                                                <TextField {...params}
-                                                    variant="standard"
-                                                    color="secondary"
-                                                    placeholder="Stadt suchen"
+                            <Box sx={{ margin: "16px", marginTop: "35px" }}>
+                                {menus.map((value, index) => (
+                                    <Box>
+                                        <Box className="accordion-outerside" onClick={() => {
+                                            let temp = [...menus];
+                                            temp[index] = { ...temp[index], status: !value.status }
+                                            setMenus(temp);
+                                        }}>
+                                            {value.status ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+                                            <Box className="catamaran-regular accordion-heading">{value.title}</Box>
+                                        </Box>
+                                        {value.title === "Datum eingeben *" && value.status === true &&
+                                            <Box mb={3.0}>
+                                                <Box sx={{ display: "flex" }}>
+                                                    <HelpOutlineIcon sx={{ fontSize: "16px", marginTop: "4px", marginRight: "10px" }} />
+                                                    <Box className="catamaran-regular ide-heading">
+                                                        Wir benötigen die Angabe für die Mondphasenberechnung.
+                                                    </Box>
+                                                </Box>
+                                                <Box mt={3}>
+                                                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                                                        <DatePicker
+                                                            className="catamaran-regular"
+                                                            format="DD-MM-YYYY"
+                                                            slotProps={{
+                                                                textField: {
+                                                                    InputProps: {
+                                                                        sx: {
+                                                                            // paddingLeft: "10px",
+                                                                            width: "155px",
+                                                                            fontFamily: '"Catamaran", serif',
+                                                                            fontOpticalSizing: "auto",
+                                                                            fontWeight: "400",
+                                                                            fontStyle: "normal",
+                                                                            fontSize: "18px"
+                                                                        },
+                                                                    },
+                                                                },
+                                                            }}
+                                                            value={selectedDate}
+                                                            onChange={(newValue) => {
+                                                                setSelectedDate(newValue);
+                                                            }}
+                                                        />
+                                                    </LocalizationProvider>
+                                                </Box>
+                                                <Box mt={3} sx={{ display: "flex" }}>
+                                                    <Switch
+                                                        onChange={handleDateVisible}
+                                                        checked={dateVisible}
+                                                        className={dateVisible ? 'react-switch-transparent' : 'react-switch'}
+                                                        onColor="#E7C509"
+                                                        onHandleColor="#FFFFFF"
+                                                        offColor="#FFFFFF"
+                                                        offHandleColor="#838B93"
+                                                        handleDiameter={21}
+                                                        uncheckedIcon={false}
+                                                        checkedIcon={false}
+                                                        boxShadow=""
+                                                        activeBoxShadow=""
+                                                        height={26}
+                                                        width={52}
+                                                    />
+                                                    <Box className={`catamaran-regular`} sx={{ marginLeft: "16px", marginTop: "2px", fontSize: "16px" }}>Auf Poster anzeigen</Box>
+                                                </Box>
+                                            </Box>
+                                        }
+                                        {value.title === "Ort eingeben *" && value.status === true &&
+                                            <Box mb={3.0}>
+                                                <Box sx={{ display: "flex" }}>
+                                                    <HelpOutlineIcon sx={{ fontSize: "16px", marginTop: "4px", marginRight: "10px" }} />
+                                                    <Box className="catamaran-regular ide-heading">
+                                                        Wir benötigen die Angabe für die Mondphasenberechnung.
+                                                    </Box>
+                                                </Box>
+                                                {/* <OutlinedInput /> */}
+                                                <FormControl fullWidth sx={{ mt: 3.0, mb: 0.5 }}>
+                                                    <Autocomplete
+                                                        {...defaultProps}
+                                                        noOptionsText={<span style={{ fontSize: '16px', padding: '8px' }}>No options</span>} // Custom text with styles
+                                                        slotProps={{
+                                                            paper: {
+                                                                sx: {
+                                                                    "& .MuiAutocomplete-noOptions": {
+                                                                        fontSize: "16px",
+                                                                        padding: "8px",
+                                                                    },
+                                                                },
+                                                            },
+                                                        }}
+                                                        value={city}
+                                                        onInputChange={(e, newInputValue) => {
+                                                            clearTimeout(timeout);
+                                                            timeout = setTimeout(() => {
+                                                                searchCityHandler(newInputValue); // Pass new input value to search
+                                                            }, 500);
+                                                        }}
+                                                        onChange={(event, newValue) => {
+                                                            // console.log(event, newValue);
+                                                            setCity(newValue);
+                                                            setCitiesList([]);
+                                                        }}
+                                                        renderInput={(params) => (
+                                                            <TextField {...params}
+                                                                placeholder="z.B. München"
+                                                                sx={{
+                                                                    "& .MuiInputBase-input": {
+                                                                        fontSize: "16px",
+                                                                    },
+                                                                    // "& .MuiOutlinedInput-root": {
+                                                                    //     "&:hover .MuiOutlinedInput-notchedOutline": {
+                                                                    //         borderColor: "transparent", // Remove hover border color
+                                                                    //     },
+                                                                    //     "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                                                                    //         borderColor: "transparent", // Remove focus border color
+                                                                    //         boxShadow: "none", // Remove box shadow on focus
+                                                                    //     },
+                                                                    // },
+                                                                }}
+                                                            />
+                                                        )}
+                                                        disableClearable
+                                                    />
+                                                </FormControl>
+                                                <Box mt={3} sx={{ display: "flex" }}>
+                                                    <Switch
+                                                        onChange={handleCityVisible}
+                                                        checked={cityVisible}
+                                                        className={cityVisible ? 'react-switch-transparent' : 'react-switch'}
+                                                        onColor="#E7C509"
+                                                        onHandleColor="#FFFFFF"
+                                                        offColor="#FFFFFF"
+                                                        offHandleColor="#838B93"
+                                                        handleDiameter={21}
+                                                        uncheckedIcon={false}
+                                                        checkedIcon={false}
+                                                        boxShadow=""
+                                                        activeBoxShadow=""
+                                                        height={26}
+                                                        width={52}
+                                                    />
+                                                    <Box className={`catamaran-regular`} sx={{ marginLeft: "16px", marginTop: "2px", fontSize: "16px" }}>Auf Poster anzeigen</Box>
+                                                </Box>
+                                            </Box>
+                                        }
+                                        {value.title === "Titel eingeben (optional)" && value.status === true &&
+                                            <Box>
+                                                <Box mt={0.5}>
+                                                    <TextField
+                                                        fullWidth
+                                                        value={title}
+                                                        onChange={handleTitle}
+                                                        placeholder="z.B. Liebe ist alles"
+                                                        sx={{
+                                                            mb: 3,
+                                                            "& .MuiInputBase-input": {
+                                                                fontSize: "16px",
+                                                            },
+                                                        }}
+                                                    />
+                                                </Box>
+                                                <Box>
+                                                    {insideFonts.map((value, index) => (
+                                                        <Box component="img" src={value.link} sx={{ width: 46, height: 46 }} />
+                                                    ))}
+                                                </Box>
+                                            </Box>
+                                        }
+                                        {value.title === "Beschreibung eingeben (optional)" && value.status === true &&
+                                            <Box>
+                                                <TextField fullWidth
+                                                    value={paragraphText}
+                                                    placeholder="z.B. Liebe ist alles"
+                                                    onChange={handleParagraphText}
                                                     sx={{
+                                                        mb: 1,
                                                         "& .MuiInputBase-input": {
                                                             fontSize: "16px",
-                                                        },
-                                                        "& .MuiOutlinedInput-root": {
-                                                            "&:hover .MuiOutlinedInput-notchedOutline": {
-                                                                borderColor: "transparent", // Remove hover border color
-                                                            },
-                                                            "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-                                                                borderColor: "transparent", // Remove focus border color
-                                                                boxShadow: "none", // Remove box shadow on focus
-                                                            },
                                                         },
                                                     }}
                                                 />
-                                            )}
-                                            disableClearable
-                                        />
-                                    </FormControl>
-                                    <Box sx={{ display: "flex", mt: 2 }}>
-                                        <Typography variant="h6" sx={{ fontSize: { xs: "14px", md: "16px" } }} mt={0.5} mb={2} mr={3}> Wann war dein Moment?</Typography>
-                                        <ToggleSwitch toggled={dateVisible} onClick={handleDateVisible} />
-                                    </Box>
-                                    <LocalizationProvider dateAdapter={AdapterDayjs}>
-                                        <DatePicker
-                                            format="YYYY-MM-DD"  // Customize the format as you wish
-                                            variant="standard"
-                                            slotProps={{
-                                                textField: {
-                                                    sx: {
-                                                        width: '100%',
-                                                        "& .MuiInputBase-input": {
-                                                            fontSize: "16px",
-                                                        },
-                                                    },
-                                                    variant: "standard",
-                                                    color: "secondary"
-                                                },
-                                            }}
-                                            value={selectedDate}
-                                            onChange={(newValue) => {
-                                                setSelectedDate(newValue);
-                                            }}
-                                        />
-                                    </LocalizationProvider>
-                                </Box>
-                            </Box>}
-                        {selectedTab === 2 &&
-                            <Box>
-                                <Box sx={{ p: 2 }}>
-                                    <Typography variant="h6" sx={{ fontSize: { xs: "14px", md: "16px" }, mb: 1 }}>
-                                        Gebe einen Titel ein (optional)
-                                    </Typography>
-                                    <TextField
-                                        color="secondary"
-                                        fullWidth
-                                        value={title}
-                                        onChange={handleTitle}
-                                        placeholder="Liebe ist alles"
-                                        variant="standard"
-                                        sx={{
-                                            mb: 3,
-                                            "& .MuiInputBase-input": {
-                                                fontSize: "16px",
-                                            },
-                                        }}
-                                    />
+                                                <Box>
 
-                                    <Typography variant="h6" sx={{ fontSize: { xs: "14px", md: "16px" }, mb: 1 }}>
-                                        Schreibe einen persönlichen Text (optional)
-                                    </Typography>
-                                    <TextField fullWidth
-                                        color="secondary"
-                                        value={paragraphText}
-                                        placeholder="Liebe ist, wenn zwei Herzen im gleichen Takt schlagen"
-                                        onChange={handleParagraphText}
-                                        variant="standard"
-                                        sx={{
-                                            mb: 1,
-                                            "& .MuiInputBase-input": {
-                                                fontSize: "16px",
-                                            },
-                                        }}
-                                    />
-                                </Box>
-                            </Box>
-                        }
+                                                </Box>
+                                            </Box>
+                                        }
+                                    </Box>
+                                ))}
+                            </Box>}
                         {selectedTab === 3 &&
                             <Box>
                                 <Box sx={{ p: 2 }}>

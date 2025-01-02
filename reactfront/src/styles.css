@@ -171,3 +171,21 @@ div:empty {
 .react-switch-transparent {
     border: 1px solid transparent
 }
+
+.accordion-heading {
+    font-weight: 600;
+    font-size: 16px;
+    margin-left: 5px;
+    margin-bottom: 20px
+}
+
+.accordion-outerside {
+    display: flex;
+    cursor: pointer;
+    margin-left: -5px;
+}
+
+.inside-heading {
+    font-weight: 400;
+    font-size: 16px;
+}
