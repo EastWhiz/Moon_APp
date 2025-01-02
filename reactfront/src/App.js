@@ -652,7 +652,7 @@ const App = () => {
                         {selectedTab === 1 &&
                             <Box sx={{ margin: "16px", marginTop: "35px" }}>
                                 {menus.map((value, index) => (
-                                    <Box>
+                                    <Box key={index}>
                                         <Box className="accordion-outerside" onClick={() => {
                                             let temp = [...menus];
                                             temp[index] = { ...temp[index], status: !value.status }
@@ -812,8 +812,8 @@ const App = () => {
                                                     />
                                                 </Box>
                                                 <Box sx={{ mb: 2.5 }}>
-                                                    {insideFonts.map((value, index) => (
-                                                        <Box className={`font-box ${value.name == titleFont ? 'font-box-active' : ''}`} component="img" src={value.link} sx={{ width: 46, height: 46 }} onClick={() => setTitleFont(value.name)} />
+                                                    {insideFonts.map((value, indexInside) => (
+                                                        <Box key={indexInside} className={`font-box ${value.name == titleFont ? 'font-box-active' : ''}`} component="img" src={value.link} sx={{ width: 46, height: 46 }} onClick={() => setTitleFont(value.name)} />
                                                     ))}
                                                 </Box>
                                             </Box>
@@ -832,8 +832,8 @@ const App = () => {
                                                     }}
                                                 />
                                                 <Box>
-                                                    {insideFonts.map((value, index) => (
-                                                        <Box className={`font-box ${value.name == paragraphTextFont ? 'font-box-active' : ''}`} component="img" src={value.link} sx={{ width: 46, height: 46 }} onClick={() => setParagraphTextFont(value.name)} />
+                                                    {insideFonts.map((value, indexInside) => (
+                                                        <Box key={indexInside} className={`font-box ${value.name == paragraphTextFont ? 'font-box-active' : ''}`} component="img" src={value.link} sx={{ width: 46, height: 46 }} onClick={() => setParagraphTextFont(value.name)} />
                                                     ))}
                                                 </Box>
                                             </Box>
