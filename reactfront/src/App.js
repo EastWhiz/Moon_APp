@@ -247,8 +247,6 @@ const App = () => {
     const [moon, setMoon] = useState({ range: [78, 91], day: 8 });
     const [rotateValue, setRotateValue] = useState(false);
 
-    const [frameSize, setFrameSize] = useState("30");
-
     const [starsEffect, setStarsEffect] = useState(false);
     const handleStarsEffect = () => {
         setStarsEffect(!starsEffect);
@@ -313,12 +311,12 @@ const App = () => {
     }, [city, selectedDate]);
 
     const frames = [
-        { name: "DINA 4", size: "21,0 cm x 29,7 cm" },
-        { name: "DINA 3", size: "29,7 cm x 42,0 cm" },
-        { name: "DINA 2", size: "42,0 cm x 59,4 cm" },
-        { name: "DINA 1", size: "59,4 cm x 84,1 cm" }
+        { name: "DINA 4", size: "21,0 cm x 29,7 cm", price: 30.0, increasedPrice: 80.0 },
+        { name: "DINA 3", size: "29,7 cm x 42,0 cm", price: 40.0, increasedPrice: 100.0 },
+        { name: "DINA 2", size: "42,0 cm x 59,4 cm", price: 50.0, increasedPrice: 120.0 },
+        { name: "DINA 1", size: "59,4 cm x 84,1 cm", price: 80.0, increasedPrice: 180.0 }
     ];
-    const [selectedFrame, setSelectedFrame] = useState({ name: "DINA 4", size: "21,0 cm x 29,7 cm" });
+    const [selectedFrame, setSelectedFrame] = useState(frames[0]);
 
     const [designs, setDesigns] = useState([
         { background: "#121824", withStars: `url('${mainUrl}/images/midnight_blue_stars.png')`, withoutStars: `url('${mainUrl}/images/midnight_blue.png')`, color: "white", smMoon: `${mainUrl}/images/m1.png`, active: true },
@@ -333,11 +331,6 @@ const App = () => {
         { priceEffect: "increased", title: "Weißer Holzrahmen", image: `${mainUrl}/images/light-border.PNG`, active: false }
     ]);
 
-    useEffect(() => {
-        let activeTile = tiles.find(tile => tile.active === true)
-        setFrameSize(activeTile.priceEffect === "normal" ? "30" : "80");
-    }, [tiles]);
-
     const [loading, setLoading] = useState(false);
 
     const [menus, setMenus] = useState([
@@ -348,37 +341,37 @@ const App = () => {
     ]);
 
     const changeTabHandler = async () => {
-        if (selectedTab !== 3)
+        if (selectedTab !== (isMobile ? 3 : 2))
             setSelectedTab(prevTab => prevTab + 1);
-        if (selectedTab === 3) {
+        if (selectedTab === (isMobile ? 3 : 2)) {
             setLoading(true);
 
             let activeTile = tiles.find(tile => tile.active === true);
-            let activeDesign = designs.find(design => design.active === true);
-            console.log(activeTile);
-            console.log(activeDesign);
-            console.log(starsEffect);
-            console.log(city);
-            console.log(title);
-            console.log(paragraphText);
-            console.log((dayjs(selectedDate.$d).format('MM-DD-YYYY hh:mm A')));
+            // let activeDesign = designs.find(design => design.active === true);
+            // console.log(activeTile);
+            // console.log(activeDesign);
+            // console.log(starsEffect);
+            // console.log(city);
+            // console.log(title);
+            // console.log(paragraphText);
+            // console.log((dayjs(selectedDate.$d).format('MM-DD-YYYY hh:mm A')));
 
             let variantId = 51846764134723;
-            if (frameSize === "30" && activeTile.priceEffect === "normal") {
+            if (selectedFrame.price === 30.0 && activeTile.priceEffect === "normal") {
                 variantId = 51846764134723;
-            } else if (frameSize === "40" && activeTile.priceEffect === "normal") {
+            } else if (selectedFrame.price === 40.0 && activeTile.priceEffect === "normal") {
                 variantId = 51846764200259;
-            } else if (frameSize === "50" && activeTile.priceEffect === "normal") {
+            } else if (selectedFrame.price === 50.0 && activeTile.priceEffect === "normal") {
                 variantId = 51846764265795;
-            } else if (frameSize === "80" && activeTile.priceEffect === "normal") {
+            } else if (selectedFrame.price === 80.0 && activeTile.priceEffect === "normal") {
                 variantId = 51846764331331;
-            } else if (frameSize === "80" && activeTile.priceEffect === "increased") {
+            } else if (selectedFrame.increasedPrice === 80.0 && activeTile.priceEffect === "increased") {
                 variantId = 51846764167491;
-            } else if (frameSize === "100" && activeTile.priceEffect === "increased") {
+            } else if (selectedFrame.increasedPrice === 100.0 && activeTile.priceEffect === "increased") {
                 variantId = 51846764233027;
-            } else if (frameSize === "120" && activeTile.priceEffect === "increased") {
+            } else if (selectedFrame.increasedPrice === 120.0 && activeTile.priceEffect === "increased") {
                 variantId = 51846764298563;
-            } else if (frameSize === "180" && activeTile.priceEffect === "increased") {
+            } else if (selectedFrame.increasedPrice === 180.0 && activeTile.priceEffect === "increased") {
                 variantId = 51846764364099;
             }
 
@@ -465,8 +458,6 @@ const App = () => {
         ),
     };
 
-    console.log(frameSize);
-
     return (
         <Box
             sx={{
@@ -499,7 +490,7 @@ const App = () => {
                         display: "block",
                         position: "absolute",
                         // width: frameSize === "5070" ? { xs: '60%', sm: '85%', md: '65%', lg: '45%', xl: '40%' } : { xs: '58%', sm: '83%', md: '63%', lg: '43%', xl: '38%' },
-                        width: { xs: '60%', sm: '85%', md: '65%', lg: '45%', xl: '40%' },
+                        width: { xs: '60%', sm: '85%', md: '65%', lg: '30%', xl: '40%' },
                         minWidth: { xs: '250px' },
                         padding: { xs: '20px', sm: '20px', md: '25px', lg: '25px', xl: '25px' },
                         textAlign: "center",
@@ -854,7 +845,62 @@ const App = () => {
                                             </Box>
                                         </Box>
                                     </Box>
-                                    <Typography variant="h6" sx={{ fontSize: { xs: "14px", md: "16px" }, mt: 3.0, mb: 3.0 }}>
+                                    {!isMobile &&
+                                        <Box>
+                                            <Typography variant="h6" sx={{ fontSize: { xs: "14px", md: "16px" }, mt: 3.0, mb: 3.0 }}>
+                                                Bilderrahmen auswählen
+                                            </Typography>
+                                            <Box mb={2.0} sx={{ display: isMobile ? '' : 'flex', justifyContent: "space-between" }}>
+                                                <Grid container spacing={2.2}>
+                                                    {tiles.map((imageSrc, index) => (
+                                                        <Grid key={index}>
+                                                            <Box onClick={() => {
+                                                                let temp = [...tiles];
+                                                                tiles.forEach((element, indexInside) => {
+                                                                    if (indexInside === index) {
+                                                                        temp[indexInside] = { ...temp[indexInside], active: true };
+                                                                    } else {
+                                                                        temp[indexInside] = { ...temp[indexInside], active: false };
+                                                                    }
+                                                                });
+                                                                setTiles(temp);
+                                                            }} sx={{
+                                                                display: "flex", // Add Flexbox
+                                                                justifyContent: "center", // Center horizontally
+                                                                alignItems: "center", // Center vertically
+                                                                cursor: "pointer",
+                                                                borderRadius: "4px",
+                                                                border: activeTile && activeTile.title === imageSrc.title ? "2px solid rgba(231, 197, 9, 1)" : "2px solid rgba(211, 211, 211, 1)",
+                                                                boxShadow: activeTile && activeTile.title === imageSrc.title ? "0px 8px 8px 0px rgba(0, 0, 0, 0.09)" : "",
+                                                                width: "54px",
+                                                                height: "72px"
+                                                            }}>
+                                                                <Box
+                                                                    component="img"
+                                                                    src={imageSrc.image}
+                                                                    // alt={`Image ${index + 1}`}
+                                                                    sx={{
+                                                                        width: 38,
+                                                                        height: 38,
+                                                                    }}
+                                                                />
+                                                            </Box>
+                                                        </Grid>
+                                                    ))}
+                                                </Grid>
+                                                <Box className="catamaran-regular" sx={{ fontSize: "16px", display: "flex", alignItems: "center", marginTop: isMobile ? '18px' : '' }}>
+                                                    kein Rahmen
+                                                </Box>
+                                            </Box>
+                                        </Box>
+                                    }
+                                </Box>
+                            </Box>
+                        }
+                        {isMobile && selectedTab === 3 &&
+                            <Box>
+                                <Box sx={{ p: 2, pb: 0.5 }}>
+                                    <Typography variant="h6" sx={{ fontSize: { xs: "14px", md: "16px" }, mb: 3.0 }}>
                                         Bilderrahmen auswählen
                                     </Typography>
                                     <Box mb={2.0} sx={{ display: isMobile ? '' : 'flex', justifyContent: "space-between" }}>
@@ -921,7 +967,7 @@ const App = () => {
                                 textAlign: "center",
                                 fontSize: { xs: "16px", md: "18px" },
                             }}>
-                                Aktueller Preis: {parseInt(frameSize).toFixed(2)}€
+                                Aktueller Preis: {activeTile && activeTile.priceEffect === "normal" ? selectedFrame.price : selectedFrame.increasedPrice}€
                             </Box>
                             <Divider />
                             <Box m={2} sx={{ display: "flex", justifyContent: "center" }}>
