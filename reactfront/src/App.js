@@ -490,7 +490,7 @@ const App = () => {
                         display: "block",
                         position: "absolute",
                         // width: frameSize === "5070" ? { xs: '60%', sm: '85%', md: '65%', lg: '45%', xl: '40%' } : { xs: '58%', sm: '83%', md: '63%', lg: '43%', xl: '38%' },
-                        width: { xs: '60%', sm: '85%', md: '65%', lg: '30%', xl: '40%' },
+                        width: { xs: '60%', sm: '85%', md: '65%', lg: '45%', xl: '40%' },
                         minWidth: { xs: '250px' },
                         padding: { xs: '20px', sm: '20px', md: '25px', lg: '25px', xl: '25px' },
                         textAlign: "center",
