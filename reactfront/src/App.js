@@ -528,12 +528,12 @@ const App = () => {
                                 </Canvas>
                             </Grid>
                             <Grid>
-                                <Typography variant="body1" sx={{ fontWeight: "500", mb: 1, fontSize: { xs: "18px", md: "24px" } }}>
+                                <Typography variant="body1" sx={{ fontWeight: "500", mb: 1, fontSize: { xs: "18px", md: "24px", fontFamily: `'${titleFont}', Arial, sans-serif` } }}>
                                     {title || "Liebe ist alles"}
                                 </Typography>
                             </Grid>
                             <Grid>
-                                <Typography variant="body2" sx={{ fontWeight: "500", mb: 2, fontSize: { xs: "12px", sm: "14px", md: "16px", lg: "16px", xl: "16px" }, padding: "0px 15px" }}>
+                                <Typography variant="body2" sx={{ fontWeight: "500", mb: 2, fontSize: { xs: "12px", sm: "14px", md: "16px", lg: "16px", xl: "16px" }, padding: "0px 15px", fontFamily: `'${paragraphTextFont}', Arial, sans-serif` }}>
                                     {paragraphText || "Liebe ist, wenn zwei Herzen im gleichen Takt schlagen"}
                                 </Typography>
                             </Grid>

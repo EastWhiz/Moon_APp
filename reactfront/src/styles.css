@@ -1,3 +1,23 @@
+@font-face {
+    font-family: 'dancing_script';
+    src: url('https://phpstack-1380969-5101925.cloudwaysapps.com/api/fonts/dancing_script.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'italiana';
+    src: url('https://phpstack-1380969-5101925.cloudwaysapps.com/api/fonts/italiana.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'outfit';
+    src: url('https://phpstack-1380969-5101925.cloudwaysapps.com/api/fonts/outfit.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'tangerine';
+    src: url('https://phpstack-1380969-5101925.cloudwaysapps.com/api/fonts/tangerine.ttf') format('truetype');
+}
+
 .catamaran-regular {
     font-family: "Catamaran", serif;
     font-optical-sizing: auto;
