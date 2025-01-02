@@ -222,3 +222,45 @@ div:empty {
     border: 2px solid rgba(231, 197, 9, 1);
     box-shadow: 0px 8px 8px 0px rgba(0, 0, 0, 0.09);
 }
+
+.disabled-button {
+    opacity: 0.35;
+    cursor: no-drop;
+}
+
+.dina4 {
+    width: 32px;
+    height: 41.48px;
+    border-radius: 4px;
+    box-shadow: 0px 8px 8px 0px rgba(0, 0, 0, 0.09);
+    margin: 0px 12px;
+}
+
+.dina3 {
+    width: 40px;
+    height: 51.85px;
+    border-radius: 4px;
+    box-shadow: 0px 8px 8px 0px rgba(0, 0, 0, 0.09);
+    margin: 0px 12px;
+}
+
+.dina2 {
+    width: 48px;
+    height: 62.22px;
+    border-radius: 4px;
+    box-shadow: 0px 8px 8px 0px rgba(0, 0, 0, 0.09);
+    margin: 0px 12px;
+}
+
+.dina1 {
+    width: 56px;
+    height: 72.59px;
+    border-radius: 4px;
+    box-shadow: 0px 8px 8px 0px rgba(0, 0, 0, 0.09);
+    margin: 0px 12px;
+}
+
+.dina-all {
+    text-align: center;
+    font-size: 11px;
+}

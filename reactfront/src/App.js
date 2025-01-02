@@ -1,19 +1,19 @@
-import { Autocomplete, Box, Button, Checkbox, Divider, FormControl, FormControlLabel, FormGroup, FormHelperText, Grid2 as Grid, InputAdornment, OutlinedInput, TextField, Typography, useMediaQuery } from "@mui/material";
+import { useTheme } from "@emotion/react";
+import ExpandLessIcon from '@mui/icons-material/ExpandLess';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
+import LoadingButton from '@mui/lab/LoadingButton';
+import { Autocomplete, Box, Divider, FormControl, Grid2 as Grid, TextField, Typography, useMediaQuery } from "@mui/material";
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { OrbitControls, Sphere, useTexture } from "@react-three/drei";
 import { Canvas, useFrame } from "@react-three/fiber";
-import LoadingButton from '@mui/lab/LoadingButton';
 import dayjs from "dayjs";
 import { useEffect, useRef, useState } from "react";
+import Switch from "react-switch";
 import * as THREE from "three";
 import './styles.css';
-import { useTheme } from "@emotion/react";
-import Switch from "react-switch";
-import ExpandLessIcon from '@mui/icons-material/ExpandLess';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 
 const mainUrl = "https://phpstack-1380969-5101925.cloudwaysapps.com";
 
@@ -137,11 +137,6 @@ const Moon = ({ moonData }) => {
 
     // ASSETS
     const textureURL = "https://ygvxwv-fv.myshopify.com/cdn/shop/t/2/assets/moon_textures.jpg";
-    // const textureURL = "https://ygvxwv-fv.myshopify.com/cdn/shop/t/2/assets/moon_textures_two.jpg";
-    // const dancing_script = "https://ygvxwv-fv.myshopify.com/cdn/shop/t/2/assets/dancing_script.ttf";
-    // const italiana = "https://ygvxwv-fv.myshopify.com/cdn/shop/t/2/assets/italiana.ttf";
-    // const assets = "https://ygvxwv-fv.myshopify.com/cdn/shop/t/2/assets/outfit.ttf";
-    // const tangerine = "https://ygvxwv-fv.myshopify.com/cdn/shop/t/2/assets/tangerine.ttf";
 
     const [texture] = useTexture([textureURL]);
 
@@ -253,9 +248,6 @@ const App = () => {
     const [rotateValue, setRotateValue] = useState(false);
 
     const [frameSize, setFrameSize] = useState("30");
-    const handleFrameSize = (event) => {
-        setFrameSize(event.target.value);
-    };
 
     const [starsEffect, setStarsEffect] = useState(false);
     const handleStarsEffect = () => {
@@ -319,6 +311,14 @@ const App = () => {
             getData();
         }
     }, [city, selectedDate]);
+
+    const frames = [
+        { name: "DINA 4", size: "21,0 cm x 29,7 cm" },
+        { name: "DINA 3", size: "29,7 cm x 42,0 cm" },
+        { name: "DINA 2", size: "42,0 cm x 59,4 cm" },
+        { name: "DINA 1", size: "59,4 cm x 84,1 cm" }
+    ];
+    const [selectedFrame, setSelectedFrame] = useState({ name: "DINA 4", size: "21,0 cm x 29,7 cm" });
 
     const [designs, setDesigns] = useState([
         { background: "#121824", withStars: `url('${mainUrl}/images/midnight_blue_stars.png')`, withoutStars: `url('${mainUrl}/images/midnight_blue.png')`, color: "white", smMoon: `${mainUrl}/images/m1.png`, active: true },
@@ -465,6 +465,8 @@ const App = () => {
         ),
     };
 
+    console.log(frameSize);
+
     return (
         <Box
             sx={{
@@ -482,7 +484,7 @@ const App = () => {
             <Box sx={{
                 width: { xs: '100%', sm: '60%', md: '65%' },
                 overflow: 'hidden',
-                // background: "url('wall2.jfif')",
+                background: "#EDEEF0",
                 backgroundRepeat: "no-repeat",
                 backgroundSize: 'cover',
                 display: 'flex',
@@ -501,7 +503,7 @@ const App = () => {
                         minWidth: { xs: '250px' },
                         padding: { xs: '20px', sm: '20px', md: '25px', lg: '25px', xl: '25px' },
                         textAlign: "center",
-                        boxShadow: "0px 4px 10px rgba(0,0,0,0.2)",
+                        boxShadow: "0px 69px 69px 0px rgba(0, 0, 0, 0.09)",
                         background: activeDesign && (starsEffect ? activeDesign.withStars : activeDesign.withoutStars),
                         backgroundSize: 'cover', // Adjust background size to cover the div
                         backgroundRepeat: 'no-repeat', // Prevent the background from repeating
@@ -632,21 +634,6 @@ const App = () => {
                                         />
                                         <Box className={`catamaran-regular`} sx={{ marginLeft: "16px", marginTop: "2px", fontSize: "16px" }}>Sterne ausblenden</Box>
                                     </Box>
-                                    {/* <Typography variant="h6" sx={{ fontSize: { xs: "14px", md: "16px" }, mt: 1 }}>
-                                        Wähle deine Größe
-                                    </Typography>
-                                    <Box>
-                                        <FormGroup>
-                                            {activeTile &&
-                                                <>
-                                                    <FormControlLabel control={<Checkbox color="secondary" value={activeTile.priceEffect === "normal" ? 30 : 80} checked={frameSize === (activeTile.priceEffect === "normal" ? "30" : "80")} onChange={handleFrameSize} />} label={<span style={{ fontSize: "16px" }}>21,0 cm x 29,7 cm (DINA 4)</span>} />
-                                                    <FormControlLabel control={<Checkbox color="secondary" value={activeTile.priceEffect === "normal" ? 40 : 100} checked={frameSize === (activeTile.priceEffect === "normal" ? "40" : "100")} onChange={handleFrameSize} />} label={<span style={{ fontSize: "16px" }}>29,7 cm x 42,0 cm (DINA 3)</span>} />
-                                                    <FormControlLabel control={<Checkbox color="secondary" value={activeTile.priceEffect === "normal" ? 50 : 120} checked={frameSize === (activeTile.priceEffect === "normal" ? "50" : "120")} onChange={handleFrameSize} />} label={<span style={{ fontSize: "16px" }}>42,0 cm x 59,4 cm (DINA 2)</span>} />
-                                                    <FormControlLabel control={<Checkbox color="secondary" value={activeTile.priceEffect === "normal" ? 80 : 180} checked={frameSize === (activeTile.priceEffect === "normal" ? "80" : "180")} onChange={handleFrameSize} />} label={<span style={{ fontSize: "16px" }}>59,4 cm x 84,1 cm (DINA 1)</span>} />
-                                                </>
-                                            }
-                                        </FormGroup>
-                                    </Box> */}
                                 </Box>
                             </Box>}
                         {selectedTab === 1 &&
@@ -813,7 +800,7 @@ const App = () => {
                                                 </Box>
                                                 <Box sx={{ mb: 2.5 }}>
                                                     {insideFonts.map((value, indexInside) => (
-                                                        <Box key={indexInside} className={`font-box ${value.name == titleFont ? 'font-box-active' : ''}`} component="img" src={value.link} sx={{ width: 46, height: 46 }} onClick={() => setTitleFont(value.name)} />
+                                                        <Box key={indexInside} className={`font-box ${value.name === titleFont ? 'font-box-active' : ''}`} component="img" src={value.link} sx={{ width: 46, height: 46 }} onClick={() => setTitleFont(value.name)} />
                                                     ))}
                                                 </Box>
                                             </Box>
@@ -833,7 +820,7 @@ const App = () => {
                                                 />
                                                 <Box>
                                                     {insideFonts.map((value, indexInside) => (
-                                                        <Box key={indexInside} className={`font-box ${value.name == paragraphTextFont ? 'font-box-active' : ''}`} component="img" src={value.link} sx={{ width: 46, height: 46 }} onClick={() => setParagraphTextFont(value.name)} />
+                                                        <Box key={indexInside} className={`font-box ${value.name === paragraphTextFont ? 'font-box-active' : ''}`} component="img" src={value.link} sx={{ width: 46, height: 46 }} onClick={() => setParagraphTextFont(value.name)} />
                                                     ))}
                                                 </Box>
                                             </Box>
@@ -841,61 +828,89 @@ const App = () => {
                                     </Box>
                                 ))}
                             </Box>}
-                        {selectedTab === 3 &&
+                        {selectedTab === 2 &&
                             <Box>
-                                <Box sx={{ p: 2 }}>
-                                    <Typography variant="h6" sx={{ fontSize: { xs: "14px", md: "16px" }, mb: 1 }}>
-                                        Füge einen Bilderrahmen hinzu
+                                <Box sx={{ p: 2, pb: 0.5 }}>
+                                    <Typography variant="h6" sx={{ fontSize: { xs: "14px", md: "16px" }, mb: 3.0 }}>
+                                        Hintergrund auswählen
                                     </Typography>
-                                    <Grid container spacing={2.5}>
-                                        {tiles.map((imageSrc, index) => (
-                                            <Grid key={index}>
-                                                <Box onClick={() => {
-                                                    let temp = [...tiles];
-                                                    tiles.forEach((element, indexInside) => {
-                                                        if (indexInside === index) {
-                                                            temp[indexInside] = { ...temp[indexInside], active: true };
-                                                        } else {
-                                                            temp[indexInside] = { ...temp[indexInside], active: false };
-                                                        }
-                                                    });
-                                                    setTiles(temp);
-                                                }} sx={{
-                                                    p: "8px 18px 0px",
-                                                    borderRadius: "10px",
-                                                    border: imageSrc.active ? "3px solid #9c27b0" : "3px solid #cccccc", // Highlight the first image
-                                                    cursor: "pointer",
-                                                    mb: 0.5
-                                                }}>
-                                                    <Box
-                                                        component="img"
-                                                        src={imageSrc.image}
-                                                        // alt={`Image ${index + 1}`}
-                                                        sx={{
-                                                            width: 46,
-                                                            height: 46,
-                                                        }}
-                                                    />
+                                    <Box sx={{ display: isMobile ? '' : 'flex', justifyContent: "space-between" }}>
+                                        <Box sx={{ display: "flex" }}>
+                                            {frames.map((value, index) => (
+                                                <Box key={index} sx={{ display: "flex", flexDirection: "column", justifyContent: "space-between", height: "100px", cursor: "pointer" }} onClick={() => setSelectedFrame(value)}>
+                                                    <Box className={value.name.toLowerCase().replace(/\s+/g, '')} sx={{ marginLeft: index === 0 ? "0px" : "", border: selectedFrame.name === value.name ? "2px solid rgba(231, 197, 9, 1)" : "2px solid transparent" }} ></Box>
+                                                    <Box className="catamaran-regular dina-all" sx={{ textAlign: index === 0 ? "left" : "" }}>{value.name}</Box>
                                                 </Box>
-                                                <Box className="catamaran-regular" sx={{
-                                                    fontSize: "12px",
-                                                    textAlign: "center", // Optional: Center-align the text
-                                                    whiteSpace: "normal", // Allows text to wrap
-                                                    wordWrap: "break-word", // Breaks long words
-                                                    maxWidth: "85px", // Matches the width of the image
-                                                    overflow: "hidden", // Prevents text from overflowing
-                                                    lineHeight: "1.2"
-                                                }}>{imageSrc.title}</Box>
-                                            </Grid>
-                                        ))}
-                                    </Grid>
+                                            ))}
+                                        </Box>
+                                        <Box sx={{ display: "flex", alignItems: "center", marginTop: isMobile ? '18px' : '' }}>
+                                            <Box>
+                                                <Box className="catamaran-regular" sx={{ fontWeight: "800", fontSize: "14px" }}>
+                                                    {selectedFrame.name}
+                                                </Box>
+                                                <Box className="catamaran-regular" sx={{ fontSize: "14px" }}>
+                                                    {selectedFrame.size}
+                                                </Box>
+                                            </Box>
+                                        </Box>
+                                    </Box>
+                                    <Typography variant="h6" sx={{ fontSize: { xs: "14px", md: "16px" }, mt: 3.0, mb: 3.0 }}>
+                                        Bilderrahmen auswählen
+                                    </Typography>
+                                    <Box mb={2.0} sx={{ display: isMobile ? '' : 'flex', justifyContent: "space-between" }}>
+                                        <Grid container spacing={2.2}>
+                                            {tiles.map((imageSrc, index) => (
+                                                <Grid key={index}>
+                                                    <Box onClick={() => {
+                                                        let temp = [...tiles];
+                                                        tiles.forEach((element, indexInside) => {
+                                                            if (indexInside === index) {
+                                                                temp[indexInside] = { ...temp[indexInside], active: true };
+                                                            } else {
+                                                                temp[indexInside] = { ...temp[indexInside], active: false };
+                                                            }
+                                                        });
+                                                        setTiles(temp);
+                                                    }} sx={{
+                                                        display: "flex", // Add Flexbox
+                                                        justifyContent: "center", // Center horizontally
+                                                        alignItems: "center", // Center vertically
+                                                        cursor: "pointer",
+                                                        borderRadius: "4px",
+                                                        border: activeTile && activeTile.title === imageSrc.title ? "2px solid rgba(231, 197, 9, 1)" : "2px solid rgba(211, 211, 211, 1)",
+                                                        boxShadow: activeTile && activeTile.title === imageSrc.title ? "0px 8px 8px 0px rgba(0, 0, 0, 0.09)" : "",
+                                                        width: "54px",
+                                                        height: "72px"
+                                                    }}>
+                                                        <Box
+                                                            component="img"
+                                                            src={imageSrc.image}
+                                                            // alt={`Image ${index + 1}`}
+                                                            sx={{
+                                                                width: 38,
+                                                                height: 38,
+                                                            }}
+                                                        />
+                                                    </Box>
+                                                </Grid>
+                                            ))}
+                                        </Grid>
+                                        <Box className="catamaran-regular" sx={{ fontSize: "16px", display: "flex", alignItems: "center", marginTop: isMobile ? '18px' : '' }}>
+                                            kein Rahmen
+                                        </Box>
+                                    </Box>
                                 </Box>
-                            </Box>}
+                            </Box>
+                        }
                         <Box sx={{ padding: "16px" }}>
                             {loading ?
                                 <LoadingButton sx={{ py: { xs: 1, md: 2 }, }} loading variant="contained" fullWidth>Submit</LoadingButton> :
-                                <Box className="catamaran-regular big-button" onClick={changeTabHandler} >
-                                    {selectedTab === 0 ? 'Nächster Schritt →' : selectedTab === 1 ? 'Personalisieren' : selectedTab === 2 ? 'Zu den Extras' : selectedTab === 3 ? 'In den Warenkorb' : null}
+                                <Box className={`catamaran-regular big-button ${selectedTab === 1 && city === "" ? 'disabled-button' : ''}`} onClick={() => {
+                                    if (!(selectedTab === 1 && city === "")) {
+                                        changeTabHandler();
+                                    }
+                                }} >
+                                    Nächster Schritt →
                                 </Box>
                             }
                             <Box className="catamaran-regular" sx={{
