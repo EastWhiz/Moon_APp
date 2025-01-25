@@ -27,9 +27,6 @@ export default function Authenticated({ header, children }) {
                                 <NavLink href={route('home', query)} active={route().current('home')}>
                                     Orders
                                 </NavLink>
-                                <NavLink href={route('instructions', query)} active={route().current('instructions')}>
-                                    Instructions
-                                </NavLink>
                             </div>
                         </div>
                         <div className="-mr-2 flex items-center sm:hidden">
@@ -62,11 +59,6 @@ export default function Authenticated({ header, children }) {
                     <div className="pt-2 pb-3 space-y-1">
                         <ResponsiveNavLink href={route('home', query)} active={route().current('home')}>
                             Orders
-                        </ResponsiveNavLink>
-                    </div>
-                    <div className="pt-2 pb-3 space-y-1">
-                        <ResponsiveNavLink href={route('instructions', query)} active={route().current('instructions')}>
-                            Instructions
                         </ResponsiveNavLink>
                     </div>
                 </div>
