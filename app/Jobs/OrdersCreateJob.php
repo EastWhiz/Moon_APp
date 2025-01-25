@@ -4,6 +4,7 @@ namespace App\Jobs;
 
 use App\Models\Order;
 use App\Models\OrderLineItem;
+use App\Models\OrderPrint;
 use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -107,6 +108,60 @@ class OrdersCreateJob implements ShouldQueue
                         'weight' => $line_item->grams,
                     ]
                 );
+
+                // Initialize an associative array to store the mapped data
+                $data = [];
+
+                // Loop through the properties to map them to the fillable fields
+                foreach ($line_item->properties as $property) {
+                    switch ($property['name']) {
+                        case '_design':
+                            $data['design'] = $property['value'];
+                            break;
+                        case '_cityVisible':
+                            $data['cityVisible'] = filter_var($property['value'], FILTER_VALIDATE_BOOLEAN);
+                            break;
+                        case '_dateVisible':
+                            $data['dateVisible'] = filter_var($property['value'], FILTER_VALIDATE_BOOLEAN);
+                            break;
+                        case '_starsEffect':
+                            $data['starsEffect'] = filter_var($property['value'], FILTER_VALIDATE_BOOLEAN);
+                            break;
+                        case '_title':
+                            $data['title'] = $property['value'];
+                            break;
+                        case '_titleFont':
+                            $data['titleFont'] = $property['value'];
+                            break;
+                        case '_paragraphText':
+                            $data['paragraphText'] = $property['value'];
+                            break;
+                        case '_paragraphTextFont':
+                            $data['paragraphTextFont'] = $property['value'];
+                            break;
+                        case '_selectedDate':
+                            $data['selectedDate'] = $property['value'];
+                            break;
+                        case '_city':
+                            $data['city'] = $property['value'];
+                            break;
+                        case '_titleFontSize':
+                            $data['titleFontSize'] = $property['value'];
+                            break;
+                        case '_paragraphFontSize':
+                            $data['paragraphFontSize'] = $property['value'];
+                            break;
+                    }
+                }
+
+                // Add additional fields if necessary
+                $data['user_id'] = $user->id; // or another way to get the user_id
+                $data['order_id'] = $order->id; // Replace with the appropriate order ID
+
+                // Save the mapped data to the database
+                $orderPrint = OrderPrint::create($data);
+
+                DropboxJob::dispatch($user, $orderPrint);
             }
         }
 

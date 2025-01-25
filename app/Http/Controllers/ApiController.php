@@ -61,10 +61,6 @@ class ApiController extends Controller
 
         $data = $response->json();
 
-        $phaseAngle = $data['data']['table']['rows'][0]['cells'][0]['extraInfo']['phase']['angel'];
-        $rotationDegree = $this->calculateMoonRotation($phaseAngle, $latitude);
-        logger("Rotate the Moon image by " . round($rotationDegree, 2) . "° clockwise.");
-
         // $finalData = [];
         // foreach ($data['data']['table']['rows'][0]['cells'] as $key => $dat) {
         //     $finalData[] = [

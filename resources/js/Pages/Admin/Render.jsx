@@ -639,6 +639,8 @@ const App = () => {
                 const formData = new FormData();
                 formData.set("id", variantId);
                 formData.set("quantity", 1);
+
+                // PROPERTIES TO SHOW IN CART
                 if (activeTile.title !== "kein Rahmen")
                     formData.append(`properties[Rahmen Kategorie]`, activeTile.title);
                 formData.append(`properties[Date]`, format(selectedDate, "dd.MM.yyyy"));
@@ -649,6 +651,21 @@ const App = () => {
                 formData.append(`properties[Beschreibung Letter Type]`, paragraphTextFont);
                 formData.append(`properties[Sterneneffekt]`, starsEffect ? 'Ja' : 'Nein');
                 formData.append(`properties[Achtergrond]`, activeDesign.name);
+
+                // PROPERTIES TO WORK IN DATABASE
+                formData.append(`properties[_design]`, activeDesign.name);
+                formData.append(`properties[_cityVisible]`, cityVisible);
+                formData.append(`properties[_dateVisible]`, dateVisible);
+                formData.append(`properties[_starsEffect]`, starsEffect);
+                formData.append(`properties[_title]`, title);
+                formData.append(`properties[_titleFont]`, titleFont);
+                formData.append(`properties[_paragraphText]`, paragraphText);
+                formData.append(`properties[_paragraphTextFont]`, paragraphTextFont);
+                formData.append(`properties[_selectedDate]`, format(selectedDate, "dd.MM.yyyy"));
+                formData.append(`properties[_city]`, JSON.stringify(city));
+                formData.append(`properties[_titleFontSize]`, titleFontSize);
+                formData.append(`properties[_paragraphFontSize]`, paragraphFontSize);
+
                 fetch(window.Shopify.routes.root + 'cart/add.js', {
                     method: "POST",
                     body: formData,
