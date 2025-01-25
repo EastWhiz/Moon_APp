@@ -1,0 +1,21 @@
+# Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
+
+client_id = "5d1db661aaf8df09300f41c1fbcc7c7a"
+name = "Moonora Test"
+handle = "moonora-test-1"
+application_url = "https://phpstack-1380969-5101925.cloudwaysapps.com/"
+embedded = true
+
+[build]
+include_config_on_deploy = true
+
+[auth]
+redirect_urls = [
+  "https://phpstack-1380969-5101925.cloudwaysapps.com/authenticate"
+]
+
+[webhooks]
+api_version = "2025-01"
+
+[pos]
+embedded = false
