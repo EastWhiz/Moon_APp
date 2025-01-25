@@ -16,9 +16,9 @@ return new class extends Migration
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('order_id');
             $table->string('design')->nullable();
-            $table->boolean('cityVisible')->default(false);
-            $table->boolean('dateVisible')->default(false);
-            $table->boolean('starsEffect')->default(false);
+            $table->string('cityVisible')->default("false");
+            $table->string('dateVisible')->default("false");
+            $table->string('starsEffect')->default("false");
             $table->string('title')->nullable();
             $table->string('titleFont')->nullable();
             $table->string('paragraphText')->nullable();
