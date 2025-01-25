@@ -46,7 +46,25 @@ class DropboxJob implements ShouldQueue
         ini_set('post_max_size', '1024M');
         set_time_limit(600); // Set script execution time to 5 minutes
 
-        Browsershot::url(env('APP_URL') . "/admin/render?design=$print->design&cityVisible=$print->cityVisible&dateVisible=$print->dateVisible&starsEffect=$print->starsEffect&title=$print->title&titleFont=$print->titleFont&paragraphText=$print->paragraphText&paragraphTextFont=$print->paragraphTextFont&selectedDate=$print->selectedDate&city=$print->city&titleFontSize=$print->titleFontSize&paragraphFontSize=$print->paragraphFontSize")
+
+        $url = env('APP_URL') . '/admin/render?' . http_build_query([
+            'design' => $print->design,
+            'cityVisible' => $print->cityVisible,
+            'dateVisible' => $print->dateVisible,
+            'starsEffect' => $print->starsEffect,
+            'title' => $print->title,
+            'titleFont' => $print->titleFont,
+            'paragraphText' => $print->paragraphText,
+            'paragraphTextFont' => $print->paragraphTextFont,
+            'selectedDate' => $print->selectedDate,
+            'city' => $print->city,
+            'titleFontSize' => $print->titleFontSize,
+            'paragraphFontSize' => $print->paragraphFontSize,
+        ]);
+
+        logger($url);
+
+        Browsershot::url($url)
             ->waitUntilNetworkIdle()
             ->timeout(180000)
             ->waitForSelector('#allGoodToGo')

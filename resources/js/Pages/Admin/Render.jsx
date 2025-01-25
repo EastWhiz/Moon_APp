@@ -661,7 +661,7 @@ const App = () => {
                 formData.append(`properties[_titleFont]`, titleFont);
                 formData.append(`properties[_paragraphText]`, paragraphText);
                 formData.append(`properties[_paragraphTextFont]`, paragraphTextFont);
-                formData.append(`properties[_selectedDate]`, format(selectedDate, "dd.MM.yyyy"));
+                formData.append(`properties[_selectedDate]`, format(selectedDate, "dd-MM-yyyy"));
                 formData.append(`properties[_city]`, JSON.stringify(city));
                 formData.append(`properties[_titleFontSize]`, titleFontSize);
                 formData.append(`properties[_paragraphFontSize]`, paragraphFontSize);
