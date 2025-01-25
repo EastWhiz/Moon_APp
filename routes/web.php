@@ -6,7 +6,9 @@ use App\Http\Controllers\CustomizerController;
 use App\Http\Controllers\FireBaseWebhookController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ShopsController;
+use App\Jobs\DropboxJob;
 use App\Jobs\SyncProductsJob;
+use App\Models\OrderPrint;
 use App\Models\Product;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
@@ -78,21 +80,11 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
 Route::inertia('admin/render', 'Admin/Render')->name('render');
 
 Route::get("/function", function () {
-    // Browsershot::url('https://www.google.com')->save('ss.png');
 
-    ini_set('max_execution_time', 600);       // 600 seconds = 10 minutes
-    ini_set('upload_max_filesize', '1024M'); // 1024 MB
-    ini_set('post_max_size', '1024M');
+    $user = User::find(2);
+    $order_print = OrderPrint::find(2);
 
-    Browsershot::url('https://phpstack-1380969-5101925.cloudwaysapps.com/admin/render?design=grey_blue&cityVisible=true&dateVisible=true&starsEffect=true&title=Faisalabad&titleFont=italiana&paragraphText=City+of+Kapaas&paragraphTextFont=tangerine&selectedDate=10-01-2025&city=%7B%22name%22%3A%22Faisalabad%2C+Punjab%2C+Pakistan%22%2C%22value%22%3A%22Faisalabad%22%2C%22lat%22%3A%2231.41554%22%2C%22lng%22%3A%2273.08969%22%7D&titleFontSize=1.00&paragraphFontSize=0.75')
-        ->waitUntilNetworkIdle()
-        ->timeout(180000)
-        ->waitForSelector('#allGoodToGo')
-        ->select('#cardIdParent')
-        ->setScreenshotType('jpeg', 100)
-        ->deviceScaleFactor(4) // Mimics 300 DPI
-        ->windowSize(9000, 5700)
-        ->save('ss.jpeg');
+    DropboxJob::dispatch($user, $order_print);
 });
 
 require __DIR__ . '/auth.php';
