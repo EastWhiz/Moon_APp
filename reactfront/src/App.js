@@ -865,7 +865,7 @@ const App = () => {
                                             <Box component="img" sx={{ height: `${moonParent.width}px`, width: `${moonParent.width}px`, transform: rotateValue ? `rotate(${rotateValue}deg)` : `rotate(0deg)` }} src={screenShotUrl} />
                                             : <Canvas
                                                 camera={{ position: [0, 0, 4], fov: 75 }}
-                                                style={{ marginTop: defaultDesign !== "" || defaultDesign !== null ? "" : "0.6vw", height: `${moonParent.width}px`, width: `${moonParent.width}px`, transform: rotateValue ? `rotate(${rotateValue}deg)` : `rotate(0deg)` }}>
+                                                style={{ marginTop: defaultDesign ? "0.6vw" : "", height: `${moonParent.width}px`, width: `${moonParent.width}px`, transform: rotateValue ? `rotate(${rotateValue}deg)` : `rotate(0deg)` }}>
                                                 <OrbitControls enablePan={false} enableZoom={false} enableRotate={false}
                                                     touches={{ ONE: THREE.TOUCH.ROTATE, TWO: THREE.TOUCH.DOLLY_ROTATE }}
                                                 />
@@ -886,13 +886,13 @@ const App = () => {
                                 </Grid>
                                 <Box sx={{
                                     position: "absolute",
-                                    bottom: defaultDesign !== "" || defaultDesign !== null ? {
+                                    bottom: defaultDesign ? "1.7vw" : {
                                         xs: activeTile.priceEffect === "normal" ? "0.104vw" : "0.104vw",
                                         sm: activeTile.priceEffect === "normal" ? "0.957vw" : "0.957vw",
                                         md: activeTile.priceEffect === "normal" ? "0.830vw" : "0.830vw",
                                         lg: activeTile.priceEffect === "normal" ? "0.830vw" : "0.830vw",
                                         xl: activeTile.priceEffect === "normal" ? "0.830vw" : "0.830vw",
-                                    } : "1.7vw",
+                                    },
                                 }}>
                                     <Grid>
                                         <Typography variant="body2" sx={{ fontWeight: "500", fontSize: { xs: "1.30vw", sm: "1.0vw", md: "0.60vw" }, fontFamily: `'outfit', Arial, sans-serif` }}>
