@@ -10,8 +10,31 @@ import { AppProvider } from '@shopify/polaris';
 import en from "@shopify/polaris/locales/en.json";
 import "@shopify/polaris/build/esm/styles.css";
 
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 window.appURL = import.meta.env.VITE_APP_URL;
+
+const theme = createTheme({
+    components: {
+        MuiCheckbox: {
+            styleOverrides: {
+                root: {
+                    "& .MuiSvgIcon-root": {
+                        fontSize: "28px", // Adjust the size of the checkbox icon
+                    },
+                },
+            },
+        },
+        MuiFormControlLabel: {
+            styleOverrides: {
+                label: {
+                    fontSize: "16px", // Set the label font size globally
+                },
+            },
+        },
+    },
+});
 
 createInertiaApp({
     title: (title) => `${title} - ${appName}`,
@@ -21,7 +44,9 @@ createInertiaApp({
 
         root.render(
             <AppProvider i18n={en}>
-                <App {...props} />
+                <ThemeProvider theme={theme}>
+                    <App {...props} />
+                </ThemeProvider>
             </AppProvider>
         );
     },

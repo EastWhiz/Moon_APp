@@ -75,6 +75,8 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
     });
 });
 
+Route::inertia('admin/render', 'Admin/Render')->name('render');
+
 Route::get("/function", function () {
     // Browsershot::url('https://www.google.com')->save('ss.png');
 
