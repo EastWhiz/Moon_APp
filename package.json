@@ -20,12 +20,6 @@
         "vite": "^4.0.0"
     },
     "dependencies": {
-        "@shopify/polaris": "11.1.2",
-        "@shopify/polaris-icons": "^6.4.0",
-        "highcharts": "^10.3.3",
-        "highcharts-react-official": "^3.2.0",
-        "puppeteer": "^24.1.1",
-        "sweetalert2": "^11.10.1",
         "@emotion/react": "^11.13.5",
         "@emotion/styled": "^11.13.5",
         "@mui/icons-material": "^6.1.8",
@@ -34,14 +28,20 @@
         "@mui/x-date-pickers": "^7.23.1",
         "@react-three/drei": "^9.117.3",
         "@react-three/fiber": "^8.17.10",
+        "@shopify/polaris": "11.1.2",
+        "@shopify/polaris-icons": "^6.4.0",
         "@testing-library/jest-dom": "^5.17.0",
         "@testing-library/react": "^13.4.0",
         "@testing-library/user-event": "^13.5.0",
         "@types/three": "^0.170.0",
         "date-fns": "^4.1.0",
         "dayjs": "^1.11.13",
+        "highcharts": "^10.3.3",
+        "highcharts-react-official": "^3.2.0",
         "html2canvas": "^1.4.1",
+        "puppeteer": "^24.1.1",
         "react-switch": "^7.1.0",
+        "sweetalert2": "^11.10.1",
         "three": "^0.170.0"
     }
 }
