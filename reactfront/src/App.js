@@ -453,9 +453,9 @@ const App = () => {
     ]);
 
     const [tiles, setTiles] = useState([
-        { priceEffect: "normal", title: "kein Rahmen", image: `${mainUrl}/api/images/no-border.PNG`, active: true },
-        { priceEffect: "increased", title: "schwarzer Rahmen", image: `${mainUrl}/api/images/black-border.PNG`, active: false },
-        { priceEffect: "increased", title: "weißer Rahmen", image: `${mainUrl}/api/images/light-border.PNG`, active: false }
+        { priceEffect: "normal", title: "kein Rahmen", image: `${mainUrl}/api/images/no-border.png`, active: true },
+        { priceEffect: "increased", title: "schwarzer Rahmen", image: `${mainUrl}/api/images/black-border.png`, active: false },
+        { priceEffect: "increased", title: "weißer Rahmen", image: `${mainUrl}/api/images/light-border.png`, active: false }
     ]);
 
     const [loading, setLoading] = useState(false);
