@@ -28,7 +28,7 @@ return new class extends Migration
             $table->decimal('titleFontSize', 4, 2)->nullable();
             $table->decimal('paragraphFontSize', 4, 2)->nullable();
             $table->enum('status', ['unprocessed', 'processed'])->default('unprocessed');
-            $table->string('link')->nullable();
+            $table->longText('link')->nullable();
             $table->timestamps();
         });
     }
