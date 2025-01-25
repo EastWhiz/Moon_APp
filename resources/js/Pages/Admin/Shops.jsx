@@ -183,7 +183,7 @@ export default function Dashboard({ auth }) {
                             if (e.target.checked) {
                                 swalWithBootstrapButtons.fire({
                                     title: 'Are you sure?',
-                                    text: "Pairbo will be enabled for this store!",
+                                    text: "Moonora will be enabled for this store!",
                                     icon: 'warning',
                                     showCancelButton: true,
                                     confirmButtonText: 'Yes, Enable!',

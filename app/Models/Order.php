@@ -37,14 +37,4 @@ class Order extends Model
     {
         return $this->hasMany(OrderLineItem::class, 'local_order_id');
     }
-
-    public function cards()
-    {
-        return $this->hasMany(CardProduct::class, 'order_id');
-    }
-
-    public function messages()
-    {
-        return $this->hasOne(MessageProduct::class, 'order_id');
-    }
 }

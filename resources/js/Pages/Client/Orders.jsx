@@ -475,7 +475,7 @@ export default function Dashboard({ auth }) {
                                         // { title: 'Customer Name' },
                                         // { title: 'Customer Email' },
                                         { title: 'Order Total' },
-                                        { title: 'Pairbo' },
+                                        { title: 'Moonora' },
                                         { title: 'Action' },
                                     ]}
                                     hasMoreItems

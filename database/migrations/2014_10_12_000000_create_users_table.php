@@ -20,8 +20,6 @@ return new class extends Migration
             $table->string('phone')->nullable();
             $table->unsignedBigInteger('role_id')->default(2);
             $table->string('store_name')->nullable();
-            $table->boolean('status')->default(false); //IF TRUE THEN PAIRBO IS ENABLED
-            $table->boolean('all_settings')->default(false); //IF TRUE THEN PAIRBO IS ENABLED
             $table->rememberToken();
             $table->timestamps();
         });

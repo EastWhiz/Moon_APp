@@ -297,7 +297,7 @@ export default function Dashboard({ auth }) {
             ),
         }, {
             key: "filterbycard",
-            label: "Filter by Pairbo",
+            label: "Filter by Moonora",
             filter: (
                 <ChoiceList
                     title="Type"
@@ -549,7 +549,7 @@ export default function Dashboard({ auth }) {
                                         // { title: 'Customer Name' },
                                         // { title: 'Customer Email' },
                                         { title: 'Order Total' },
-                                        { title: 'Pairbo' },
+                                        { title: 'Moonora' },
                                         { title: 'Action' },
                                     ]}
                                     hasMoreItems

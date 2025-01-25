@@ -21,18 +21,18 @@ export default function Dashboard({ auth }) {
 
     const instructions = [
         'Login at https://apps.shopify.com',
-        'In the search bar, type “Pairbo”',
-        'Click the “Pairbo” app and select the install button',
+        'In the search bar, type “Moonora”',
+        'Click the “Moonora” app and select the install button',
         'Once installed, login at https://www.shopify.com and click the “Home” button on the left-hand navigation panel',
         'Scroll to the bottom of the left-hand navigation panel and click the arrow next to “Apps”',
-        'In the search bar, type “Pairbo” to have our app listed in the navigation panel',
-        'Click the “Pairbo” app in the navigation panel to view order details'
+        'In the search bar, type “Moonora” to have our app listed in the navigation panel',
+        'Click the “Moonora” app in the navigation panel to view order details'
     ];
 
     const instructionsTwo = [
         'After Installation. Go to Online Store > Themes > Customize',
         'Go to App Embeds Section',
-        'Enable Pairbo - App'
+        'Enable Moonora - App'
     ];
 
     return (

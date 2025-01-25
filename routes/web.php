@@ -2,14 +2,11 @@
 
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\OrdersController;
-use App\Http\Controllers\PairboProductsController;
 use App\Http\Controllers\CustomizerController;
 use App\Http\Controllers\FireBaseWebhookController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ShopsController;
-// use App\Jobs\SyncOrdersJob;
 use App\Jobs\SyncProductsJob;
-use App\Models\PairboProduct;
 use App\Models\Product;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
