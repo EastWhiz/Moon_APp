@@ -4,6 +4,7 @@ namespace App\Jobs;
 
 use App\Models\Collection;
 use App\Models\CollectionProduct;
+use App\Models\OrderPrint;
 use App\Models\Product;
 use App\Models\ProductImage;
 use App\Models\ProductVariant;
@@ -69,9 +70,6 @@ class AppUninstalledJob extends \Osiset\ShopifyApp\Messaging\Jobs\AppUninstalled
 
             $shopId = $shop->getId();
 
-            $user->plan_id = NULL;
-            $user->save();
-
             // Collection::where('user_id', $user->id)->delete();
             // CollectionProduct::where('user_id', $user->id)->delete();
             // Collection::where('user_id', $user->id)->delete();
@@ -79,6 +77,7 @@ class AppUninstalledJob extends \Osiset\ShopifyApp\Messaging\Jobs\AppUninstalled
             // ProductImage::where('user_id', $user->id)->delete();
             // ProductVariant::where('user_id', $user->id)->delete();
             // DELETING COMMANDS
+            OrderPrint::where('user_id', $user->id)->delete();
             $shopCommand->softDelete($shopId);
         }
 
