@@ -186,7 +186,7 @@ class DropboxJob implements ShouldQueue
         $screenshotsDirectory = storage_path('app/public/screenshots');
         $imageName = Str::random(20);
 
-        Browsershot::url("https://phpstack-1380969-5101925.cloudwaysapps.com/admin/render?design=black&cityVisible=true&dateVisible=true&starsEffect=false&titleFont=outfit&paragraphTextFont=outfit&selectedDate=25-01-2025&titleFontSize=0.90&paragraphFontSize=0.75&title=Ich%20liebe%20dich%20bis%20zum%20Mond%20nd%20zur%C3%BCck")
+        Browsershot::url($url)
             ->waitUntilNetworkIdle()
             ->timeout(180000)
             ->waitForSelector('#allGoodToGo')
