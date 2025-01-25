@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\ApiController;
 use App\Http\Controllers\CustomizerController;
+use App\Http\Controllers\DropboxController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -19,8 +21,25 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('/get-details', [CustomizerController::class, 'getStoreFront']);
+Route::get('/astronomy-api/appearance', [ApiController::class, 'getMoonAppearance'])->name('moonAppearance');
+Route::get('/astronomy-api/moon', [ApiController::class, 'getMoonPicture'])->name('moonAppearance');
+Route::get('/geo-names', [ApiController::class, 'getGeoNames'])->name('moonAppearance');
+Route::get('/fonts/{fontName}', function ($fontName) {
+    $path = public_path('fonts/' . $fontName);
 
-Route::get('/fonts/{filename}', [CustomizerController::class, 'loadFile']);
+    if (file_exists($path)) {
+        return response()->download($path, $fontName);
+    }
 
-Route::post('/create-product', [CustomizerController::class, 'createProduct']);
+    return response()->json(['error' => 'Font not found'], 404);
+});
+Route::get('/images/{imageName}', function ($fontName) {
+    $path = public_path('images/' . $fontName);
+
+    if (file_exists($path)) {
+        return response()->download($path, $fontName);
+    }
+
+    return response()->json(['error' => 'image not found'], 404);
+});
+Route::post('/upload-file', [DropboxController::class, 'uploadFileToDropbox'])->name('fileUpload');

@@ -328,7 +328,7 @@ const App = () => {
     const defaultParagraphFontSize = urlParams.get('paragraphFontSize');
     const defaultCity = JSON.parse(urlParams.get('city'));
 
-    const [day, month, year] = defaultSelectedDate.split("-"); // Split the string into parts
+    const [day, month, year] = defaultSelectedDate ? defaultSelectedDate.split("-") : "25-01-2025".split("-"); // Split the string into parts
     const defaultModifiedDate = new Date(year, month - 1, day); // Month is 0-indexed
 
     // Log all values
@@ -445,7 +445,7 @@ const App = () => {
     const [selectedFrame, setSelectedFrame] = useState(frames[0]);
 
     const [designs, setDesigns] = useState([
-        { name: "black", background: "#111111", withStars: `${mainUrl}/api/images/black_stars.png`, withoutStars: `${mainUrl}/api/images/black.png`, color: "white", smMoon: `${mainUrl}/api/images/m1.png`, active: defaultDesign === "" || defaultDesign === 'black' ? true : false },
+        { name: "black", background: "#111111", withStars: `${mainUrl}/api/images/black_stars.png`, withoutStars: `${mainUrl}/api/images/black.png`, color: "white", smMoon: `${mainUrl}/api/images/m1.png`, active: defaultDesign === "" || defaultDesign === null || defaultDesign === 'black' ? true : false },
         { name: "midnight_blue", background: "#121824", withStars: `${mainUrl}/api/images/midnight_blue_stars.png`, withoutStars: `${mainUrl}/api/images/midnight_blue.png`, color: "white", smMoon: `${mainUrl}/api/images/m1.png`, active: defaultDesign === 'midnight_blue' ? true : false },
         { name: "grey_blue", background: "#3b4655", withStars: `${mainUrl}/api/images/grey_blue_stars.png`, withoutStars: `${mainUrl}/api/images/grey_blue.png`, color: "white", smMoon: `${mainUrl}/api/images/m1.png`, active: defaultDesign === 'grey_blue' ? true : false },
         { name: "aquamarine", background: "#224955", withStars: `${mainUrl}/api/images/aquamarine_stars.png`, withoutStars: `${mainUrl}/api/images/aquamarine.png`, color: "white", smMoon: `${mainUrl}/api/images/m1.png`, active: defaultDesign === 'aquamarine' ? true : false },
@@ -845,7 +845,7 @@ const App = () => {
                                             <Box component="img" sx={{ height: `${moonParent.width}px`, width: `${moonParent.width}px`, transform: rotateValue ? `rotate(${rotateValue}deg)` : `rotate(0deg)` }} src={screenShotUrl} />
                                             : <Canvas
                                                 camera={{ position: [0, 0, 4], fov: 75 }}
-                                                style={{ marginTop: defaultDesign != "" || defaultDesign != null ? "0.6vw" : "", height: `${moonParent.width}px`, width: `${moonParent.width}px`, transform: rotateValue ? `rotate(${rotateValue}deg)` : `rotate(0deg)` }}>
+                                                style={{ marginTop: defaultDesign !== "" || defaultDesign !== null ? "0.6vw" : "", height: `${moonParent.width}px`, width: `${moonParent.width}px`, transform: rotateValue ? `rotate(${rotateValue}deg)` : `rotate(0deg)` }}>
                                                 <OrbitControls enablePan={false} enableZoom={false} enableRotate={false}
                                                     touches={{ ONE: THREE.TOUCH.ROTATE, TWO: THREE.TOUCH.DOLLY_ROTATE }}
                                                 />
@@ -866,7 +866,7 @@ const App = () => {
                                 </Grid>
                                 <Box sx={{
                                     position: "absolute",
-                                    bottom: defaultDesign != "" || defaultDesign != null ? "1.7vw" : {
+                                    bottom: defaultDesign !== "" || defaultDesign !== null ? "1.7vw" : {
                                         xs: activeTile.priceEffect === "normal" ? "0.104vw" : "0.104vw",
                                         sm: activeTile.priceEffect === "normal" ? "0.957vw" : "0.957vw",
                                         md: activeTile.priceEffect === "normal" ? "0.830vw" : "0.830vw",
