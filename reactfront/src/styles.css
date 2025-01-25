@@ -1,0 +1,293 @@
+@import url('https://fonts.googleapis.com/css2?family=Catamaran:wght@100..900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+
+@font-face {
+    font-family: 'dancing_script';
+    src: url('https://phpstack-1380969-5101925.cloudwaysapps.com/api/fonts/dancing_script.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'italiana';
+    src: url('https://phpstack-1380969-5101925.cloudwaysapps.com/api/fonts/italiana.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'outfit';
+    src: url('https://phpstack-1380969-5101925.cloudwaysapps.com/api/fonts/outfit.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'tangerine';
+    src: url('https://phpstack-1380969-5101925.cloudwaysapps.com/api/fonts/tangerine.ttf') format('truetype');
+}
+
+body {
+    line-height: 1.65;
+    letter-spacing: 0px;
+    color: black;
+}
+
+div:empty,
+p:empty {
+    display: block;
+}
+
+*,
+::before,
+::after {
+    box-sizing: initial;
+}
+
+
+.catamaran-regular {
+    font-family: "Catamaran", serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+}
+
+.inter-regular {
+    font-family: "Inter", serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+}
+
+.roboto-thin {
+    font-family: "Roboto", sans-serif;
+    font-weight: 100;
+    font-style: normal;
+}
+
+.roboto-light {
+    font-family: "Roboto", sans-serif;
+    font-weight: 300;
+    font-style: normal;
+}
+
+.roboto-regular {
+    font-family: "Roboto", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+.roboto-medium {
+    font-family: "Roboto", sans-serif;
+    font-weight: 500;
+    font-style: normal;
+}
+
+.roboto-bold {
+    font-family: "Roboto", sans-serif;
+    font-weight: 700;
+    font-style: normal;
+}
+
+.roboto-black {
+    font-family: "Roboto", sans-serif;
+    font-weight: 900;
+    font-style: normal;
+}
+
+.roboto-thin-italic {
+    font-family: "Roboto", sans-serif;
+    font-weight: 100;
+    font-style: italic;
+}
+
+.roboto-light-italic {
+    font-family: "Roboto", sans-serif;
+    font-weight: 300;
+    font-style: italic;
+}
+
+.roboto-regular-italic {
+    font-family: "Roboto", sans-serif;
+    font-weight: 400;
+    font-style: italic;
+}
+
+.roboto-medium-italic {
+    font-family: "Roboto", sans-serif;
+    font-weight: 500;
+    font-style: italic;
+}
+
+.roboto-bold-italic {
+    font-family: "Roboto", sans-serif;
+    font-weight: 700;
+    font-style: italic;
+}
+
+.roboto-black-italic {
+    font-family: "Roboto", sans-serif;
+    font-weight: 900;
+    font-style: italic;
+}
+
+/* GLOBAL CSS */
+
+.MuiButtonBase-root {
+    font-size: 14px;
+}
+
+.MuiPickersCalendarHeader-label {
+    font-size: 14px;
+    /* Adjust calendar font size */
+}
+
+.MuiPickersDay-root {
+    font-size: 14px;
+    /* Adjust font size for days */
+}
+
+.MuiDayCalendar-weekDayLabel {
+    font-size: 14px;
+    /* Adjust font size for years */
+}
+
+.MuiPickersArrowSwitcher-leftArrowIcon {
+    font-size: 18px;
+    /* Adjust font size for years */
+}
+
+.MuiPickersArrowSwitcher-rightArrowIcon {
+    font-size: 18px;
+    /* Adjust font size for years */
+}
+
+:focus-visible {
+    outline: none !important;
+    outline-offset: none !important;
+    box-shadow: none !important;
+}
+
+.little-heading {
+    font-size: 14px;
+    margin: 16px;
+}
+
+.tabs-outerside {
+    display: flex;
+    margin: 16px;
+    margin-bottom: 18px;
+    justify-content: space-between;
+    border-bottom: 1px solid #E4E4E4;
+}
+
+.tabs-heading {
+    padding-bottom: 12px;
+    font-size: 20px;
+    margin-bottom: -1px;
+    cursor: pointer
+}
+
+.active-tab {
+    font-weight: 600;
+    border-bottom: 2px solid #E7C509
+}
+
+.big-button {
+    font-weight: 700;
+    font-size: 18px;
+    background: #E7C509;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer
+}
+
+.react-switch {
+    border: 1px solid #838B93
+}
+
+.react-switch-transparent {
+    border: 1px solid transparent
+}
+
+.basic-heading {
+    font-weight: 600;
+    font-size: 16px;
+}
+
+.accordion-heading {
+    font-weight: 600;
+    font-size: 16px;
+    margin-left: 5px;
+    margin-bottom: 20px
+}
+
+.accordion-outerside {
+    display: flex;
+    cursor: pointer;
+    margin-left: -5px;
+}
+
+.inside-heading {
+    font-weight: 400;
+    font-size: 16px;
+}
+
+.font-box {
+    display: "flex";
+    border: 2px solid #D3D3D3;
+    border-radius: 4px;
+    margin-right: 15px;
+    cursor: pointer
+}
+
+.font-box-active {
+    border: 2px solid rgba(231, 197, 9, 1);
+    box-shadow: 0px 8px 8px 0px rgba(0, 0, 0, 0.09);
+}
+
+.disabled-button {
+    opacity: 0.35;
+    cursor: no-drop;
+}
+
+.dina4 {
+    width: 32px;
+    height: 41.48px;
+    border-radius: 4px;
+    box-shadow: 0px 8px 8px 0px rgba(0, 0, 0, 0.09);
+    margin: 0px 12px;
+}
+
+.dina3 {
+    width: 40px;
+    height: 51.85px;
+    border-radius: 4px;
+    box-shadow: 0px 8px 8px 0px rgba(0, 0, 0, 0.09);
+    margin: 0px 12px;
+}
+
+.dina2 {
+    width: 48px;
+    height: 62.22px;
+    border-radius: 4px;
+    box-shadow: 0px 8px 8px 0px rgba(0, 0, 0, 0.09);
+    margin: 0px 12px;
+}
+
+.dina1 {
+    width: 56px;
+    height: 72.59px;
+    border-radius: 4px;
+    box-shadow: 0px 8px 8px 0px rgba(0, 0, 0, 0.09);
+    margin: 0px 12px;
+}
+
+.dina-all {
+    text-align: center;
+    font-size: 11px;
+}
+
+.breakIt {
+    white-space: nowrap;
+    overflow: hidden
+}
+
+.w800 {
+    font-weight: 800;
+}
