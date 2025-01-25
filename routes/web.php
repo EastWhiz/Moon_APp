@@ -77,22 +77,22 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
 
 Route::inertia('admin/render', 'Admin/Render')->name('render');
 
-Route::get("/function", function () {
-    // Browsershot::url('https://www.google.com')->save('ss.png');
+// Route::get("/function", function () {
+//     // Browsershot::url('https://www.google.com')->save('ss.png');
 
-    ini_set('max_execution_time', 600);       // 600 seconds = 10 minutes
-    ini_set('upload_max_filesize', '1024M'); // 1024 MB
-    ini_set('post_max_size', '1024M');
+//     ini_set('max_execution_time', 600);       // 600 seconds = 10 minutes
+//     ini_set('upload_max_filesize', '1024M'); // 1024 MB
+//     ini_set('post_max_size', '1024M');
 
-    Browsershot::url('http://127.0.0.1:8000/admin/render?design=midnight_blue&cityVisible=true&dateVisible=true&starsEffect=true&title=Lahore&titleFont=outfit&paragraphText=City%20of%20Lights&paragraphTextFont=italiana&selectedDate=30-01-2025&city={%22name%22:%22Lahore,%20Punjab,%20Pakistan%22,%22value%22:%22Lahore%22,%22lat%22:%2231.558%22,%22lng%22:%2274.35071%22}&titleFontSize=1&paragraphFontSize=0.75&moon=full&rotateValue=45&newMoon=false')
-        ->waitUntilNetworkIdle()
-        ->timeout(180000)
-        ->waitForSelector('#allGoodToGo')
-        ->select('#cardIdParent')
-        ->setScreenshotType('jpeg', 100)
-        ->deviceScaleFactor(4) // Mimics 300 DPI
-        ->windowSize(9000, 5700)
-        ->save('ss.jpeg');
-});
+//     Browsershot::url('http://127.0.0.1:8000/admin/render?design=midnight_blue&cityVisible=true&dateVisible=true&starsEffect=true&title=Lahore&titleFont=outfit&paragraphText=City%20of%20Lights&paragraphTextFont=italiana&selectedDate=30-01-2025&city={%22name%22:%22Lahore,%20Punjab,%20Pakistan%22,%22value%22:%22Lahore%22,%22lat%22:%2231.558%22,%22lng%22:%2274.35071%22}&titleFontSize=1&paragraphFontSize=0.75&moon=full&rotateValue=45&newMoon=false')
+//         ->waitUntilNetworkIdle()
+//         ->timeout(180000)
+//         ->waitForSelector('#allGoodToGo')
+//         ->select('#cardIdParent')
+//         ->setScreenshotType('jpeg', 100)
+//         ->deviceScaleFactor(4) // Mimics 300 DPI
+//         ->windowSize(9000, 5700)
+//         ->save('ss.jpeg');
+// });
 
 require __DIR__ . '/auth.php';
