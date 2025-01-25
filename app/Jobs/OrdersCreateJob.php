@@ -114,42 +114,42 @@ class OrdersCreateJob implements ShouldQueue
 
                 // Loop through the properties to map them to the fillable fields
                 foreach ($line_item->properties as $property) {
-                    switch ($property['name']) {
+                    switch ($property->name) {
                         case '_design':
-                            $data['design'] = $property['value'];
+                            $data['design'] = $property->value;
                             break;
                         case '_cityVisible':
-                            $data['cityVisible'] = filter_var($property['value'], FILTER_VALIDATE_BOOLEAN);
+                            $data['cityVisible'] = $property->value;
                             break;
                         case '_dateVisible':
-                            $data['dateVisible'] = filter_var($property['value'], FILTER_VALIDATE_BOOLEAN);
+                            $data['dateVisible'] = $property->value;
                             break;
                         case '_starsEffect':
-                            $data['starsEffect'] = filter_var($property['value'], FILTER_VALIDATE_BOOLEAN);
+                            $data['starsEffect'] = $property->value;
                             break;
                         case '_title':
-                            $data['title'] = $property['value'];
+                            $data['title'] = $property->value == "" ?  null : $property->value;
                             break;
                         case '_titleFont':
-                            $data['titleFont'] = $property['value'];
+                            $data['titleFont'] = $property->value;
                             break;
                         case '_paragraphText':
-                            $data['paragraphText'] = $property['value'];
+                            $data['paragraphText'] = $property->value == "" ?  null : $property->value;
                             break;
                         case '_paragraphTextFont':
-                            $data['paragraphTextFont'] = $property['value'];
+                            $data['paragraphTextFont'] = $property->value;
                             break;
                         case '_selectedDate':
-                            $data['selectedDate'] = $property['value'];
+                            $data['selectedDate'] = $property->value;
                             break;
                         case '_city':
-                            $data['city'] = $property['value'];
+                            $data['city'] = $property->value == '""' ?  null : $property->value;
                             break;
                         case '_titleFontSize':
-                            $data['titleFontSize'] = $property['value'];
+                            $data['titleFontSize'] = $property->value;
                             break;
                         case '_paragraphFontSize':
-                            $data['paragraphFontSize'] = $property['value'];
+                            $data['paragraphFontSize'] = $property->value;
                             break;
                     }
                 }
