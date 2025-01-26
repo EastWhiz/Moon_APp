@@ -85,7 +85,7 @@ export default function Dashboard({ auth }) {
 
     const resourceName = {
         singular: 'order',
-        plural: 'orders',
+        plural: 'prints',
     };
 
     const [tableRows, setTableRows] = useState([]);
@@ -125,7 +125,7 @@ export default function Dashboard({ auth }) {
     const [cardFilter, setCardFilter] = useState([]);
 
     const [pagination, setPagination] = useState({
-        path: route("orders.get"),
+        path: route("prints.get"),
         next_cursor: null,
         next_page_url: null,
         prev_cursor: null,
@@ -383,7 +383,7 @@ export default function Dashboard({ auth }) {
             user={auth.user}
             header={<h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight"> Dashboard </h2>}
         >
-            <Head title="Orders" />
+            <Head title="Prints" />
             <div>
                 <Modal
                     aria-labelledby="transition-modal-title"
@@ -497,7 +497,7 @@ export default function Dashboard({ auth }) {
                             <Box>
                                 <Box sx={{ display: "flex", justifyContent: 'space-between', m: 1, mb: 2 }}>
                                     <Typography variant="h5" component="div" sx={{ fontSize: { xs: '20px', sm: '20px', md: '20px', lg: '22px', xl: '22px' } }}>
-                                        Orders
+                                        Prints
                                     </Typography>
                                     <Select
                                         labelInline

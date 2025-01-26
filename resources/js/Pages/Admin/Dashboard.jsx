@@ -75,7 +75,7 @@ export default function Dashboard({ auth }) {
                             "data": result.data2
                         },
                         {
-                            "name": "Orders",
+                            "name": "Prints",
                             "data": result.data3
                         },
                     ],
@@ -139,7 +139,7 @@ export default function Dashboard({ auth }) {
                                                         {data && makeTwoDigit(data.data2)}
                                                     </Typography>
                                                     <Typography align="center" sx={{ fontWeight: 'bold', fontSize: { xs: '18px', sm: '18px', md: '18px', lg: '18px', xl: '18px' } }}>
-                                                        Orders
+                                                        Prints
                                                     </Typography>
                                                 </Card>
                                             </Grid>

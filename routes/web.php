@@ -56,10 +56,10 @@ Route::group(['middleware' => ['verify.embedded', 'verify.shopify', 'billable']]
         //     SyncOrdersJob::dispatch($user);
         // }
 
-        return Inertia::render('Client/Orders', compact('response'));
+        return Inertia::render('Client/Prints', compact('response'));
     })->name('home');
 
-    Route::get('orders', [OrdersController::class, 'getOrders'])->name('orders.get.client');
+    Route::get('prints', [OrdersController::class, 'getPrints'])->name('prints.get.client');
 });
 
 Route::group(['middleware' => ['auth', 'verified']], function () {
@@ -71,8 +71,8 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
 
     Route::prefix('admin')->group(function () {
         Route::inertia('dashboard', 'Admin/Dashboard')->name('dashboard');
-        Route::inertia('orders', 'Admin/Orders')->name('orders');
-        Route::get('get-orders', [OrdersController::class, 'getOrders'])->name('orders.get');
+        Route::inertia('prints', 'Client/Prints')->name('prints');
+        Route::get('get-prints', [OrdersController::class, 'getPrints'])->name('prints.get.client');
         Route::get('dashboard-data', [DashboardController::class, 'getDashboard']);
     });
 });

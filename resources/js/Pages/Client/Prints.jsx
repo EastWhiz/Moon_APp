@@ -95,8 +95,8 @@ export default function Dashboard({ auth }) {
     let timeout = null;
 
     const resourceName = {
-        singular: 'order',
-        plural: 'orders',
+        singular: 'print',
+        plural: 'prints',
     };
 
     const [tableRows, setTableRows] = useState([]);
@@ -136,7 +136,7 @@ export default function Dashboard({ auth }) {
     const [searchShop, setSearchShop] = useState("");
 
     const [pagination, setPagination] = useState({
-        path: route("orders.get.client"),
+        path: route("prints.get.client"),
         next_cursor: null,
         next_page_url: null,
         prev_cursor: null,
@@ -312,7 +312,7 @@ export default function Dashboard({ auth }) {
         <ClientLayout
             header={<h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight"> Dashboard </h2>}
         >
-            <Head title="Orders" />
+            <Head title="Prints" />
             <div>
                 <Modal
                     aria-labelledby="transition-modal-title"
@@ -332,7 +332,7 @@ export default function Dashboard({ auth }) {
                             {order &&
                                 <div style={{ backgroundColor: 'white', margin: 'auto', display: 'flex', flexDirection: 'column', height: '100%' }}>
                                     <Typography variant="h5" gutterBottom align="left">
-                                        Order {order.id}
+                                        Print {order.id}
                                     </Typography>
                                     {/* alignItems: 'center', */}
                                     <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '20px' }}>
@@ -425,7 +425,7 @@ export default function Dashboard({ auth }) {
                             <Box>
                                 <Box sx={{ display: "flex", justifyContent: 'space-between', m: 1, mb: 2 }}>
                                     <Typography variant="h5" component="div" sx={{ fontSize: { xs: '20px', sm: '20px', md: '20px', lg: '22px', xl: '22px' } }}>
-                                        Orders
+                                        Prints
                                     </Typography>
                                     <Select
                                         labelInline
@@ -470,11 +470,11 @@ export default function Dashboard({ auth }) {
                                     onSelectionChange={handleSelectionChange}
                                     headings={[
                                         // { title: 'ID' },
-                                        { title: 'Order #' },
+                                        { title: 'Print #' },
                                         { title: 'Date' },
                                         // { title: 'Customer Name' },
                                         // { title: 'Customer Email' },
-                                        { title: 'Order Total' },
+                                        { title: 'Print Total' },
                                         { title: 'Moonora' },
                                         { title: 'Action' },
                                     ]}
