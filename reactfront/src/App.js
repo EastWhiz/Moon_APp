@@ -208,8 +208,8 @@ const Moon = ({ moonData }) => {
 
     // ASSETS
     // MOB_CASE TEXTURES
-    const textureURL = "https://cdn.shopify.com/s/files/1/0821/3243/5220/t/4/assets/moon_textures_8k.png";
-    // const textureURL = "https://ygvxwv-fv.myshopify.com/cdn/shop/t/2/assets/moon_textures_8k.png";
+    // const textureURL = "https://cdn.shopify.com/s/files/1/0821/3243/5220/t/4/assets/moon_textures_8k.png";
+    const textureURL = "https://ygvxwv-fv.myshopify.com/cdn/shop/t/2/assets/moon_textures_8k.png";
     // const textureURL = "https://ygvxwv-fv.myshopify.com/cdn/shop/t/2/assets/moon_textures_4k.png";
 
     const [texture] = useTexture([textureURL]);
@@ -598,43 +598,43 @@ const App = () => {
                 // console.log(paragraphText);
                 // console.log(format(selectedDate, "dd.MM.yyyy"));
 
-                // let variantId = 51846764134723;
-                // if (selectedFrame.price === 30.0 && activeTile.priceEffect === "normal") {
-                //     variantId = 51846764134723;
-                // } else if (selectedFrame.price === 40.0 && activeTile.priceEffect === "normal") {
-                //     variantId = 51846764200259;
-                // } else if (selectedFrame.price === 50.0 && activeTile.priceEffect === "normal") {
-                //     variantId = 51846764265795;
-                // } else if (selectedFrame.price === 80.0 && activeTile.priceEffect === "normal") {
-                //     variantId = 51846764331331;
-                // } else if (selectedFrame.increasedPrice === 80.0 && activeTile.priceEffect === "increased") {
-                //     variantId = 51846764167491;
-                // } else if (selectedFrame.increasedPrice === 100.0 && activeTile.priceEffect === "increased") {
-                //     variantId = 51846764233027;
-                // } else if (selectedFrame.increasedPrice === 120.0 && activeTile.priceEffect === "increased") {
-                //     variantId = 51846764298563;
-                // } else if (selectedFrame.increasedPrice === 180.0 && activeTile.priceEffect === "increased") {
-                //     variantId = 51846764364099;
-                // }
-
-                let variantId = 50019933061396;
+                let variantId = 51846764134723;
                 if (selectedFrame.price === 30.0 && activeTile.priceEffect === "normal") {
-                    variantId = 50019933061396;
+                    variantId = 51846764134723;
                 } else if (selectedFrame.price === 40.0 && activeTile.priceEffect === "normal") {
-                    variantId = 50019933126932;
+                    variantId = 51846764200259;
                 } else if (selectedFrame.price === 50.0 && activeTile.priceEffect === "normal") {
-                    variantId = 50019933192468;
+                    variantId = 51846764265795;
                 } else if (selectedFrame.price === 80.0 && activeTile.priceEffect === "normal") {
-                    variantId = 50019933258004;
+                    variantId = 51846764331331;
                 } else if (selectedFrame.increasedPrice === 80.0 && activeTile.priceEffect === "increased") {
-                    variantId = 50019933094164;
+                    variantId = 51846764167491;
                 } else if (selectedFrame.increasedPrice === 100.0 && activeTile.priceEffect === "increased") {
-                    variantId = 50019933159700;
+                    variantId = 51846764233027;
                 } else if (selectedFrame.increasedPrice === 120.0 && activeTile.priceEffect === "increased") {
-                    variantId = 50019933225236;
+                    variantId = 51846764298563;
                 } else if (selectedFrame.increasedPrice === 180.0 && activeTile.priceEffect === "increased") {
-                    variantId = 50019933290772;
+                    variantId = 51846764364099;
                 }
+
+                // let variantId = 50019933061396;
+                // if (selectedFrame.price === 30.0 && activeTile.priceEffect === "normal") {
+                //     variantId = 50019933061396;
+                // } else if (selectedFrame.price === 40.0 && activeTile.priceEffect === "normal") {
+                //     variantId = 50019933126932;
+                // } else if (selectedFrame.price === 50.0 && activeTile.priceEffect === "normal") {
+                //     variantId = 50019933192468;
+                // } else if (selectedFrame.price === 80.0 && activeTile.priceEffect === "normal") {
+                //     variantId = 50019933258004;
+                // } else if (selectedFrame.increasedPrice === 80.0 && activeTile.priceEffect === "increased") {
+                //     variantId = 50019933094164;
+                // } else if (selectedFrame.increasedPrice === 100.0 && activeTile.priceEffect === "increased") {
+                //     variantId = 50019933159700;
+                // } else if (selectedFrame.increasedPrice === 120.0 && activeTile.priceEffect === "increased") {
+                //     variantId = 50019933225236;
+                // } else if (selectedFrame.increasedPrice === 180.0 && activeTile.priceEffect === "increased") {
+                //     variantId = 50019933290772;
+                // }
 
                 const formData = new FormData();
                 formData.set("id", variantId);
