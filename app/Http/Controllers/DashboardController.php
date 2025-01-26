@@ -15,9 +15,9 @@ class DashboardController extends Controller
 
         $orders = Order::count();
 
-        $card_orders = Order::wherehas('cards')->count();
+        $card_orders = Order::count();
 
-        $simple_orders = Order::whereDoesntHave('cards')->count();
+        $simple_orders = Order::count();
 
         $object['data'] = $users;
         $object['data2'] = $orders;

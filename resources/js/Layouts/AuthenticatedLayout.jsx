@@ -25,11 +25,6 @@ export default function Authenticated({ user, header, children }) {
                                     Dashboard
                                 </NavLink>
                             </div>
-                            <div className="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                                <NavLink href={route('prints')} active={route().current('prints')}>
-                                    Prints
-                                </NavLink>
-                            </div>
                         </div>
 
                         <div className="hidden sm:flex sm:items-center sm:ml-6">
@@ -101,12 +96,6 @@ export default function Authenticated({ user, header, children }) {
                             Dashboard
                         </ResponsiveNavLink>
                     </div>
-                    <div className="pt-2 pb-3 space-y-1">
-                        <ResponsiveNavLink href={route('prints')} active={route().current('prints')}>
-                            Prints
-                        </ResponsiveNavLink>
-                    </div>
-
                     <div className="pt-4 pb-1 border-t border-gray-200 dark:border-gray-600">
                         <div className="px-4">
                             <div className="font-medium text-base text-gray-800 dark:text-gray-200">{user.name}</div>

@@ -1,1 +1,0 @@
-import{j as o}from"./app-1833b9cb.js";const r=({label:s,toggled:l,onClick:n,disabled:e})=>o.jsx("div",{id:"customToggleTwo",children:o.jsxs("label",{children:[o.jsx("input",{type:"checkbox",checked:l,onChange:n,disabled:e}),o.jsx("span",{style:e?{backgroundColor:"rgb(149, 151, 151)"}:{}}),o.jsx("strong",{children:s})]})}),c=r;export{c as T};
