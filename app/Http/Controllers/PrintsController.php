@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\DropboxJob;
 use App\Models\OrderPrint;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -40,5 +41,14 @@ class PrintsController extends Controller
         $shops_filter = User::where('role_id', 2)->get();
 
         return sendResponse(true, 'Prints retrieved successfully!', $shops, $shops_filter);
+    }
+
+    public function retryPrint(Request $request)
+    {
+        $order_print = OrderPrint::find($request->order_print_id);
+        $user = User::find($order_print->user_id);
+        DropboxJob::dispatchSync($user, $order_print);
+
+        return sendResponse(true, "Print Re-Work done Successfully!");
     }
 }

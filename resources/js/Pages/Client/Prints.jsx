@@ -1,17 +1,24 @@
-import {
-    IndexTable, IndexFilters, useSetIndexFiltersMode, useIndexResourceState, Button, Select, Pagination, Badge, ChoiceList
-} from '@shopify/polaris';
 import ClientLayout from "@/Layouts/ClientLayout";
-import { Head, router, usePage } from "@inertiajs/react";
-import { Box, Divider, Grid, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material";
-import "@shopify/polaris/build/esm/styles.css";
-import ToggleSmall from '@/Components/ToggleSmall';
-import { useState, useCallback, useEffect } from 'react';
-import Swal from 'sweetalert2';
-import * as React from 'react';
+import { Head, usePage } from "@inertiajs/react";
+import { Box, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material";
 import Backdrop from '@mui/material/Backdrop';
-import Modal from '@mui/material/Modal';
 import Fade from '@mui/material/Fade';
+import Modal from '@mui/material/Modal';
+import {
+    Badge,
+    Button,
+    IndexFilters,
+    IndexTable,
+    Link,
+    Pagination,
+    Select,
+    useIndexResourceState,
+    useSetIndexFiltersMode
+} from '@shopify/polaris';
+import "@shopify/polaris/build/esm/styles.css";
+import * as React from 'react';
+import { useCallback, useEffect, useState } from 'react';
+import Swal from 'sweetalert2';
 
 export default function Dashboard({ auth }) {
 
@@ -202,23 +209,14 @@ export default function Dashboard({ auth }) {
             .then((result) => {
                 if (result.success == true) {
                     // console.log(result);
-
-                    const my_rows = result.data.data.map((order, index) => {
+                    const updatedData = result.data.data.map((item) => {
                         return {
-                            id: order.id,
-                            store_name: order.shop.store_name ? order.shop.store_name : order.shop.name,
-                            order_date: (new Date(order.order_created_at)).toISOString().split('T')[0],
-                            order_no: order.order_name,
-                            customer_name: order.customer_name,
-                            customer_email: order.email,
-                            order_total: `$${order.final_total}`,
-                            greeting_card: order.cards.length > 0 ? order.cards[0] : false,
-                            message: order.messages ? order.messages.message : false,
-                            order: order,
-                        }
+                            ...item, // Spread the existing properties of the object
+                            loading: false, // Add the new property with your desired value
+                        };
                     });
 
-                    setTableRows(my_rows);
+                    setTableRows(updatedData); // Update the table rows with the modified array
                     setPagination({
                         path: result.data.path,
                         next_cursor: result.data.next_cursor,
@@ -265,48 +263,100 @@ export default function Dashboard({ auth }) {
         handleSearchShopRemove
     ]);
 
+    const reworkHandler = (value) => {
+
+        let temp = [...tableRows];
+        let index = temp.findIndex(valueFind => valueFind.id == value.id);
+        temp[index] = { ...temp[index], loading: true }
+        setTableRows(temp);
+
+        fetch(route("retry.print") + '&' + queryString, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ order_print_id: value.id }), // Convert the payload to a JSON string
+        })
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                return response.json(); // Parse the JSON response
+            })
+            .then((data) => {
+                if (data.success) {
+                    Swal.fire("Success", data.message, "success");
+                    setReload(!reload);
+                } else {
+                    Swal.fire("Error", data.message, "error");
+                    let temp = [...tableRows];
+                    temp[index] = { ...temp[index], loading: false }
+                    setTableRows(temp);
+                }
+            })
+            .catch((error) => {
+                Swal.fire("Error", error.toString(), "error");
+                let temp = [...tableRows];
+                temp[index] = { ...temp[index], loading: false }
+                setTableRows(temp);
+            });
+    }
+
     const filters = [];
 
     const appliedFilters = [];
 
-    const rowMarkup = tableRows.map(
-        ({ id, store_name, order_date, order_no, customer_name, customer_email, order_total, greeting_card, order, message }, index) => (
-            <IndexTable.Row
-                id={id}
-                key={id}
-                selected={selectedResources.includes(id)}
-                position={index}
-            >
-                <IndexTable.Cell>
-                    {order_no}
-                </IndexTable.Cell>
-                <IndexTable.Cell>
-                    {order_date}
-                </IndexTable.Cell>
-                {/* <IndexTable.Cell>
-                    {customer_name}
-                </IndexTable.Cell> */}
-                {/* <IndexTable.Cell>
-                    {customer_email}
-                </IndexTable.Cell> */}
-                <IndexTable.Cell>
-                    {order_total}
-                </IndexTable.Cell>
-                <IndexTable.Cell>
-                    {greeting_card ? <Badge status='success'>Card</Badge> : message ? <Badge status='attention'>Message</Badge> : <Badge status='warning'>None</Badge>}
-                </IndexTable.Cell>
-                <IndexTable.Cell>
-                    {greeting_card ?
-                        <Button onClick={() => handleOpenTwo(`${window.appURL}/${greeting_card.canvas_image}`, "CARD")}>Card</Button> :
-                        message ? <Button onClick={() => handleOpenTwo(`${window.appURL}/${greeting_card.canvas_image}`, message)}>Message</Button> : null
-                    }
-                    <span style={{ marginLeft: "10px" }}></span>
-                    <Button onClick={() => handleOpen(order)}>Details</Button>
-                </IndexTable.Cell>
-            </IndexTable.Row >
-        ),
-    );
-
+    const rowMarkup = tableRows.map((value, index) => (
+        <IndexTable.Row
+            id={value.id}
+            key={value.id}
+            selected={selectedResources.includes(value.id)}
+            position={index}
+        >
+            <IndexTable.Cell>
+                <div className='custom_style'>
+                    <Link dataPrimaryLink>
+                        <b>{value.order.order_name}</b>
+                    </Link>
+                </div>
+            </IndexTable.Cell>
+            <IndexTable.Cell>
+                {value.selectedDate}
+            </IndexTable.Cell>
+            <IndexTable.Cell>
+                {value.design}
+            </IndexTable.Cell>
+            <IndexTable.Cell>
+                <Badge status={value.cityVisible == "true" ? 'success' : 'critical'}>{value.cityVisible}</Badge>
+            </IndexTable.Cell>
+            <IndexTable.Cell>
+                <Badge status={value.dateVisible == "true" ? 'success' : 'critical'}>{value.dateVisible}</Badge>
+            </IndexTable.Cell>
+            <IndexTable.Cell>
+                <Badge status={value.starsEffect == "true" ? 'success' : 'critical'}>{value.starsEffect}</Badge>
+            </IndexTable.Cell>
+            <IndexTable.Cell>
+                {value.title ?? 'N/A'}
+            </IndexTable.Cell>
+            <IndexTable.Cell>
+                {value.titleFont ?? 'N/A'}
+            </IndexTable.Cell>
+            <IndexTable.Cell>
+                {value.paragraphText ?? 'N/A'}
+            </IndexTable.Cell>
+            <IndexTable.Cell>
+                {value.paragraphTextFont ?? 'N/A'}
+            </IndexTable.Cell>
+            <IndexTable.Cell>
+                <Badge status={value.status == "processed" ? 'success' : 'critical'}>{value.status}</Badge>
+            </IndexTable.Cell>
+            <IndexTable.Cell>
+                <Button disabled={value.link ? false : true} size='slim' onClick={() => window.open(value.link, '_blank')}>Open</Button>
+                <Box component={'span'} ml={1}></Box>
+                <Button loading={value.loading ? true : false} size='slim' onClick={() => reworkHandler(value)}>Re-Work</Button>
+            </IndexTable.Cell>
+        </IndexTable.Row >
+    ));
 
     return (
         <ClientLayout
@@ -469,14 +519,18 @@ export default function Dashboard({ auth }) {
                                     }
                                     onSelectionChange={handleSelectionChange}
                                     headings={[
-                                        // { title: 'ID' },
-                                        { title: 'Print #' },
+                                        { title: 'Order #' },
                                         { title: 'Date' },
-                                        // { title: 'Customer Name' },
-                                        // { title: 'Customer Email' },
-                                        { title: 'Print Total' },
-                                        { title: 'Moonora' },
-                                        { title: 'Action' },
+                                        { title: 'Design' },
+                                        { title: 'City Visible' },
+                                        { title: 'Date Visible' },
+                                        { title: 'Stars Effect' },
+                                        { title: 'Title' },
+                                        { title: 'Title Font' },
+                                        { title: 'Paragraph' },
+                                        { title: 'Paragraph Font' },
+                                        { title: 'Status' },
+                                        { title: 'Actions' },
                                     ]}
                                     hasMoreItems
                                     selectable={false}

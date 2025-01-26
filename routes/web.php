@@ -60,6 +60,7 @@ Route::group(['middleware' => ['verify.embedded', 'verify.shopify', 'billable']]
     })->name('home');
 
     Route::get('prints', [PrintsController::class, 'getPrints'])->name('prints.get.client');
+    Route::post('retry-print', [PrintsController::class, 'retryPrint'])->name('retry.print');
 });
 
 Route::group(['middleware' => ['auth', 'verified']], function () {
@@ -71,9 +72,10 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
 
     Route::prefix('admin')->group(function () {
         Route::inertia('dashboard', 'Admin/Dashboard')->name('dashboard');
-        Route::inertia('prints', 'Client/Prints')->name('prints');
-        Route::get('get-prints', [PrintsController::class, 'getPrints'])->name('prints.get.client');
         Route::get('dashboard-data', [DashboardController::class, 'getDashboard']);
+        // Route::inertia('prints', 'Client/Prints')->name('prints');
+        // Route::get('get-prints', [PrintsController::class, 'getPrints'])->name('prints.get.client');
+        // Route::post('retry-print', [PrintsController::class, 'retryPrint'])->name('retry.print');
     });
 });
 
