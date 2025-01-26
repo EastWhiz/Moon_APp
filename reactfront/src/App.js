@@ -325,8 +325,8 @@ const App = () => {
     const defaultParagraphText = urlParams.get('paragraphText');
     const defaultParagraphTextFont = urlParams.get('paragraphTextFont');
     const defaultSelectedDate = urlParams.get('selectedDate');
-    const defaultTitleFontSize = parseFloat(urlParams.get('titleFontSize'));
-    const defaultParagraphFontSize = parseFloat(urlParams.get('paragraphFontSize'));
+    const defaultTitleFontSize = isNaN(urlParams.get('titleFontSize')) ? null : parseFloat(urlParams.get('titleFontSize'));
+    const defaultParagraphFontSize = isNaN(urlParams.get('titleFontSize')) ? null : parseFloat(urlParams.get('paragraphFontSize'));
     const defaultCity = JSON.parse(urlParams.get('city'));
 
     const [day, month, year] = defaultSelectedDate ? defaultSelectedDate.split("-") : "25-01-2025".split("-"); // Split the string into parts

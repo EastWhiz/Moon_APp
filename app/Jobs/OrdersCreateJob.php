@@ -113,6 +113,7 @@ class OrdersCreateJob implements ShouldQueue
                 $data = [];
 
                 // Loop through the properties to map them to the fillable fields
+                logger(json_encode($line_item->properties));
                 foreach ($line_item->properties as $property) {
                     switch ($property->name) {
                         case '_design':
@@ -146,6 +147,7 @@ class OrdersCreateJob implements ShouldQueue
                             $data['city'] = $property->value == '""' ?  null : $property->value;
                             break;
                         case '_titleFontSize':
+
                             $data['titleFontSize'] = $property->value;
                             break;
                         case '_paragraphFontSize':
