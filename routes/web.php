@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\OrdersController;
+use App\Http\Controllers\PrintsController;
 use App\Http\Controllers\CustomizerController;
 use App\Http\Controllers\FireBaseWebhookController;
 use App\Http\Controllers\ProfileController;
@@ -59,7 +59,7 @@ Route::group(['middleware' => ['verify.embedded', 'verify.shopify', 'billable']]
         return Inertia::render('Client/Prints', compact('response'));
     })->name('home');
 
-    Route::get('prints', [OrdersController::class, 'getPrints'])->name('prints.get.client');
+    Route::get('prints', [PrintsController::class, 'getPrints'])->name('prints.get.client');
 });
 
 Route::group(['middleware' => ['auth', 'verified']], function () {
@@ -72,7 +72,7 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
     Route::prefix('admin')->group(function () {
         Route::inertia('dashboard', 'Admin/Dashboard')->name('dashboard');
         Route::inertia('prints', 'Client/Prints')->name('prints');
-        Route::get('get-prints', [OrdersController::class, 'getPrints'])->name('prints.get.client');
+        Route::get('get-prints', [PrintsController::class, 'getPrints'])->name('prints.get.client');
         Route::get('dashboard-data', [DashboardController::class, 'getDashboard']);
     });
 });
