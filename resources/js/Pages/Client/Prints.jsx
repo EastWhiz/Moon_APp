@@ -270,7 +270,7 @@ export default function Dashboard({ auth }) {
         temp[index] = { ...temp[index], loading: true }
         setTableRows(temp);
 
-        fetch(route("retry.print") + '&' + queryString, {
+        fetch(route("retry.print", query), {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
