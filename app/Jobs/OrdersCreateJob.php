@@ -113,7 +113,7 @@ class OrdersCreateJob implements ShouldQueue
                 $data = [];
 
                 // Loop through the properties to map them to the fillable fields
-                logger(json_encode($line_item->properties));
+                // logger(json_encode($line_item->properties));
                 foreach ($line_item->properties as $property) {
                     switch ($property->name) {
                         case '_design':
