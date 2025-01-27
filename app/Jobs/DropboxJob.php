@@ -187,14 +187,22 @@ class DropboxJob implements ShouldQueue
         $imageName = Str::random(20);
 
         Browsershot::url($url)
-            ->waitUntilNetworkIdle()
-            ->timeout(180000)
-            ->waitForSelector('#allGoodToGo')
-            ->select('#cardIdParent')
-            ->setScreenshotType('jpeg', 100)
-            ->deviceScaleFactor(4) // Mimics 300 DPI
-            ->windowSize(9000, 5700)
-            ->save($screenshotsDirectory . "/$imageName.jpeg");
+        ->setNodeModulePath('/home/1380969.cloudwaysapps.com/uavphvarpc/node_modules') // Puppeteer node_modules path
+        ->setChromePath('/usr/bin/google-chrome') // Path to Chrome binary
+        // ->noSandbox()
+        // ->ignoreHttpsErrors()
+        ->waitUntilNetworkIdle()
+        ->setEnvironmentOptions([
+            'CHROME_CONFIG_HOME' => '/home/1380969.cloudwaysapps.com/uavphvarpc/public_html/temp-puppeteer'
+        ])
+        ->timeout(180000)
+        ->protocolTimeout(180000)
+        ->waitForSelector('#allGoodToGo')
+        ->select('#cardIdParent')
+        ->setScreenshotType('jpeg', 100)
+        ->deviceScaleFactor(4) // Mimics 300 DPI
+        ->windowSize(9000, 5700)
+        ->save($screenshotsDirectory . "/$imageName.jpeg");
 
         sleep(1);
         $link = $this->uploadFileToDropbox("$imageName.jpeg");
