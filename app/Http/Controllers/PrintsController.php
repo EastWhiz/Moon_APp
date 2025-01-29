@@ -46,9 +46,10 @@ class PrintsController extends Controller
     public function retryPrint(Request $request)
     {
         $order_print = OrderPrint::find($request->order_print_id);
+        $order_print->update(['status' => 'unprocessed']);
         $user = User::find($order_print->user_id);
-        DropboxJob::dispatchSync($user, $order_print);
+        DropboxJob::dispatch($user, $order_print);
 
-        return sendResponse(true, "Print Re-Work done Successfully!");
+        return sendResponse(true, "Print Re-Work done Queued!");
     }
 }

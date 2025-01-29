@@ -209,14 +209,7 @@ export default function Dashboard({ auth }) {
             .then((result) => {
                 if (result.success == true) {
                     // console.log(result);
-                    const updatedData = result.data.data.map((item) => {
-                        return {
-                            ...item, // Spread the existing properties of the object
-                            loading: false, // Add the new property with your desired value
-                        };
-                    });
-
-                    setTableRows(updatedData); // Update the table rows with the modified array
+                    setTableRows(result.data.data); // Update the table rows with the modified array
                     setPagination({
                         path: result.data.path,
                         next_cursor: result.data.next_cursor,
@@ -264,12 +257,6 @@ export default function Dashboard({ auth }) {
     ]);
 
     const reworkHandler = (value) => {
-
-        let temp = [...tableRows];
-        let index = temp.findIndex(valueFind => valueFind.id == value.id);
-        temp[index] = { ...temp[index], loading: true }
-        setTableRows(temp);
-
         fetch(route("retry.print", query), {
             method: 'POST',
             headers: {
@@ -289,16 +276,10 @@ export default function Dashboard({ auth }) {
                     setReload(!reload);
                 } else {
                     Swal.fire("Error", data.message, "error");
-                    let temp = [...tableRows];
-                    temp[index] = { ...temp[index], loading: false }
-                    setTableRows(temp);
                 }
             })
             .catch((error) => {
                 Swal.fire("Error", error.toString(), "error");
-                let temp = [...tableRows];
-                temp[index] = { ...temp[index], loading: false }
-                setTableRows(temp);
             });
     }
 
@@ -353,7 +334,7 @@ export default function Dashboard({ auth }) {
             <IndexTable.Cell>
                 <Button disabled={value.link ? false : true} size='slim' onClick={() => window.open(value.link, '_blank')}>Open</Button>
                 <Box component={'span'} ml={1}></Box>
-                <Button loading={value.loading ? true : false} size='slim' onClick={() => reworkHandler(value)}>Re-Work</Button>
+                <Button loading={value.status == "unprocessed" ? true : false} size='slim' onClick={() => reworkHandler(value)}>Re-Work</Button>
             </IndexTable.Cell>
         </IndexTable.Row >
     ));
