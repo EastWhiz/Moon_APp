@@ -233,13 +233,13 @@ export default function Dashboard({ auth }) {
 
     useEffect(() => {
         const interval = setInterval(() => {
-          console.log('checkingNewChanges');
-          setReload(!reload);
-        }, 60000); // 60000 milliseconds = 1 minute
-    
+            console.log('checkingNewChanges');
+            setReload(prevReload => !prevReload);
+        }, 10000); // 60000 milliseconds = 1 minute
+
         // Cleanup the interval when the component is unmounted
         return () => clearInterval(interval);
-      }, []);
+    }, []);
 
     const handleFiltersQueryChange = useCallback(
         (value) => {
