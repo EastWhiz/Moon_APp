@@ -200,7 +200,7 @@ class DropboxJob implements ShouldQueue
         ->select('#cardIdParent')
         ->setScreenshotType('jpeg', 100)
         // ->deviceScaleFactor(4) // Mimics 300 DPI
-        ->windowSize(9000, 5700)
+        // ->windowSize(9000, 5700)
         ->save($screenshotsDirectory . "/$imageName.jpeg");
 
         sleep(1);
