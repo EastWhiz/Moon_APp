@@ -235,7 +235,7 @@ export default function Dashboard({ auth }) {
         const interval = setInterval(() => {
             console.log('checkingNewChanges');
             setReload(prevReload => !prevReload);
-        }, 10000); // 60000 milliseconds = 1 minute
+        }, 60000); // 60000 milliseconds = 1 minute
 
         // Cleanup the interval when the component is unmounted
         return () => clearInterval(interval);
