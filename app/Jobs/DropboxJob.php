@@ -93,9 +93,7 @@ class DropboxJob implements ShouldQueue
     // Function to handle file upload to Dropbox
     public function uploadFileToDropbox($imageName)
     {
-        ini_set('memory_limit', '4096M');
-        ini_set('max_execution_time', 1800);       // 600 seconds = 10 minutes
-
+        
         $accessToken = $this->refreshDropboxToken(); // Get the access token using refresh token
 
         if (!$accessToken) {
@@ -132,7 +130,7 @@ class DropboxJob implements ShouldQueue
                     'autorename' => true, // To avoid conflicts with the same file name
                 ]),
             ])
-                ->timeout(1800) // Set timeout to 5 minutes
+                ->timeout(3600) // Set timeout to 5 minutes
                 ->withBody($imageData, 'application/octet-stream') // Attach the binary data
                 ->post('https://content.dropboxapi.com/2/files/upload');
 
@@ -159,10 +157,6 @@ class DropboxJob implements ShouldQueue
         // logger(json_encode($user));
         // logger(json_encode($print));
 
-        ini_set('max_execution_time', 1800);       // 600 seconds = 10 minutes
-        ini_set('memory_limit', '4096M');
-        ini_set('upload_max_filesize', '4096M'); // 1024 MB
-        ini_set('post_max_size', '4096M');
 
 
         $url = env('APP_URL') . '/admin/render?' . http_build_query([
@@ -190,17 +184,18 @@ class DropboxJob implements ShouldQueue
         ->setChromePath('/usr/bin/google-chrome') // Path to Chrome binary
         // ->noSandbox()
         // ->ignoreHttpsErrors()
-        ->waitUntilNetworkIdle()
+        // ->waitUntilNetworkIdle()
         ->setEnvironmentOptions([
             'CHROME_CONFIG_HOME' => '/home/1380969.cloudwaysapps.com/uavphvarpc/public_html/temp-puppeteer'
         ])
-        ->timeout(1800)
-        ->protocolTimeout(1800)
+        ->timeout(3600)
+        ->protocolTimeout(3600)
         ->waitForSelector('#allGoodToGo')
         ->select('#cardIdParent')
         ->setScreenshotType('jpeg', 100)
-        // ->deviceScaleFactor(4) // Mimics 300 DPI
+        ->deviceScaleFactor(4) // Mimics 300 DPI
         // ->windowSize(9000, 5700)
+        ->windowSize(8600, 5400)
         ->save($screenshotsDirectory . "/$imageName.jpeg");
 
         sleep(1);
