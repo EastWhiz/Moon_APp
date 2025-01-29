@@ -312,7 +312,7 @@ const App = () => {
             newDiv.id = 'allGoodToGo';
             newDiv.style.display = 'none';
             document.body.appendChild(newDiv);
-        }, 10000);
+        }, 5000);
     }, []);
 
     const urlParams = new URLSearchParams(window.location.search);
