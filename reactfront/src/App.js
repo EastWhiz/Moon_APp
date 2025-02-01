@@ -861,7 +861,7 @@ const App = () => {
                 position: "sticky",
                 top: "0",
                 height: { xs: '60vh', sm: '60vh', md: '100vh', lg: '100vh', xl: '100vh' },
-                zIndex: "1"
+                zIndex: "9999"
             }}>
                 <Box sx={{
                     display: "block",
