@@ -31,7 +31,6 @@ p:empty {
     display: block;
 }
 
-*,
 ::before,
 ::after {
     box-sizing: initial;

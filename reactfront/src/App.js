@@ -18,7 +18,7 @@ import Switch from "react-switch";
 import * as THREE from "three";
 import './styles.css';
 
-// const sampleHit = "http://127.0.0.1:8000/admin/render?design=midnight_blue&cityVisible=true&dateVisible=true&starsEffect=true&title=Lahore&titleFont=outfit&paragraphText=City%20of%20Lights&paragraphTextFont=italiana&selectedDate=30-01-2025&city={%22name%22:%22Lahore,%20Punjab,%20Pakistan%22,%22value%22:%22Lahore%22,%22lat%22:%2231.558%22,%22lng%22:%2274.35071%22}&titleFontSize=1&paragraphFontSize=0.75&moon=full&rotateValue=45&newMoon=false"
+// const sampleHit = "http://127.0.0.1:8000/admin/render?design=midnight_blue&cityVisible=true&dateVisible=true&starsEffect=true&title=Lahore&titleFont=outfit&paragraphText=City%20of%20Lights&paragraphTextFont=italiana&selectedDate=30-01-2025&city={%22name%22:%22Lahore,%20Punjab,%20Pakistan%22,%22value%22:%22Lahore%22,%22lat%22:%2231.558%22,%22lng%22:%2274.35071%22}"
 
 const mainUrl = "https://phpstack-1380969-5101925.cloudwaysapps.com";
 
@@ -325,8 +325,6 @@ const App = () => {
     const defaultParagraphText = urlParams.get('paragraphText');
     const defaultParagraphTextFont = urlParams.get('paragraphTextFont');
     const defaultSelectedDate = urlParams.get('selectedDate');
-    const defaultTitleFontSize = urlParams.get('titleFontSize') ? parseFloat(urlParams.get('titleFontSize')) : null;
-    const defaultParagraphFontSize = urlParams.get('paragraphFontSize') ? parseFloat(urlParams.get('paragraphFontSize')) : null;
     const defaultCity = JSON.parse(urlParams.get('city'));
 
     const [day, month, year] = defaultSelectedDate ? defaultSelectedDate.split("-") : "25-01-2025".split("-"); // Split the string into parts
@@ -343,8 +341,6 @@ const App = () => {
     // console.log('Paragraph Text Font:', defaultParagraphTextFont);
     // console.log('Selected Date:', defaultSelectedDate);
     // console.log('Selected Date Modified:', defaultModifiedDate);
-    // console.log('Title Font Size:', defaultTitleFontSize);
-    // console.log('Paragraph Font Size:', defaultParagraphFontSize);
     // console.log('City:', defaultCity);
 
     const theme = useTheme();
@@ -470,7 +466,7 @@ const App = () => {
     ]);
 
     const childDivRef = useRef(null);
-    const [titleFontSize, setTitleFontSize] = useState(defaultTitleFontSize ?? (isTablet ? 1.6 : isMobile ? 2.2 : 1)); // Default font size in vw
+    const [titleFontSize, setTitleFontSize] = useState(isTablet ? 1.6 : isMobile ? 2.2 : 1); // Default font size in vw
 
     useEffect(() => {
         const adjustFontSize = () => {
@@ -521,7 +517,7 @@ const App = () => {
     }, [title, titleFontSize]);
 
     const childDivRefTwo = useRef(null);
-    const [paragraphFontSize, setParagraphTitleFontSize] = useState(defaultParagraphFontSize ?? (isTablet ? 1.3 : isMobile ? 1.8 : 0.75)); // Default font size in vw
+    const [paragraphFontSize, setParagraphTitleFontSize] = useState(isTablet ? 1.3 : isMobile ? 1.8 : 0.75); // Default font size in vw
 
     useEffect(() => {
         const adjustFontSize = () => {
@@ -646,11 +642,11 @@ const App = () => {
                 formData.append(`properties[Date]`, format(selectedDate, "dd.MM.yyyy"));
                 formData.append(`properties[Ort]`, city ? city.name : '');
                 formData.append(`properties[Titel Text]`, title);
-                formData.append(`properties[Titel Letter Type]`, titleFont);
-                formData.append(`properties[Beschreibung Text]`, paragraphText);
-                formData.append(`properties[Beschreibung Letter Type]`, paragraphTextFont);
+                formData.append(`properties[Schriftart Titel]`, titleFont);
+                formData.append(`properties[Beschreibungstext]`, paragraphText);
+                formData.append(`properties[Schriftart Beschreibung]`, paragraphTextFont);
                 formData.append(`properties[Sterneneffekt]`, starsEffect ? 'Ja' : 'Nein');
-                formData.append(`properties[Achtergrond]`, activeDesign.name);
+                formData.append(`properties[Hintergrund]`, activeDesign.name);
 
                 // PROPERTIES TO WORK IN DATABASE
                 formData.append(`properties[_design]`, activeDesign.name);
@@ -663,8 +659,6 @@ const App = () => {
                 formData.append(`properties[_paragraphTextFont]`, paragraphTextFont);
                 formData.append(`properties[_selectedDate]`, format(selectedDate, "dd-MM-yyyy"));
                 formData.append(`properties[_city]`, JSON.stringify(city));
-                formData.append(`properties[_titleFontSize]`, titleFontSize);
-                formData.append(`properties[_paragraphFontSize]`, paragraphFontSize);
 
                 fetch(window.Shopify.routes.root + 'cart/add.js', {
                     method: "POST",
@@ -713,7 +707,7 @@ const App = () => {
                 //     // formData.append(`properties[Border]`, activeTile.title);
                 //     formData.append(`properties[Ort]`, city ? city.name : '');
                 //     formData.append(`properties[Titel Text]`, title);
-                //     formData.append(`properties[Beschreibung Text]`, paragraphText);
+                //     formData.append(`properties[Beschreibungstext]`, paragraphText);
                 //     formData.append(`properties[Sterneneffekt]`, starsEffect ? 'Ja' : 'Nein');
                 //     // formData.append(`properties[Vorschau]`, file);
                 //     formData.append(`properties[_Image Link]`, result.link);
@@ -960,6 +954,7 @@ const App = () => {
                                                         boxShadow: design.active ? "0px 8px 8px 0px rgba(0, 0, 0, 0.09)" : "",
                                                         backgroundColor: design.background,
                                                         cursor: "pointer",
+                                                        boxSizing: "initial"
                                                     }} onClick={() => {
                                                         let temp = [...designs];
                                                         designs.forEach((element, indexInside) => {
@@ -1033,6 +1028,7 @@ const App = () => {
                                                 <Box mt={3}>
                                                     <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={deLocale}>
                                                         <DatePicker
+                                                            localeText={{ toolbarTitle: "Datum wählen" }}
                                                             className="catamaran-regular"
                                                             // format="DD-MM-YYYY"
                                                             slotProps={{
@@ -1049,6 +1045,7 @@ const App = () => {
                                                                         },
                                                                     },
                                                                 },
+                                                                toolbar: { title: "Datum wählen" },
                                                             }}
                                                             value={selectedDate}
                                                             onChange={(newValue) => {

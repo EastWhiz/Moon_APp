@@ -22,8 +22,6 @@ class OrderPrint extends Model
         'paragraphTextFont',
         'selectedDate',
         'city',
-        'titleFontSize',
-        'paragraphFontSize',
         'status',
         'link'
     ];

@@ -175,9 +175,7 @@ class DropboxJob implements ShouldQueue
             'paragraphText' => $print->paragraphText,
             'paragraphTextFont' => $print->paragraphTextFont,
             'selectedDate' => $print->selectedDate,
-            'city' => $print->city,
-            'titleFontSize' => $print->titleFontSize,
-            'paragraphFontSize' => $print->paragraphFontSize,
+            'city' => $print->city
         ]);
 
         // logger($url);

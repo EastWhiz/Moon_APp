@@ -511,7 +511,7 @@ export default function Dashboard({ auth }) {
                                     onSelectionChange={handleSelectionChange}
                                     headings={[
                                         { title: 'Order #' },
-                                        { title: 'Date' },
+                                        { title: 'Moon Date' },
                                         { title: 'Design' },
                                         { title: 'City Visible' },
                                         { title: 'Date Visible' },

@@ -146,13 +146,6 @@ class OrdersCreateJob implements ShouldQueue
                         case '_city':
                             $data['city'] = $property->value == '""' ?  null : $property->value;
                             break;
-                        case '_titleFontSize':
-
-                            $data['titleFontSize'] = $property->value;
-                            break;
-                        case '_paragraphFontSize':
-                            $data['paragraphFontSize'] = $property->value;
-                            break;
                     }
                 }
 
