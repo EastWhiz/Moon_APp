@@ -119,11 +119,21 @@ function calculateMoonRotation(moonData, observerLatitude, observerLongitude, da
 
     const sunPosition = calculateSunPosition(date);
 
+    // console.log("GTA1: ", JSON.stringify(sunPosition));
     // Convert date to UTC hours
+
+    // console.log("GTA11: ", JSON.stringify(date));
+    // console.log("GTA12: ", date.getUTCHours());
+    // console.log("GTA13: ", date.getUTCMinutes());
+
     const utcHours = date.getUTCHours() + date.getUTCMinutes() / 60;
+
+    // console.log("GTA2: ", utcHours);
 
     // Local Sidereal Time (LST) in degrees
     const LST = (100.46 + 0.985647 * dayOfYear(date) + observerLongitude + 15 * utcHours) % 360;
+
+    // console.log("GTA3: ", LST);
 
     // Extract Moon's equatorial coordinates
     const moonRA = parseFloat(moonData.position.equatorial.rightAscension.hours);
@@ -135,6 +145,8 @@ function calculateMoonRotation(moonData, observerLatitude, observerLongitude, da
 
     // Hour Angle (H) in degrees
     const H = (LST - moonRA * 15) % 360; // Convert Moon's RA from hours to degrees
+
+    // console.log("GTA4: ", H);
 
     // Observer's latitude in radians
     const observerLatRad = toRadians(observerLatitude);

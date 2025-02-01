@@ -177,6 +177,16 @@ class DropboxJob implements ShouldQueue
         $screenshotsDirectory = storage_path('app/public/screenshots');
         $imageName = Str::random(20);
 
+        // $consoleMessages = Browsershot::url($url)
+        // ->setNodeModulePath('/home/1380969.cloudwaysapps.com/uavphvarpc/node_modules') // Puppeteer node_modules path
+        // ->setChromePath('/usr/bin/google-chrome') // Path to Chrome binary
+        // ->waitUntilNetworkIdle()
+        // ->setEnvironmentOptions([
+        //     'CHROME_CONFIG_HOME' => '/home/1380969.cloudwaysapps.com/uavphvarpc/public_html/temp-puppeteer'
+        // ])->timeout(60)
+        // ->debug()->consoleMessages();
+        // logger(json_encode($consoleMessages));
+
         Browsershot::url($url)
         ->setNodeModulePath('/home/1380969.cloudwaysapps.com/uavphvarpc/node_modules') // Puppeteer node_modules path
         ->setChromePath('/usr/bin/google-chrome') // Path to Chrome binary
