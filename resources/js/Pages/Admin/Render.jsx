@@ -440,7 +440,7 @@ const App = () => {
                     result.data.table.rows[0].cells[0],
                     parseFloat(city.lat),
                     parseFloat(city.lng),
-                    new Date(format(selectedDate, "MM-dd-yyyy"))
+                    new Date(format(selectedDate, "yyyy-MM-dd") + 'T00:00:00')
                 )
                 setRotateValue(parseFloat(functionResponse.rotationAngle));
             } catch (error) {
