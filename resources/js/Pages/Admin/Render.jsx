@@ -129,6 +129,10 @@ function calculateMoonRotation(moonData, observerLatitude, observerLongitude, da
     const moonRA = parseFloat(moonData.position.equatorial.rightAscension.hours);
     const moonDec = parseFloat(moonData.position.equatorial.declination.degrees);
 
+    if (isNaN(moonRA) || isNaN(moonDec)) {
+        return { error: "Invalid moon data" }; // Handle the error or return default values
+    }
+
     // Hour Angle (H) in degrees
     const H = (LST - moonRA * 15) % 360; // Convert Moon's RA from hours to degrees
 
@@ -137,11 +141,27 @@ function calculateMoonRotation(moonData, observerLatitude, observerLongitude, da
 
     // Calculate the parallactic angle using refined spherical trigonometry
     const Hrad = toRadians(H); // Hour angle in radians
-    const parallacticAngle = Math.atan2(
-        Math.sin(Hrad),
-        Math.tan(observerLatRad) * Math.cos(toRadians(moonDec)) -
-        Math.sin(toRadians(moonDec)) * Math.cos(Hrad)
-    );
+
+    const sinH = Math.sin(Hrad);
+    const tanLatCosDec = Math.tan(observerLatRad) * Math.cos(toRadians(moonDec));
+    const sinDecCosH = Math.sin(toRadians(moonDec)) * Math.cos(Hrad);
+
+    // alert(JSON.stringify({
+    //     p1: moonRA,
+    //     p2: moonDec,
+    //     p3: H, //
+    //     p4: observerLatRad,
+    //     p5: Hrad, //
+    //     p6: sinH, //
+    //     p7: tanLatCosDec,
+    //     p8: sinDecCosH //
+    // }))
+
+    if (isNaN(sinH) || isNaN(tanLatCosDec) || isNaN(sinDecCosH)) {
+        return { error: "Invalid parameters for parallactic angle" }; // Handle the error
+    }
+
+    const parallacticAngle = Math.atan2(sinH, tanLatCosDec - sinDecCosH);
 
     // Normalize parallactic angle to [-180°, 180°]
     const normalizedAngle = ((toDegrees(parallacticAngle) + 180) % 360) - 180;
@@ -420,7 +440,7 @@ const App = () => {
                     result.data.table.rows[0].cells[0],
                     parseFloat(city.lat),
                     parseFloat(city.lng),
-                    new Date(format(selectedDate, "MM-dd-yyyy"))
+                    new Date(format(selectedDate, "yyyy-MM-dd") + 'T00:00:00')
                 )
                 setRotateValue(parseFloat(functionResponse.rotationAngle));
             } catch (error) {
@@ -568,6 +588,10 @@ const App = () => {
     }, [paragraphText, paragraphFontSize]);
 
     const changeTabHandler = async () => {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth', // Smooth scroll effect
+        });
         if (selectedTab !== (isMobile ? 3 : 2))
             setSelectedTab(prevTab => prevTab + 1);
         if (selectedTab === (isMobile ? 3 : 2)) {
