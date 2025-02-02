@@ -1241,7 +1241,7 @@ const App = () => {
                             <Box>
                                 <Box sx={{ p: 2, pb: 0.5 }}>
                                     <Box mb={3.0} className="catamaran-regular basic-heading">
-                                        Hintergrund auswählen
+                                        Größe auswählen
                                     </Box>
                                     <Box sx={{ display: isMobile ? '' : 'flex', justifyContent: "space-between" }}>
                                         <Box sx={{ display: "flex" }}>
