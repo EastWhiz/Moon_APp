@@ -497,13 +497,15 @@ const App = () => {
     }, [city, selectedDate]);
 
     const [frames, setFrames] = useState([
-        { name: "DINA 4", size: "21,0 cm x 29,7 cm", price: 30.0, increasedPrice: 80.0 },
-        { name: "DINA 3", size: "29,7 cm x 42,0 cm", price: 40.0, increasedPrice: 100.0 },
-        { name: "DINA 2", size: "42,0 cm x 59,4 cm", price: 50.0, increasedPrice: 120.0 },
-        { name: "DINA 1", size: "59,4 cm x 84,1 cm", price: 80.0, increasedPrice: 180.0 }
+        { name: "DINA 4", size: "21.0 cm x 29.7 cm (DINA 4)", price: 30, increasedPrice: 80 },
+        { name: "DINA 3", size: "29.7 cm x 42.0 cm (DINA 3)", price: 40, increasedPrice: 100 },
+        { name: "DINA 2", size: "42.0 cm x 59.4 cm (DINA 2)", price: 50, increasedPrice: 120 },
+        { name: "DINA 1", size: "59.4 cm x 84.1 cm (DINA 1)", price: 80, increasedPrice: 180 }
     ]);
 
     const [selectedFrame, setSelectedFrame] = useState(frames[0]);
+
+    const [variantsArray, setVariantsArray] = useState([]);
 
     // useEffect(() => {
     //     const getData = async () => {
@@ -512,13 +514,14 @@ const App = () => {
     //             const data = await response.json();
     //             console.log(data.products[0]);
     //             let variants = data.products[0].variants;
+    //             setVariantsArray(variants);
     //             setFrames([
-    //                 { name: "DINA 4", size: "21,0 cm x 29,7 cm", price: variants[0].price, increasedPrice: variants[1].price },
-    //                 { name: "DINA 3", size: "29,7 cm x 42,0 cm", price: variants[2].price, increasedPrice: variants[3].price },
-    //                 { name: "DINA 2", size: "42,0 cm x 59,4 cm", price: variants[4].price, increasedPrice: variants[5].price },
-    //                 { name: "DINA 1", size: "59,4 cm x 84,1 cm", price: variants[6].price, increasedPrice: variants[7].price }
+    //                 { name: "DINA 4", size: variants[0].option1, price: parseFloat(variants[0].price), increasedPrice: parseFloat(variants[1].price) },
+    //                 { name: "DINA 3", size: variants[2].option1, price: parseFloat(variants[2].price), increasedPrice: parseFloat(variants[3].price) },
+    //                 { name: "DINA 2", size: variants[4].option1, price: parseFloat(variants[4].price), increasedPrice: parseFloat(variants[5].price) },
+    //                 { name: "DINA 1", size: variants[6].option1, price: parseFloat(variants[6].price), increasedPrice: parseFloat(variants[7].price) }
     //             ]);
-    //             setSelectedFrame({ name: "DINA 4", size: "21,0 cm x 29,7 cm", price: variants[0].price, increasedPrice: variants[1].price });
+    //             setSelectedFrame({ name: "DINA 4", size: variants[0].option1, price: parseFloat(variants[0].price), increasedPrice: parseFloat(variants[1].price) });
     //         } catch (error) {
     //             console.error(error);
     //         }
@@ -535,9 +538,9 @@ const App = () => {
     ]);
 
     const [tiles, setTiles] = useState([
-        { priceEffect: "normal", title: "kein Rahmen", image: `${mainUrl}/api/images/no-border.png`, active: true },
-        { priceEffect: "increased", title: "schwarzer Rahmen", image: `${mainUrl}/api/images/black-border.png`, active: false },
-        { priceEffect: "increased", title: "weißer Rahmen", image: `${mainUrl}/api/images/light-border.png`, active: false }
+        { priceEffect: "Kein Rahmen", title: "Kein Rahmen", image: `${mainUrl}/api/images/no-border.png`, active: true },
+        { priceEffect: "Mit Rahmen", title: "Schwarzer Rahmen", image: `${mainUrl}/api/images/black-border.png`, active: false },
+        { priceEffect: "Mit Rahmen", title: "Weißer Rahmen", image: `${mainUrl}/api/images/light-border.png`, active: false }
     ]);
 
     const [loading, setLoading] = useState(false);
@@ -670,7 +673,7 @@ const App = () => {
     useEffect(() => {
         setTimeout(() => {
             if (screenShotUrl !== false && loading === false) {
-                setLoading(true);
+                // setLoading(true);
 
                 let activeTile = tiles.find(tile => tile.active === true);
                 let activeDesign = designs.find(design => design.active === true);
@@ -684,50 +687,14 @@ const App = () => {
                 // console.log(paragraphText);
                 // console.log(format(selectedDate, "dd.MM.yyyy"));
 
-                let variantId = 51846764134723;
-                if (selectedFrame.price === 30.0 && activeTile.priceEffect === "normal") {
-                    variantId = 51846764134723;
-                } else if (selectedFrame.price === 40.0 && activeTile.priceEffect === "normal") {
-                    variantId = 51846764200259;
-                } else if (selectedFrame.price === 50.0 && activeTile.priceEffect === "normal") {
-                    variantId = 51846764265795;
-                } else if (selectedFrame.price === 80.0 && activeTile.priceEffect === "normal") {
-                    variantId = 51846764331331;
-                } else if (selectedFrame.increasedPrice === 80.0 && activeTile.priceEffect === "increased") {
-                    variantId = 51846764167491;
-                } else if (selectedFrame.increasedPrice === 100.0 && activeTile.priceEffect === "increased") {
-                    variantId = 51846764233027;
-                } else if (selectedFrame.increasedPrice === 120.0 && activeTile.priceEffect === "increased") {
-                    variantId = 51846764298563;
-                } else if (selectedFrame.increasedPrice === 180.0 && activeTile.priceEffect === "increased") {
-                    variantId = 51846764364099;
-                }
-
-                // let variantId = 50019933061396;
-                // if (selectedFrame.price === 30.0 && activeTile.priceEffect === "normal") {
-                //     variantId = 50019933061396;
-                // } else if (selectedFrame.price === 40.0 && activeTile.priceEffect === "normal") {
-                //     variantId = 50019933126932;
-                // } else if (selectedFrame.price === 50.0 && activeTile.priceEffect === "normal") {
-                //     variantId = 50019933192468;
-                // } else if (selectedFrame.price === 80.0 && activeTile.priceEffect === "normal") {
-                //     variantId = 50019933258004;
-                // } else if (selectedFrame.increasedPrice === 80.0 && activeTile.priceEffect === "increased") {
-                //     variantId = 50019933094164;
-                // } else if (selectedFrame.increasedPrice === 100.0 && activeTile.priceEffect === "increased") {
-                //     variantId = 50019933159700;
-                // } else if (selectedFrame.increasedPrice === 120.0 && activeTile.priceEffect === "increased") {
-                //     variantId = 50019933225236;
-                // } else if (selectedFrame.increasedPrice === 180.0 && activeTile.priceEffect === "increased") {
-                //     variantId = 50019933290772;
-                // }
+                let selectedVariant = variantsArray.find(value => value.option1 === selectedFrame.size && value.option2 === activeTile.priceEffect);
 
                 const formData = new FormData();
-                formData.set("id", variantId);
+                formData.set("id", selectedVariant.id);
                 formData.set("quantity", 1);
 
                 // PROPERTIES TO SHOW IN CART
-                if (activeTile.title !== "kein Rahmen")
+                if (activeTile.title !== "Kein Rahmen")
                     formData.append(`properties[Rahmen Kategorie]`, activeTile.title);
                 formData.append(`properties[Date]`, format(selectedDate, "dd.MM.yyyy"));
                 formData.append(`properties[Ort]`, city ? city.name : '');
@@ -765,59 +732,6 @@ const App = () => {
                         console.error('Error:', error); // Handle errors here
                         setLoading(false);
                     });
-
-                // // console.log(variantId);
-                // //TAKING IMAGE CODE
-                // html2canvas(document.querySelector('#cardIdParent'), {
-                //     scale: isMobile ? 36 : 20,
-                //     dpi: 300,
-                //     allowTaint: false,
-                //     useCORS: true,
-                //     backgroundColor: null,
-                //     scrollX: -window.scrollX,
-                //     scrollY: -window.scrollY,
-                //     windowWidth: document.documentElement.offsetWidth,
-                //     windowHeight: document.documentElement.offsetHeight
-                // }).then(async canvas => {
-                //     const dataURL = canvas.toDataURL('image/png');
-                //     // console.log(dataURL);
-                //     // window.open(dataURL, "_blank");
-                //     // const file = DataURIToBlob(dataURL);
-                //     // console.log(`FINAL SIZE ${file.size / 1048576} MB`);
-
-                //     let result = await uploadFileToServer(dataURL);
-                //     // console.log(result.link);
-
-                //     const formData = new FormData();
-                //     formData.set("id", variantId);
-                //     formData.set("quantity", 1);
-                //     if (activeTile.title !== "kein Rahmen")
-                //         formData.append(`properties[Rahmen Kategorie]`, activeTile.title);
-                //     formData.append(`properties[Date]`, format(selectedDate, "dd.MM.yyyy"));
-                //     // formData.append(`properties[Border]`, activeTile.title);
-                //     formData.append(`properties[Ort]`, city ? city.name : '');
-                //     formData.append(`properties[Titel Text]`, title);
-                //     formData.append(`properties[Beschreibungstext]`, paragraphText);
-                //     formData.append(`properties[Sterneneffekt]`, starsEffect ? 'Ja' : 'Nein');
-                //     // formData.append(`properties[Vorschau]`, file);
-                //     formData.append(`properties[_Image Link]`, result.link);
-                //     fetch(window.Shopify.routes.root + 'cart/add.js', {
-                //         method: "POST",
-                //         body: formData,
-                //     })
-                //         .then(response => response.json())
-                //         .then(jsonData => {
-                //             setScreenShotUrl(false);
-                //             setLoading(false);
-                //             // console.log(jsonData);
-                //             window.location.href = window.Shopify.routes.root + 'cart';
-                //         })
-                //         .catch(error => {
-                //             console.error('Error:', error); // Handle errors here
-                //             setLoading(false);
-                //         });
-
-                // });
             }
         }, 2000);
     }, [screenShotUrl]);
@@ -925,11 +839,11 @@ const App = () => {
                     minWidth: { xs: '50px' },
                     boxShadow: "0px 69px 69px 69px rgba(0, 0, 0, 0.09)",
                     border: {
-                        xs: activeTile.priceEffect === "normal" ? "none" : `14px solid ${activeTile.image.includes('light') ? "#f0f0f0" : "#161715"}`,
-                        sm: activeTile.priceEffect === "normal" ? "none" : `14px solid ${activeTile.image.includes('light') ? "#f0f0f0" : "#161715"}`,
-                        md: activeTile.priceEffect === "normal" ? "none" : `20px solid ${activeTile.image.includes('light') ? "#f0f0f0" : "#161715"}`,
-                        lg: activeTile.priceEffect === "normal" ? "none" : `20px solid ${activeTile.image.includes('light') ? "#f0f0f0" : "#161715"}`,
-                        xl: activeTile.priceEffect === "normal" ? "none" : `20px solid ${activeTile.image.includes('light') ? "#f0f0f0" : "#161715"}`,
+                        xs: activeTile.priceEffect === "Kein Rahmen" ? "none" : `14px solid ${activeTile.image.includes('light') ? "#f0f0f0" : "#161715"}`,
+                        sm: activeTile.priceEffect === "Kein Rahmen" ? "none" : `14px solid ${activeTile.image.includes('light') ? "#f0f0f0" : "#161715"}`,
+                        md: activeTile.priceEffect === "Kein Rahmen" ? "none" : `20px solid ${activeTile.image.includes('light') ? "#f0f0f0" : "#161715"}`,
+                        lg: activeTile.priceEffect === "Kein Rahmen" ? "none" : `20px solid ${activeTile.image.includes('light') ? "#f0f0f0" : "#161715"}`,
+                        xl: activeTile.priceEffect === "Kein Rahmen" ? "none" : `20px solid ${activeTile.image.includes('light') ? "#f0f0f0" : "#161715"}`,
                     },
                 }}>
                     <Box id="cardIdParent" sx={{
@@ -957,8 +871,8 @@ const App = () => {
                             <Grid container direction="column" alignItems="center" sx={{ width: "90%" }} id="moonParentId">
                                 <Grid sx={{
                                     paddingTop: {
-                                        xs: activeTile.priceEffect === "normal" ? "10px" : "10px",
-                                        sm: activeTile.priceEffect === "normal" ? "15px" : "15px",
+                                        xs: activeTile.priceEffect === "Kein Rahmen" ? "10px" : "10px",
+                                        sm: activeTile.priceEffect === "Kein Rahmen" ? "15px" : "15px",
                                     },
                                 }}>
                                     {newMoon ?
@@ -989,11 +903,11 @@ const App = () => {
                                 <Box sx={{
                                     position: "absolute",
                                     bottom: defaultDesign ? "1.7vw" : {
-                                        xs: activeTile.priceEffect === "normal" ? "0.104vw" : "0.104vw",
-                                        sm: activeTile.priceEffect === "normal" ? "0.957vw" : "0.957vw",
-                                        md: activeTile.priceEffect === "normal" ? "0.830vw" : "0.830vw",
-                                        lg: activeTile.priceEffect === "normal" ? "0.830vw" : "0.830vw",
-                                        xl: activeTile.priceEffect === "normal" ? "0.830vw" : "0.830vw",
+                                        xs: activeTile.priceEffect === "Kein Rahmen" ? "0.104vw" : "0.104vw",
+                                        sm: activeTile.priceEffect === "Kein Rahmen" ? "0.957vw" : "0.957vw",
+                                        md: activeTile.priceEffect === "Kein Rahmen" ? "0.830vw" : "0.830vw",
+                                        lg: activeTile.priceEffect === "Kein Rahmen" ? "0.830vw" : "0.830vw",
+                                        xl: activeTile.priceEffect === "Kein Rahmen" ? "0.830vw" : "0.830vw",
                                     },
                                 }}>
                                     <Grid>
@@ -1312,7 +1226,7 @@ const App = () => {
                                                     {selectedFrame.name}
                                                 </Box>
                                                 <Box className="catamaran-regular" sx={{ fontSize: "14px" }}>
-                                                    {selectedFrame.size}
+                                                    {selectedFrame.size.replace(/\s?\(DINA \d+\)/g, '')}
                                                 </Box>
                                             </Box>
                                         </Box>
@@ -1414,7 +1328,7 @@ const App = () => {
                                             ))}
                                         </Grid>
                                         <Box className="catamaran-regular" sx={{ fontSize: "16px", display: "flex", alignItems: "center", marginTop: isMobile ? '18px' : '' }}>
-                                            {activeTile.title === "kein Rahmen" ? "kein Rahmen" : activeTile.title === "schwarzer Rahmen" ? "schwarzer Rahmen" : activeTile.title === "weißer Rahmen" ? "weißer Rahmen" : null}
+                                            {activeTile.title === "Kein Rahmen" ? "Kein Rahmen" : activeTile.title === "Schwarzer Rahmen" ? "Schwarzer Rahmen" : activeTile.title === "Weißer Rahmen" ? "Weißer Rahmen" : null}
                                         </Box>
                                     </Box>
                                 </Box>
@@ -1427,7 +1341,7 @@ const App = () => {
                                 textAlign: "center",
                                 fontSize: { xs: "16px", md: "18px" },
                             }}>
-                                Aktueller Preis: {activeTile && activeTile.priceEffect === "normal" ? selectedFrame.price : selectedFrame.increasedPrice}€
+                                Aktueller Preis: {activeTile && activeTile.priceEffect === "Kein Rahmen" ? selectedFrame.price.toFixed(2) : selectedFrame.increasedPrice.toFixed(2)}€
                             </Box>
                             {loading ?
                                 <LoadingButton sx={{ py: 2 }} loading variant="contained" fullWidth>Submit</LoadingButton> :
