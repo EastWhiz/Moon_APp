@@ -1404,7 +1404,7 @@ const App = () => {
                                 </svg>
                                 <Box className={`catamaran-regular`} sx={{ marginTop: "-2px", marginLeft: "5px" }}>Bequem auf Rechnung zahlen</Box>
                             </Box>
-                            <Box className={`catamaran-regular`} sx={{ textAlign: "center", padding: isMobile ? "5px 20px" : "5px 40px", fontSize: "14px", backgroundColor: "#edeef0", margin: "15px 40px" }}>
+                            <Box className={`catamaran-regular`} sx={{ textAlign: "center", padding: "5px 40px", fontSize: "14px", backgroundColor: "#edeef0", margin: isMobile ? "15px 0px" : "15px 40px" }}>
                                 <b>Heute bestellen </b>und zwischen <span style={{ color: "#05c42c" }}>{getFormattedDates().fourthDate}</span> und <span style={{ color: "#05c42c" }}>{getFormattedDates().seventhDate}</span> erhalten 🚚
                             </Box>
                         </Box>
