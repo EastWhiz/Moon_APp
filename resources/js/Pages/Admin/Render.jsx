@@ -505,27 +505,27 @@ const App = () => {
 
     const [selectedFrame, setSelectedFrame] = useState(frames[0]);
 
-    useEffect(() => {
-        const getData = async () => {
-            try {
-                const response = await fetch('https://moonora.de/products.json');
-                const data = await response.json();
-                console.log(data.products[0]);
-                let variants = data.products[0].variants;
-                setFrames([
-                    { name: "DINA 4", size: "21,0 cm x 29,7 cm", price: variants[0].price, increasedPrice: variants[1].price },
-                    { name: "DINA 3", size: "29,7 cm x 42,0 cm", price: variants[2].price, increasedPrice: variants[3].price },
-                    { name: "DINA 2", size: "42,0 cm x 59,4 cm", price: variants[4].price, increasedPrice: variants[5].price },
-                    { name: "DINA 1", size: "59,4 cm x 84,1 cm", price: variants[6].price, increasedPrice: variants[7].price }
-                ]);
-                setSelectedFrame({ name: "DINA 4", size: "21,0 cm x 29,7 cm", price: variants[0].price, increasedPrice: variants[1].price });
-            } catch (error) {
-                console.error(error);
-            }
-        }
+    // useEffect(() => {
+    //     const getData = async () => {
+    //         try {
+    //             const response = await fetch('https://moonora.de/products.json');
+    //             const data = await response.json();
+    //             console.log(data.products[0]);
+    //             let variants = data.products[0].variants;
+    //             setFrames([
+    //                 { name: "DINA 4", size: "21,0 cm x 29,7 cm", price: variants[0].price, increasedPrice: variants[1].price },
+    //                 { name: "DINA 3", size: "29,7 cm x 42,0 cm", price: variants[2].price, increasedPrice: variants[3].price },
+    //                 { name: "DINA 2", size: "42,0 cm x 59,4 cm", price: variants[4].price, increasedPrice: variants[5].price },
+    //                 { name: "DINA 1", size: "59,4 cm x 84,1 cm", price: variants[6].price, increasedPrice: variants[7].price }
+    //             ]);
+    //             setSelectedFrame({ name: "DINA 4", size: "21,0 cm x 29,7 cm", price: variants[0].price, increasedPrice: variants[1].price });
+    //         } catch (error) {
+    //             console.error(error);
+    //         }
+    //     }
 
-        getData();
-    }, []);
+    //     getData();
+    // }, []);
 
     const [designs, setDesigns] = useState([
         { name: "black", background: "#111111", withStars: `${mainUrl}/api/images/black_stars.png`, withoutStars: `${mainUrl}/api/images/black.png`, color: "white", smMoon: `${mainUrl}/api/images/m1.png`, active: defaultDesign === "" || defaultDesign === null || defaultDesign === 'black' ? true : false },
