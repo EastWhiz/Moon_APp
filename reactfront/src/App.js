@@ -513,12 +513,12 @@ const App = () => {
                 console.log(data.products[0]);
                 let variants = data.products[0].variants;
                 setFrames([
-                    { name: "DINA 4", size: "21,0 cm x 29,7 cm", price: variants[0].price, increasedPrice: variants[1].price },
-                    { name: "DINA 3", size: "29,7 cm x 42,0 cm", price: variants[2].price, increasedPrice: variants[3].price },
-                    { name: "DINA 2", size: "42,0 cm x 59,4 cm", price: variants[4].price, increasedPrice: variants[5].price },
-                    { name: "DINA 1", size: "59,4 cm x 84,1 cm", price: variants[6].price, increasedPrice: variants[7].price }
+                    { name: "DINA 4", size: "21,0 cm x 29,7 cm", price: parseFloat(variants[0].price), increasedPrice: parseFloat(variants[1].price) },
+                    { name: "DINA 3", size: "29,7 cm x 42,0 cm", price: parseFloat(variants[2].price), increasedPrice: parseFloat(variants[3].price) },
+                    { name: "DINA 2", size: "42,0 cm x 59,4 cm", price: parseFloat(variants[4].price), increasedPrice: parseFloat(variants[5].price) },
+                    { name: "DINA 1", size: "59,4 cm x 84,1 cm", price: parseFloat(variants[6].price), increasedPrice: parseFloat(variants[7].price) }
                 ]);
-                setSelectedFrame({ name: "DINA 4", size: "21,0 cm x 29,7 cm", price: variants[0].price, increasedPrice: variants[1].price });
+                setSelectedFrame({ name: "DINA 4", size: "21,0 cm x 29,7 cm", price: parseFloat(variants[0].price), increasedPrice: parseFloat(variants[1].price) });
             } catch (error) {
                 console.error(error);
             }
@@ -684,6 +684,9 @@ const App = () => {
                 // console.log(paragraphText);
                 // console.log(format(selectedDate, "dd.MM.yyyy"));
 
+                console.log(selectedFrame.price);
+                console.log(activeTile.priceEffect);
+
                 let variantId = 51846764134723;
                 if (selectedFrame.price === 30.0 && activeTile.priceEffect === "normal") {
                     variantId = 51846764134723;
@@ -721,6 +724,8 @@ const App = () => {
                 // } else if (selectedFrame.increasedPrice === 180.0 && activeTile.priceEffect === "increased") {
                 //     variantId = 50019933290772;
                 // }
+
+                console.log(variantId);
 
                 const formData = new FormData();
                 formData.set("id", variantId);
