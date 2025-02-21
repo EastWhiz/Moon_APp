@@ -336,6 +336,37 @@ function useDivDimensions(id, delay = 300, tiles, reload) {
     return dimensions;
 }
 
+function getFormattedDates() {
+    const formatDate = (date) => {
+        const day = String(date.getDate()).padStart(2, '0');
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        return `${day}.${month}`;
+    };
+
+    const getNextValidDate = (startDate, daysToAdd) => {
+        let date = new Date(startDate);
+        let addedDays = 0;
+
+        while (addedDays < daysToAdd) {
+            date.setDate(date.getDate() + 1);
+            const dayOfWeek = date.getDay();
+            if (dayOfWeek !== 0 && dayOfWeek !== 6) { // 0 = Sunday, 6 = Saturday
+                addedDays++;
+            }
+        }
+        return date;
+    };
+
+    const currentDate = new Date();
+    const fourthDate = getNextValidDate(currentDate, 4);
+    const seventhDate = getNextValidDate(currentDate, 7);
+
+    return {
+        fourthDate: formatDate(fourthDate),
+        seventhDate: formatDate(seventhDate)
+    };
+}
+
 const App = () => {
 
     useEffect(() => {
@@ -465,13 +496,36 @@ const App = () => {
         }
     }, [city, selectedDate]);
 
-    const frames = [
+    const [frames, setFrames] = useState([
         { name: "DINA 4", size: "21,0 cm x 29,7 cm", price: 30.0, increasedPrice: 80.0 },
         { name: "DINA 3", size: "29,7 cm x 42,0 cm", price: 40.0, increasedPrice: 100.0 },
         { name: "DINA 2", size: "42,0 cm x 59,4 cm", price: 50.0, increasedPrice: 120.0 },
         { name: "DINA 1", size: "59,4 cm x 84,1 cm", price: 80.0, increasedPrice: 180.0 }
-    ];
+    ]);
+
     const [selectedFrame, setSelectedFrame] = useState(frames[0]);
+
+    useEffect(() => {
+        const getData = async () => {
+            try {
+                const response = await fetch('https://moonora.de/products.json');
+                const data = await response.json();
+                console.log(data.products[0]);
+                let variants = data.products[0].variants;
+                setFrames([
+                    { name: "DINA 4", size: "21,0 cm x 29,7 cm", price: variants[0].price, increasedPrice: variants[1].price },
+                    { name: "DINA 3", size: "29,7 cm x 42,0 cm", price: variants[2].price, increasedPrice: variants[3].price },
+                    { name: "DINA 2", size: "42,0 cm x 59,4 cm", price: variants[4].price, increasedPrice: variants[5].price },
+                    { name: "DINA 1", size: "59,4 cm x 84,1 cm", price: variants[6].price, increasedPrice: variants[7].price }
+                ]);
+                setSelectedFrame({ name: "DINA 4", size: "21,0 cm x 29,7 cm", price: variants[0].price, increasedPrice: variants[1].price });
+            } catch (error) {
+                console.error(error);
+            }
+        }
+
+        getData();
+    }, []);
 
     const [designs, setDesigns] = useState([
         { name: "black", background: "#111111", withStars: `${mainUrl}/api/images/black_stars.png`, withoutStars: `${mainUrl}/api/images/black.png`, color: "white", smMoon: `${mainUrl}/api/images/m1.png`, active: defaultDesign === "" || defaultDesign === null || defaultDesign === 'black' ? true : false },
@@ -1021,7 +1075,7 @@ const App = () => {
                                         </Box> */}
                                     </Box>
 
-                                    <Box mt={3.0} mb={isMobile ? 1 : 20} sx={{ display: "flex" }}>
+                                    <Box mt={3.0} mb={isMobile ? 1 : 4} sx={{ display: "flex" }}>
                                         <Switch
                                             onChange={handleStarsEffect}
                                             checked={starsEffect}
@@ -1367,6 +1421,14 @@ const App = () => {
                             </Box>
                         }
                         <Box sx={{ padding: "16px" }}>
+                            <Box className="catamaran-regular" sx={{
+                                color: "#000000",
+                                py: "6px",
+                                textAlign: "center",
+                                fontSize: { xs: "16px", md: "18px" },
+                            }}>
+                                Aktueller Preis: {activeTile && activeTile.priceEffect === "normal" ? selectedFrame.price : selectedFrame.increasedPrice}€
+                            </Box>
                             {loading ?
                                 <LoadingButton sx={{ py: 2 }} loading variant="contained" fullWidth>Submit</LoadingButton> :
                                 <Box className={`catamaran-regular big-button ${selectedTab === 1 && city === "" ? 'disabled-button' : ''}`} onClick={() => {
@@ -1380,23 +1442,57 @@ const App = () => {
 
                                 </Box>
                             }
-                            <Box className="catamaran-regular" sx={{
-                                mt: 3,
-                                mb: 3,
-                                color: "#000000",
-                                py: "6px",
-                                textAlign: "center",
-                                fontSize: { xs: "16px", md: "18px" },
-                            }}>
-                                Aktueller Preis: {activeTile && activeTile.priceEffect === "normal" ? selectedFrame.price : selectedFrame.increasedPrice}€
-                            </Box>
-                            {/* <Divider />
-                            <Box m={2} sx={{ display: "flex", justifyContent: "center" }}>
-                                <Box className="catamaran-regular" sx={{ color: "#838B93", textAlign: "center", fontSize: { xs: "11px", md: "11px" } }} >
-                                    Versand durch
+                            <Box sx={{ display: "flex", justifyContent: "space-between", margin: "15px 30px 15px 30px" }}>
+                                <Box sx={{ border: "1px solid #bababa", width: "35px", height: "20px", textAlign: "center", borderRadius: "2px" }}>
+                                    <svg width="20px" height="20px" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="-15 -15 80 80">
+                                        <g clip-path="url(#a)">
+                                            <path fill="#002991" d="M38.914 13.35c0 5.574-5.144 12.15-12.927 12.15H18.49l-.368 2.322L16.373 39H7.056l5.605-36h15.095c5.083 0 9.082 2.833 10.555 6.77a9.687 9.687 0 0 1 .603 3.58z" />
+                                            <path fill="#60CDFF" d="M44.284 23.7A12.894 12.894 0 0 1 31.53 34.5h-5.206L24.157 48H14.89l1.483-9 1.75-11.178.367-2.322h7.497c7.773 0 12.927-6.576 12.927-12.15 3.825 1.974 6.055 5.963 5.37 10.35z" />
+                                            <path fill="#008CFF" d="M38.914 13.35C37.31 12.511 35.365 12 33.248 12h-12.64L18.49 25.5h7.497c7.773 0 12.927-6.576 12.927-12.15z" />
+                                        </g>
+                                        <defs>
+                                            <clipPath id="a">
+                                                <path fill="#fff" d="M7.056 3h37.35v45H7.056z" />
+                                            </clipPath>
+                                        </defs>
+                                    </svg>
                                 </Box>
-                                <Box component="img" src={`${mainUrl}/api/images/dhl.png`} sx={{ marginLeft: "10px", height: 18 }} />
-                            </Box> */}
+                                <Box sx={{ border: "1px solid #bababa", width: "35px", height: "20px", textAlign: "center", borderRadius: "2px" }}>
+                                    <svg width="20px" height="20px" viewBox="0 0 52 32" version="1.1" xmlns="http://www.w3.org/2000/svg">
+                                        <g id="Components---Sprint-3" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                            <g id="assets-/-logo-/-mastercard-/-symbol">
+                                                <polygon id="Fill-1" fill="#FF5F00" points="18.7752605 28.537934 32.6926792 28.537934 32.6926792 3.41596003 18.7752605 3.41596003" />
+                                                <path d="M19.6590387,15.976947 C19.6590387,10.8803009 22.03472,6.34107274 25.7341024,3.41596003 C23.0283795,1.27638054 19.6148564,0 15.9044284,0 C7.12054904,0 0.000132546844,7.15323422 0.000132546844,15.976947 C0.000132546844,24.8006598 7.12054904,31.953894 15.9044284,31.953894 C19.6148564,31.953894 23.0283795,30.6775135 25.7341024,28.537934 C22.03472,25.6123775 19.6590387,21.0735931 19.6590387,15.976947" id="Fill-2" fill="#EB001B" />
+                                                <path d="M50.9714634,25.8771954 L50.9714634,25.257201 L50.8101981,25.257201 L50.6250744,25.6836968 L50.4395088,25.257201 L50.2782434,25.257201 L50.2782434,25.8771954 L50.3917919,25.8771954 L50.3917919,25.4094258 L50.5658701,25.8128438 L50.6838368,25.8128438 L50.857915,25.4085382 L50.857915,25.8771954 L50.9714634,25.8771954 Z M49.9504109,25.8771954 L49.9504109,25.3628264 L50.157184,25.3628264 L50.157184,25.2580887 L49.6314148,25.2580887 L49.6314148,25.3628264 L49.8377461,25.3628264 L49.8377461,25.8771954 L49.9504109,25.8771954 Z M51.4680723,15.9768139 C51.4680723,24.8005266 44.347214,31.9537609 35.5637764,31.9537609 C31.8533484,31.9537609 28.4393835,30.6773803 25.7341024,28.5378008 C29.4334848,25.6126881 31.8091661,21.07346 31.8091661,15.9768139 C31.8091661,10.8806116 29.4334848,6.34138341 25.7341024,3.41582689 C28.4393835,1.2762474 31.8533484,-0.000133141225 35.5637764,-0.000133141225 C44.347214,-0.000133141225 51.4680723,7.15310107 51.4680723,15.9768139 L51.4680723,15.9768139 Z" id="Fill-4" fill="#F79E1B" />
+                                            </g>
+                                        </g>
+                                    </svg>
+                                </Box>
+                                <Box sx={{ border: "1px solid #bababa", width: "35px", height: "20px", textAlign: "center", borderRadius: "2px" }}>
+                                    <svg width="20px" height="20px" style={{ fill: "#323abe" }} version="1.1" viewBox="11 17 46 30" xmlns="http://www.w3.org/2000/svg">
+                                        <g id="Layer_2">
+                                            <polygon class="st0" points="27.1,24.1 24.5,39.9 28.6,39.9 31.2,24.1 27.1,24.1  " />
+                                            <path class="st0" d="M50.8,24.1L50.8,24.1c-1,0-1.7,0.3-2.1,1.3L42.6,40h4.3c0,0,0.7-2,0.9-2.4c0.5,0,4.6,0,5.2,0   c0.1,0.6,0.5,2.4,0.5,2.4h3.8L54,24.1H50.8z M48.9,34.3c0.3-0.9,1.6-4.4,1.6-4.4c0,0,0.3-0.9,0.5-1.5l0,0l0.3,1.4   c0,0,0.8,3.8,1,4.6H48.9z" />
+                                            <path class="st0" d="M39.4,30.5c-1.4-0.7-2.3-1.2-2.3-2c0-0.7,0.7-1.4,2.3-1.4c1.3,0,2.3,0.3,3.1,0.6l0.4,0.2l0.6-3.4   c-0.8-0.3-2.1-0.7-3.7-0.7l0,0c-4,0-6.9,2.2-6.9,5.2c0,2.3,2,3.6,3.6,4.3c1.6,0.8,2.1,1.3,2.1,2c0,1.1-1.3,1.5-2.5,1.5   c-1.6,0-2.5-0.2-3.9-0.8l-0.5-0.3l-0.6,3.5c1,0.4,2.7,0.8,4.6,0.8c4.3,0,7.1-2.1,7.1-5.4C42.9,33,41.8,31.6,39.4,30.5z" />
+                                            <path class="st0" d="M21.1,24.1L21.1,24.1l-4,10.8l-0.4-2.2c0,0,0,0,0,0l-1.4-7.3c-0.2-1-1-1.3-1.9-1.3H6.9c-0.1,0-0.1,0.1-0.2,0.1   c0,0.1,0,0.2,0.1,0.2c1,0.3,1.9,0.6,2.7,1c0.9,0.4,1.5,1.2,1.8,2.1l3.3,12.4l4.3,0l6.4-15.8H21.1z" />
+                                        </g>
+                                    </svg>
+                                </Box>
+                                <svg height="21px" aria-hidden="true" role="img" viewBox="0 0 51 22">
+                                    <path d="M44.2986 -0.00524902H5.98714C2.68054 -0.00524902 0 2.67529 0 5.98189V16.0076C0 19.3142 2.68054 21.9948 5.98714 21.9948H44.2986C47.6052 21.9948 50.2857 19.3142 50.2857 16.0076V5.98189C50.2857 2.67529 47.6052 -0.00524902 44.2986 -0.00524902Z" fill="#FFA8CD"></path>
+                                    <path d="M41.1195 14.1197C40.2073 14.1197 39.4964 13.3654 39.4964 12.4495C39.4964 11.5335 40.2073 10.7792 41.1195 10.7792C42.0317 10.7792 42.7427 11.5335 42.7427 12.4495C42.7427 13.3654 42.0317 14.1197 41.1195 14.1197ZM40.6634 15.8842C41.4415 15.8842 42.4342 15.5879 42.9842 14.4295L43.0378 14.4565C42.7964 15.0895 42.7963 15.4666 42.7963 15.5609V15.7091H44.7548V9.18989H42.7963V9.33799C42.7963 9.43228 42.7964 9.80942 43.0378 10.4426L42.9842 10.4695C42.4342 9.31112 41.4415 9.01475 40.6634 9.01475C38.7988 9.01475 37.4842 10.4964 37.4842 12.4495C37.4842 14.4026 38.7988 15.8842 40.6634 15.8842ZM34.0768 9.01475C33.1915 9.01475 32.4939 9.32456 31.9306 10.4695L31.8769 10.4426C32.1184 9.80942 32.1184 9.43228 32.1184 9.33799V9.18989H30.1598V15.7091H32.172V12.2744C32.172 11.3719 32.6951 10.8062 33.5403 10.8062C34.3854 10.8062 34.8013 11.2911 34.8013 12.2609V15.7091H36.8135V11.5605C36.8135 10.0788 35.6598 9.01475 34.0768 9.01475ZM27.2489 10.4695L27.1952 10.4426C27.4367 9.80942 27.4367 9.43228 27.4367 9.33799V9.18989H25.4781V15.7091H27.4903L27.5038 12.5707C27.5038 11.6548 27.9867 11.1026 28.7781 11.1026C28.9928 11.1026 29.1671 11.1295 29.3684 11.1833V9.18989C28.483 9.00132 27.6916 9.33799 27.2489 10.4695ZM20.8501 14.1197C19.9379 14.1197 19.227 13.3654 19.227 12.4495C19.227 11.5335 19.9379 10.7792 20.8501 10.7792C21.7623 10.7792 22.4732 11.5335 22.4732 12.4495C22.4732 13.3654 21.7623 14.1197 20.8501 14.1197ZM20.394 15.8842C21.1721 15.8842 22.1648 15.5879 22.7148 14.4295L22.7684 14.4565C22.5269 15.0895 22.5269 15.4666 22.5269 15.5609V15.7091H24.4855V9.18989H22.5269V9.33799C22.5269 9.43228 22.5269 9.80942 22.7684 10.4426L22.7148 10.4695C22.1648 9.31112 21.1721 9.01475 20.394 9.01475C18.5294 9.01475 17.2148 10.4964 17.2148 12.4495C17.2148 14.4026 18.5294 15.8842 20.394 15.8842ZM14.4111 15.7091H16.4233V6.28047H14.4111V15.7091ZM12.9355 6.28047H10.8831C10.8831 7.96417 9.85019 9.47274 8.28065 10.5503L7.66361 10.9813V6.28047H5.53069V15.7091H7.66361V11.0352L11.1916 15.7091H13.7941L10.4002 11.2372C11.9429 10.1192 12.949 8.3817 12.9355 6.28047Z" fill="#0B051D"></path>
+                                </svg>
+                            </Box>
+                            <Box sx={{ display: "flex", justifyContent: "center" }}>
+                                <svg height="21px" aria-hidden="true" role="img" viewBox="0 0 51 22">
+                                    <path d="M44.2986 -0.00524902H5.98714C2.68054 -0.00524902 0 2.67529 0 5.98189V16.0076C0 19.3142 2.68054 21.9948 5.98714 21.9948H44.2986C47.6052 21.9948 50.2857 19.3142 50.2857 16.0076V5.98189C50.2857 2.67529 47.6052 -0.00524902 44.2986 -0.00524902Z" fill="#FFA8CD"></path>
+                                    <path d="M41.1195 14.1197C40.2073 14.1197 39.4964 13.3654 39.4964 12.4495C39.4964 11.5335 40.2073 10.7792 41.1195 10.7792C42.0317 10.7792 42.7427 11.5335 42.7427 12.4495C42.7427 13.3654 42.0317 14.1197 41.1195 14.1197ZM40.6634 15.8842C41.4415 15.8842 42.4342 15.5879 42.9842 14.4295L43.0378 14.4565C42.7964 15.0895 42.7963 15.4666 42.7963 15.5609V15.7091H44.7548V9.18989H42.7963V9.33799C42.7963 9.43228 42.7964 9.80942 43.0378 10.4426L42.9842 10.4695C42.4342 9.31112 41.4415 9.01475 40.6634 9.01475C38.7988 9.01475 37.4842 10.4964 37.4842 12.4495C37.4842 14.4026 38.7988 15.8842 40.6634 15.8842ZM34.0768 9.01475C33.1915 9.01475 32.4939 9.32456 31.9306 10.4695L31.8769 10.4426C32.1184 9.80942 32.1184 9.43228 32.1184 9.33799V9.18989H30.1598V15.7091H32.172V12.2744C32.172 11.3719 32.6951 10.8062 33.5403 10.8062C34.3854 10.8062 34.8013 11.2911 34.8013 12.2609V15.7091H36.8135V11.5605C36.8135 10.0788 35.6598 9.01475 34.0768 9.01475ZM27.2489 10.4695L27.1952 10.4426C27.4367 9.80942 27.4367 9.43228 27.4367 9.33799V9.18989H25.4781V15.7091H27.4903L27.5038 12.5707C27.5038 11.6548 27.9867 11.1026 28.7781 11.1026C28.9928 11.1026 29.1671 11.1295 29.3684 11.1833V9.18989C28.483 9.00132 27.6916 9.33799 27.2489 10.4695ZM20.8501 14.1197C19.9379 14.1197 19.227 13.3654 19.227 12.4495C19.227 11.5335 19.9379 10.7792 20.8501 10.7792C21.7623 10.7792 22.4732 11.5335 22.4732 12.4495C22.4732 13.3654 21.7623 14.1197 20.8501 14.1197ZM20.394 15.8842C21.1721 15.8842 22.1648 15.5879 22.7148 14.4295L22.7684 14.4565C22.5269 15.0895 22.5269 15.4666 22.5269 15.5609V15.7091H24.4855V9.18989H22.5269V9.33799C22.5269 9.43228 22.5269 9.80942 22.7684 10.4426L22.7148 10.4695C22.1648 9.31112 21.1721 9.01475 20.394 9.01475C18.5294 9.01475 17.2148 10.4964 17.2148 12.4495C17.2148 14.4026 18.5294 15.8842 20.394 15.8842ZM14.4111 15.7091H16.4233V6.28047H14.4111V15.7091ZM12.9355 6.28047H10.8831C10.8831 7.96417 9.85019 9.47274 8.28065 10.5503L7.66361 10.9813V6.28047H5.53069V15.7091H7.66361V11.0352L11.1916 15.7091H13.7941L10.4002 11.2372C11.9429 10.1192 12.949 8.3817 12.9355 6.28047Z" fill="#0B051D"></path>
+                                </svg>
+                                <Box className={`catamaran-regular`} sx={{ marginTop: "-2px", marginLeft: "5px" }}>Bequem auf Rechnung zahlen</Box>
+                            </Box>
+                            <Box className={`catamaran-regular`} sx={{ textAlign: "center", padding: "5px 40px", fontSize: "14px", backgroundColor: "#edeef0", margin: "15px 40px" }}>
+                                <b>Heute bestellen </b>und zwischen <span style={{ color: "#05c42c" }}>{getFormattedDates().fourthDate}</span> und <span style={{ color: "#05c42c" }}>{getFormattedDates().seventhDate}</span> erhalten 🚚
+                            </Box>
                         </Box>
                     </Box>
                 </Box>
