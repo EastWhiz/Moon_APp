@@ -164,9 +164,9 @@ class DropboxJob implements ShouldQueue
             'cityVisible' => $print->cityVisible,
             'dateVisible' => $print->dateVisible,
             'starsEffect' => $print->starsEffect,
-            'title' => $print->title,
+            'title' => $print->title ?? "",
             'titleFont' => $print->titleFont,
-            'paragraphText' => $print->paragraphText,
+            'paragraphText' => $print->paragraphText ?? "",
             'paragraphTextFont' => $print->paragraphTextFont,
             'selectedDate' => $print->selectedDate,
             'city' => $print->city
