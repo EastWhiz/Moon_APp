@@ -441,13 +441,13 @@ const App = () => {
         { name: 'tangerine', link: `${mainUrl}/api/images/tangerine.png` },
     ];
 
-    const [title, setTitle] = useState(defaultTitle ?? "");
+    const [title, setTitle] = useState(defaultTitle ?? "Ich liebe dich bis zum Mond & zurück");
     const [titleFont, setTitleFont] = useState(defaultTitleFont ?? "outfit");
     const handleTitle = (event) => {
         setTitle(event.target.value);
     };
 
-    const [paragraphText, setParagraphText] = useState(defaultParagraphText ?? "");
+    const [paragraphText, setParagraphText] = useState(defaultParagraphText ?? "Sabrina & Christopher");
     const [paragraphTextFont, setParagraphTextFont] = useState(defaultParagraphTextFont ?? "outfit");
     const handleParagraphText = (event) => {
         setParagraphText(event.target.value);
@@ -892,12 +892,12 @@ const App = () => {
                                 </Grid>
                                 <Grid sx={{ width: "80%", marginTop: { xs: "-10px", sm: "0px" } }}>
                                     <Typography ref={childDivRef} className="breakIt" variant="body1" sx={{ fontWeight: "500", marginBottom: "0.7vw", fontSize: `${titleFontSize}vw`, fontFamily: `'${titleFont}', Arial, sans-serif` }}>
-                                        {title || "Ich liebe dich bis zum Mond & zurück"}
+                                        {title}
                                     </Typography>
                                 </Grid>
                                 <Grid sx={{ width: "80%" }}>
                                     <Typography ref={childDivRefTwo} className="breakIt" variant="body1" sx={{ fontWeight: "500", mb: 2, fontSize: `${paragraphFontSize}vw`, fontFamily: `'${paragraphTextFont}', Arial, sans-serif` }}>
-                                        {paragraphText || "Sabrina & Christopher"}
+                                        {paragraphText}
                                     </Typography>
                                 </Grid>
                                 <Box sx={{

@@ -441,13 +441,13 @@ const App = () => {
         { name: 'tangerine', link: `${mainUrl}/api/images/tangerine.png` },
     ];
 
-    const [title, setTitle] = useState(defaultTitle ?? "");
+    const [title, setTitle] = useState(defaultTitle ?? "Ich liebe dich bis zum Mond & zurück");
     const [titleFont, setTitleFont] = useState(defaultTitleFont ?? "outfit");
     const handleTitle = (event) => {
         setTitle(event.target.value);
     };
 
-    const [paragraphText, setParagraphText] = useState(defaultParagraphText ?? "");
+    const [paragraphText, setParagraphText] = useState(defaultParagraphText ?? "Sabrina & Christopher");
     const [paragraphTextFont, setParagraphTextFont] = useState(defaultParagraphTextFont ?? "outfit");
     const handleParagraphText = (event) => {
         setParagraphText(event.target.value);
@@ -507,28 +507,28 @@ const App = () => {
 
     const [variantsArray, setVariantsArray] = useState([]);
 
-    // useEffect(() => {
-    //     const getData = async () => {
-    //         try {
-    //             const response = await fetch('https://moonora.de/products.json');
-    //             const data = await response.json();
-    //             console.log(data.products[0]);
-    //             let variants = data.products[0].variants;
-    //             setVariantsArray(variants);
-    //             setFrames([
-    //                 { name: "DINA 4", size: variants[0].option1, price: parseFloat(variants[0].price), increasedPrice: parseFloat(variants[1].price) },
-    //                 { name: "DINA 3", size: variants[2].option1, price: parseFloat(variants[2].price), increasedPrice: parseFloat(variants[3].price) },
-    //                 { name: "DINA 2", size: variants[4].option1, price: parseFloat(variants[4].price), increasedPrice: parseFloat(variants[5].price) },
-    //                 { name: "DINA 1", size: variants[6].option1, price: parseFloat(variants[6].price), increasedPrice: parseFloat(variants[7].price) }
-    //             ]);
-    //             setSelectedFrame({ name: "DINA 4", size: variants[0].option1, price: parseFloat(variants[0].price), increasedPrice: parseFloat(variants[1].price) });
-    //         } catch (error) {
-    //             console.error(error);
-    //         }
-    //     }
+    useEffect(() => {
+        const getData = async () => {
+            try {
+                const response = await fetch('https://moonora.de/products.json');
+                const data = await response.json();
+                console.log(data.products[0]);
+                let variants = data.products[0].variants;
+                setVariantsArray(variants);
+                setFrames([
+                    { name: "DINA 4", size: variants[0].option1, price: parseFloat(variants[0].price), increasedPrice: parseFloat(variants[1].price) },
+                    { name: "DINA 3", size: variants[2].option1, price: parseFloat(variants[2].price), increasedPrice: parseFloat(variants[3].price) },
+                    { name: "DINA 2", size: variants[4].option1, price: parseFloat(variants[4].price), increasedPrice: parseFloat(variants[5].price) },
+                    { name: "DINA 1", size: variants[6].option1, price: parseFloat(variants[6].price), increasedPrice: parseFloat(variants[7].price) }
+                ]);
+                setSelectedFrame({ name: "DINA 4", size: variants[0].option1, price: parseFloat(variants[0].price), increasedPrice: parseFloat(variants[1].price) });
+            } catch (error) {
+                console.error(error);
+            }
+        }
 
-    //     getData();
-    // }, []);
+        getData();
+    }, []);
 
     const [designs, setDesigns] = useState([
         { name: "black", background: "#111111", withStars: `${mainUrl}/api/images/black_stars.png`, withoutStars: `${mainUrl}/api/images/black.png`, color: "white", smMoon: `${mainUrl}/api/images/m1.png`, active: defaultDesign === "" || defaultDesign === null || defaultDesign === 'black' ? true : false },
@@ -892,12 +892,12 @@ const App = () => {
                                 </Grid>
                                 <Grid sx={{ width: "80%", marginTop: { xs: "-10px", sm: "0px" } }}>
                                     <Typography ref={childDivRef} className="breakIt" variant="body1" sx={{ fontWeight: "500", marginBottom: "0.7vw", fontSize: `${titleFontSize}vw`, fontFamily: `'${titleFont}', Arial, sans-serif` }}>
-                                        {title || "Ich liebe dich bis zum Mond & zurück"}
+                                        {title}
                                     </Typography>
                                 </Grid>
                                 <Grid sx={{ width: "80%" }}>
                                     <Typography ref={childDivRefTwo} className="breakIt" variant="body1" sx={{ fontWeight: "500", mb: 2, fontSize: `${paragraphFontSize}vw`, fontFamily: `'${paragraphTextFont}', Arial, sans-serif` }}>
-                                        {paragraphText || "Sabrina & Christopher"}
+                                        {paragraphText}
                                     </Typography>
                                 </Grid>
                                 <Box sx={{
